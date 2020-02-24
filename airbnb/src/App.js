@@ -10,7 +10,7 @@ const initialState = {
 	properties: [
 		{
 			id: 1,
-			location: 'Canada',
+			location: 'Canadaa',
 			title: 'Hotel',
 			type: 'Hotel',
 			price: 100,
