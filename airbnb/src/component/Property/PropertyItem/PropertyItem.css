@@ -1,0 +1,16 @@
+.property {
+	cursor: pointer;
+	word-wrap: break-word;
+	word-break: break-all;
+	max-width: 100%;
+	background-color: #ffffff;
+	border-radius: 12px;
+	padding: 7px;
+	border-color: rgba(0, 0, 0, 0.02);
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+	transition: all 0.2s ease-in-out;
+}
+
+.property:hover {
+	transform: scale(1.1);
+}
