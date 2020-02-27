@@ -1,7 +1,14 @@
 .propertyPage {
-	margin-left: 15%;
-	margin-right: 40%;
-	padding: 15px 0;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	width: auto !important;
+	padding-right: 24px !important;
+	padding-left: 24px !important;
+	display: flex;
+}
+
+.propertyContent {
+	position: relative !important;
 }
 
 .roomContainer {
@@ -14,4 +21,17 @@
 
 .propertyPage div .lineMargin {
 	margin-top: 16px;
+}
+
+@media (min-width: 1128px) {
+	.propertyPage {
+		max-width: 1080px !important;
+	}
+}
+
+@media (min-width: 1128px) {
+	.propertyContent {
+		width: 58.333333333333336% !important;
+		padding-right: 8px !important;
+	}
 }
