@@ -1,0 +1,22 @@
+.reviewHeader {
+	margin-bottom: 12px;
+}
+
+.reviewHeader div {
+	display: flex;
+}
+
+.reviewHeader .lineMargin {
+	margin-top: 16px;
+}
+
+.rhc {
+	padding-top: 15px;
+}
+.rhi {
+	padding-right: 14px;
+}
+
+.rhi h3 {
+	padding: 0 5px;
+}

@@ -4,13 +4,14 @@ import './App.css';
 import NavBar from './component/NavBar/NavBar';
 import PropertyList from './component/Property/PropertyList/PropertyList';
 import About from './component/About/About';
+import PropertyPage from './component/PropertyPage/PropertyPage';
 
 const initialState = {
 	isSignedIn: false,
 	properties: [
 		{
 			id: 1,
-			location: 'Canadaa',
+			location: 'Canada',
 			title: 'Hotel',
 			type: 'Hotel',
 			price: 100,
@@ -50,7 +51,7 @@ const initialState = {
 		{ label: 'About', link: '/about' }
 	],
 
-	property: {}
+	property: JSON.parse(localStorage.getItem('property'))
 };
 
 //TODO: Create Footer
@@ -62,14 +63,13 @@ class App extends Component {
 		this.state = initialState;
 	}
 
-	handlePropertyClick = property => {
-		// debugger;
+	setProperty = property => {
 		this.setState({ property: property });
-		console.log(property);
+		localStorage.setItem('property', JSON.stringify(property));
 	};
 
 	render() {
-		const { properties, links } = this.state;
+		const { properties, links, property } = this.state;
 		return (
 			<Router>
 				<div>
@@ -87,9 +87,9 @@ class App extends Component {
 										type={
 											'Hotel'
 										}
-										handlePropertyClick={
+										setProperty={
 											this
-												.handlePropertyClick
+												.setProperty
 										}
 									/>
 									<PropertyList
@@ -99,9 +99,9 @@ class App extends Component {
 										type={
 											'House'
 										}
-										handlePropertyClick={
+										setProperty={
 											this
-												.handlePropertyClick
+												.setProperty
 										}
 									/>
 									<PropertyList
@@ -111,9 +111,9 @@ class App extends Component {
 										type={
 											'Apartment'
 										}
-										handlePropertyClick={
+										setProperty={
 											this
-												.handlePropertyClick
+												.setProperty
 										}
 									/>
 								</div>
@@ -123,6 +123,20 @@ class App extends Component {
 					<Route
 						path='/about'
 						component={About}
+					/>
+					<Route
+						path='/property'
+						component={props => (
+							<PropertyPage
+								{...props}
+								propertyID={
+									property.id
+								}
+								property={
+									property
+								}
+							/>
+						)}
 					/>
 				</div>
 			</Router>

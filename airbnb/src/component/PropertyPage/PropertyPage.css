@@ -1,0 +1,17 @@
+.propertyPage {
+	margin-left: 15%;
+	margin-right: 40%;
+	padding: 15px 0;
+}
+
+.roomContainer {
+	display: flex;
+}
+
+.roomContainer p {
+	margin-right: 24px;
+}
+
+.propertyPage div .lineMargin {
+	margin-top: 16px;
+}

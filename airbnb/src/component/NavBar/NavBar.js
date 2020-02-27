@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../airbnb-1.svg';
+import logo from '../../2132GLogo_500x500.png';
 import ProfileMenu from './ProfileMenu';
 import './NavBar.css';
 
@@ -25,10 +25,7 @@ class NavBar extends Component {
 		let linkMarkup = this.props.links.map((link, i) => {
 			return (
 				<li>
-					<Link
-						to={link.link}
-						className='link-styless'
-					>
+					<Link to={link.link}>
 						<div className='nav-padding'>
 							{link.label}
 						</div>
@@ -46,7 +43,7 @@ class NavBar extends Component {
 								alt='AirBnB'
 								style={{
 									height:
-										'30px'
+										'55px'
 								}}
 							/>
 						</Link>

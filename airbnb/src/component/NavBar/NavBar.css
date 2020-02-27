@@ -109,11 +109,6 @@ nav {
 	background-color: rgb(235, 235, 235);
 }
 
-.link-styless {
-	color: inherit; /* blue colors for links too */
-	text-decoration: inherit; /* no underline */
-}
-
 .profile-item {
 	margin: 0 16px;
 	border-bottom: 1px solid rgb(235, 235, 235);

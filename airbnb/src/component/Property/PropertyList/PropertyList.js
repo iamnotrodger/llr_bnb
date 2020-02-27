@@ -2,18 +2,18 @@ import React from 'react';
 import PropertyItem from '../PropertyItem/PropertyItem';
 import './PropertyList.css';
 
-const PropertyList = ({ properties, type, handlePropertyClick }) => {
+const PropertyList = ({ properties, type, setProperty }) => {
 	return (
 		<div className='list'>
 			<h2>{type}</h2>
-			<div className='container'>
+			<div className='propertyContainer'>
 				{properties.map((property, i) => {
 					return (
 						<PropertyItem
 							key={i}
 							property={property}
-							handlePropertyClick={
-								handlePropertyClick
+							setProperty={
+								setProperty
 							}
 						/>
 					);

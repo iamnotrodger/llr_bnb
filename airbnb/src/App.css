@@ -11,6 +11,22 @@
 	font-family: 'Signika';
 }
 
+a {
+	color: inherit; /* blue colors for links too */
+	text-decoration: inherit; /* no underline */
+}
+
+.lineMargin {
+	margin: 24px 0;
+	display: block !important;
+}
+
+.lml {
+	border-bottom-style: solid !important;
+	border-bottom-width: var(--border-rule-border-width, 1px) !important;
+	border-bottom-color: var(--color-divider, #ebebeb) !important;
+}
+
 @media screen and (max-width: 1024px) {
 	.main {
 		padding: 0 5%;
