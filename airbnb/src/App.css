@@ -27,6 +27,15 @@ a {
 	border-bottom-color: var(--color-divider, #ebebeb) !important;
 }
 
+button {
+	border-image: initial;
+}
+
+button:active {
+	outline: none;
+	border: none;
+}
+
 @media screen and (max-width: 1024px) {
 	.main {
 		padding: 0 5%;

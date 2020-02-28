@@ -27,6 +27,22 @@ class PropertyPage extends Component {
 					date: 'March 2020',
 					comment:
 						'Est reprehenderit eu tempor et excepteur dolor. Eu aliqua culpa dolore in sint reprehenderit laborum nisi amet ullamco. Minim ipsum aliqua consequat ea occaecat. Quis magna reprehenderit mollit exercitation occaecat amet esse elit consectetur esse magna. Et proident est labore cupidatat velit ea Lorem esse commodo cupidatat. Ipsum Lorem culpa ea fugiat anim ea. Ad nisi cillum sit excepteur reprehenderit sint.'
+				},
+				{
+					id: 3,
+					username: 'Dummy 1',
+					rating: 4.5,
+					date: 'Febuary 2020',
+					comment:
+						'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
+				},
+				{
+					id: 4,
+					username: 'Dummy 1',
+					rating: 4.5,
+					date: 'Febuary 2020',
+					comment:
+						'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
 				}
 			],
 
@@ -63,7 +79,7 @@ class PropertyPage extends Component {
 						<p>{`${room.numBath} bathroom`}</p>
 					</div>
 
-					<div>
+					<div className='rcl'>
 						<div className='lineMargin'>
 							<div className='lml'></div>
 						</div>
@@ -100,8 +116,25 @@ class PropertyPage extends Component {
 					<ReviewList reviews={reviews} />
 				</div>
 
-				<div>
-					<Booking />
+				<div className='bookingDiv'>
+					<div>
+						<div
+							style={{
+								marginTop:
+									'32px',
+								marginBottom:
+									'24px'
+							}}
+						>
+							<div className='innerBooking'>
+								<Booking
+									price={
+										property.price
+									}
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		);

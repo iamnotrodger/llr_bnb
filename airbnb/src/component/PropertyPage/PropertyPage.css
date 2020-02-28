@@ -19,8 +19,19 @@
 	margin-right: 24px;
 }
 
-.propertyPage div .lineMargin {
+.rcl .lineMargin {
 	margin-top: 16px;
+}
+
+.bookingDiv {
+	position: relative;
+	min-height: 1px;
+}
+
+.innerBooking {
+	margin-left: 45px !important;
+	width: 376px !important;
+	z-index: 3 !important;
 }
 
 @media (min-width: 1128px) {
@@ -33,5 +44,17 @@
 	.propertyContent {
 		width: 58.333333333333336% !important;
 		padding-right: 8px !important;
+	}
+}
+
+@media (min-width: 1128px) {
+	.bookingDiv {
+		padding-left: 8px;
+	}
+}
+
+@media (min-width: 1128px) {
+	.innerBooking {
+		position: fixed;
 	}
 }

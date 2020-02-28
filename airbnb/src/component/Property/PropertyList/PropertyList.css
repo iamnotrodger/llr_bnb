@@ -27,7 +27,7 @@
 } */
 
 @media screen and (max-width: 768px) {
-	.container {
+	.propertyContainer {
 		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	}
 }
