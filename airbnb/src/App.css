@@ -36,6 +36,10 @@ button:active {
 	border: none;
 }
 
+button:focus {
+	outline: 0;
+}
+
 @media screen and (max-width: 1024px) {
 	.main {
 		padding: 0 5%;

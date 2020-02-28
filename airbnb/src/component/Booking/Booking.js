@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import 'react-dates/initialize';
+import moment from 'moment';
 import { DateRangePicker } from 'react-dates';
 import StarRatingComponent from 'react-star-rating-component';
 import 'react-dates/lib/css/_datepicker.css';
@@ -14,21 +15,59 @@ class Booking extends Component {
 			startDate: null,
 			endDate: null,
 			numDays: 0,
-			total: 0
+			total: 0,
+			unavailableDays: [
+				'2020-03-07',
+				'2020-03-08',
+				'2020-03-09',
+				'2020-03-11',
+				'2020-03-12'
+			]
 		};
 	}
 
-	datediff = (first, second) => {
-		return Math.round((second - first) / (1000 * 60 * 60 * 24));
+	//Sets the unavailable dates in the calendar.
+	isBlocked = day => {
+		return this.state.unavailableDays.some(unavailableDay =>
+			moment(unavailableDay).isSame(day, 'day')
+		);
+	};
+
+	// Returns true if the range of dates contains unavailable dates.
+	checkForBlockedDates = (start, end, dates) => {
+		const dateFormat = 'YYYY-MM-DD';
+		const diff = moment(end).diff(start, 'days') + 1;
+		for (let i = 0; i < diff; i++) {
+			const checkDate = moment(start)
+				.add(i, 'd')
+				.format(dateFormat);
+			if (dates.find(day => day === checkDate)) {
+				return true;
+			}
+			// if (dates[checkDate] && dates[checkDate].blocked) {
+			// 	return true;
+			//       }
+		}
+		return false;
 	};
 
 	setDateAndDays = (startDate, endDate) => {
 		let numDays = 0;
 		if (startDate != null && endDate != null) {
-			numDays = this.datediff(
-				startDate.toDate(),
-				endDate.toDate()
-			);
+			if (
+				this.checkForBlockedDates(
+					startDate.toDate(),
+					endDate.toDate(),
+					this.state.unavailableDays
+				)
+			) {
+				return;
+			}
+			numDays =
+				moment(endDate.toDate()).diff(
+					startDate.toDate(),
+					'days'
+				) + 1;
 		}
 
 		this.setState({
@@ -75,11 +114,13 @@ class Booking extends Component {
 						endDateId='your_unique_end_date_id' // PropTypes.string.isRequired,
 						onDatesChange={({
 							startDate,
-							endDate
+							endDate,
+							dates
 						}) =>
 							this.setDateAndDays(
 								startDate,
-								endDate
+								endDate,
+								dates
 							)
 						} // PropTypes.func.isRequired,
 						focusedInput={
@@ -91,6 +132,9 @@ class Booking extends Component {
 							})
 						} // PropTypes.func.isRequired,
 						numberOfMonths={1}
+						isDayBlocked={this.isBlocked}
+						minimumNights={0}
+						showClearDates={true}
 					/>
 
 					<div className='lineMargin'>

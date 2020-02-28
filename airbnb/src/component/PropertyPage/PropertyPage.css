@@ -9,6 +9,7 @@
 
 .propertyContent {
 	position: relative !important;
+	padding-top: 24px;
 }
 
 .roomContainer {

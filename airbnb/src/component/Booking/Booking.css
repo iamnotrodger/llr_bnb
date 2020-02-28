@@ -40,3 +40,7 @@
 	border-color: transparent !important;
 	text-align: center !important;
 }
+
+.submitButton:active {
+	background: rgb(209, 55, 61) !important;
+}
