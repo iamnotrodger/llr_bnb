@@ -1,6 +1,7 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import ReviewItem from '../ReviewItem/ReviewItem';
+import ReviewWrite from '../ReviewWrite/ReviewWrite';
 import './ReviewList.css';
 
 const ReviewList = ({ reviews }) => {
@@ -42,6 +43,10 @@ const ReviewList = ({ reviews }) => {
 						/>
 					);
 				})}
+			</div>
+
+			<div>
+				<ReviewWrite />
 			</div>
 		</div>
 	);
