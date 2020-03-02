@@ -37,11 +37,8 @@ class ReviewWrite extends Component {
 		);
 	}
 
-	onCommentChange = e => {
-		if (this.state.comment.length <= 140) {
-			this.setState({ [e.target.name]: e.target.value });
-			console.log(this.state.comment.length);
-		}
+	onChange = e => {
+		this.setState({ [e.target.name]: e.target.value });
 	};
 
 	handleKeyPress = e => {
@@ -53,6 +50,10 @@ class ReviewWrite extends Component {
 				)
 			});
 		}
+	};
+
+	onSubmitReview = () => {
+		console.log('submit review');
 	};
 
 	render() {
@@ -82,19 +83,23 @@ class ReviewWrite extends Component {
 					</div>
 
 					<div className='commentContainer'>
-						<input
+						<textarea
 							className='commentComponent'
 							name='comment'
 							value={comment}
 							placeholder='Write Comment...'
-							onChange={
+							maxLength={140}
+							onChange={this.onChange}
+						/>
+					</div>
+					<div>
+						<input
+							onClick={
 								this
-									.onCommentChange
+									.onSubmitReview
 							}
-							onKeyDown={
-								this
-									.handleKeyPress
-							}
+							type='submit'
+							value='Submit'
 						/>
 					</div>
 				</div>
