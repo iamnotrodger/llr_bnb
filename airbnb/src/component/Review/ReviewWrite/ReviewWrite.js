@@ -92,15 +92,17 @@ class ReviewWrite extends Component {
 							onChange={this.onChange}
 						/>
 					</div>
-					<div>
-						<input
+					<div className='reviewSubmitContainer'>
+						<button
+							className='reviewSubmitbtn'
 							onClick={
 								this
 									.onSubmitReview
 							}
 							type='submit'
-							value='Submit'
-						/>
+						>
+							Submit
+						</button>
 					</div>
 				</div>
 			</div>

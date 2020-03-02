@@ -78,6 +78,10 @@ class Booking extends Component {
 		});
 	};
 
+	onSubmitReserve = () => {
+		console.log('Reserve');
+	};
+
 	render() {
 		const { price } = this.props;
 		const { total } = this.state;
@@ -154,6 +158,7 @@ class Booking extends Component {
 					<button
 						type='submit'
 						className='submitButton'
+						onClick={this.onSubmitReserve}
 					>
 						Reserve
 					</button>
