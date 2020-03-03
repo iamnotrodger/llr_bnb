@@ -17,7 +17,7 @@ class ReviewWrite extends Component {
 		this.setState({ [name]: nextValue });
 	};
 
-	renderStarRating(rating, name) {
+	renderStarRating = (rating, name) => {
 		const nameCapitalized =
 			name.charAt(0).toUpperCase() + name.slice(1);
 		return (
@@ -41,7 +41,7 @@ class ReviewWrite extends Component {
 				</div>
 			</div>
 		);
-	}
+	};
 
 	onChange = e => {
 		this.setState({ [e.target.name]: e.target.value });
@@ -78,6 +78,7 @@ class ReviewWrite extends Component {
 							communication,
 							'communication'
 						)}
+
 						{this.renderStarRating(
 							cleanliness,
 							'cleanliness'

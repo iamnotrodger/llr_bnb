@@ -15,6 +15,7 @@
     "react-scripts": "3.4.0",
     "react-star-rating-component": "^1.4.1",
     "react-star-ratings": "^2.3.0",
+    "react-transition-group": "^4.3.0",
     "unsplash-js": "^6.0.0"
   },
   "scripts": {

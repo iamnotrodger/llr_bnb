@@ -94,6 +94,7 @@ class Booking extends Component {
 					</div>
 					<div>
 						<StarRatingComponent
+							name='displayStar'
 							editing={false}
 							starCount={1}
 							starColor={'#00A699'}
@@ -109,7 +110,7 @@ class Booking extends Component {
 				</div>
 				<div className='bookingDate'>
 					<div>
-						<lable>Dates</lable>
+						<label>Dates</label>
 					</div>
 					<DateRangePicker
 						startDate={this.state.startDate} // momentPropTypes.momentObj or null,

@@ -11,7 +11,7 @@ const ReviewItem = ({ id, username, rating, date, comment }) => {
 				className='reviewRating'
 			>
 				<StarRatingComponent
-					name={id}
+					name='reviewRating'
 					editing={false}
 					starCount={5}
 					starColor={'#00A699'}

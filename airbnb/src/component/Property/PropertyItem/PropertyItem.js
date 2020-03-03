@@ -27,7 +27,7 @@ const PropertyItem = ({ property, setProperty }) => {
 
 				<div style={{ fontSize: '15px' }}>
 					<StarRatingComponent
-						name={property.id}
+						name='rating'
 						editing={false}
 						starCount={5}
 						starColor={'#00A699'}

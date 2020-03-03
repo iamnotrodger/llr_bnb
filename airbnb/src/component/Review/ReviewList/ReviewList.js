@@ -12,6 +12,7 @@ const ReviewList = ({ reviews }) => {
 				<div className='rhc'>
 					<div className='rhi'>
 						<StarRatingComponent
+							name='displayStar'
 							editing={false}
 							starCount={1}
 							starColor={'#00A699'}
@@ -33,6 +34,7 @@ const ReviewList = ({ reviews }) => {
 				{reviews.map((review, i) => {
 					return (
 						<ReviewItem
+							key={i}
 							id={i}
 							username={
 								review.username

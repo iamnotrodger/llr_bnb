@@ -24,7 +24,7 @@ class NavBar extends Component {
 	render() {
 		let linkMarkup = this.props.links.map((link, i) => {
 			return (
-				<li>
+				<li key={i}>
 					<Link to={link.link}>
 						<div className='nav-padding'>
 							{link.label}
@@ -69,15 +69,18 @@ class NavBar extends Component {
 										/>
 									</div>
 								</div>
-								{this.state
-									.menuOpen ? (
-									<ProfileMenu
-										toggleMenu={
-											this
-												.toggleMenu
-										}
-									/>
-								) : null}
+								<div>
+									{this
+										.state
+										.menuOpen ? (
+										<ProfileMenu
+											toggleMenu={
+												this
+													.toggleMenu
+											}
+										/>
+									) : null}
+								</div>
 							</li>
 						</ul>
 					</div>

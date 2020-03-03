@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import OutsideAlerter from './OutsideAlerter';
 import './NavBar.css';
 
@@ -11,9 +12,11 @@ const ProfileMenu = ({ toggleMenu }) => {
 						<ul>
 							<li>
 								<div className='profile-item'>
-									<div>
-										Profile
-									</div>
+									<Link to='/profile'>
+										<div>
+											Profile
+										</div>
+									</Link>
 								</div>
 							</li>
 

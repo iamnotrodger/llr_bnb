@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import NavBar from './component/NavBar/NavBar';
-import PropertyList from './component/Property/PropertyList/PropertyList';
-import About from './component/About/About';
 import PropertyPage from './component/PropertyPage/PropertyPage';
+import ProfilePage from './component/ProfilePage/ProfilePage';
+import About from './component/About/About';
+import PropertyList from './component/Property/PropertyList/PropertyList';
 
 const initialState = {
 	isSignedIn: false,
@@ -135,6 +136,15 @@ class App extends Component {
 								property={
 									property
 								}
+							/>
+						)}
+					/>
+
+					<Route
+						path='/profile'
+						component={props => (
+							<ProfilePage
+								{...props}
 							/>
 						)}
 					/>
