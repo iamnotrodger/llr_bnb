@@ -22,17 +22,23 @@ class ReviewWrite extends Component {
 			name.charAt(0).toUpperCase() + name.slice(1);
 		return (
 			<div className='ratingComponent'>
-				<p>{nameCapitalized}</p>
-				<StarRatingComponent
-					name={name}
-					starCount={5}
-					starColor={'#00A699'}
-					value={rating}
-					onStarClick={this.onStarClick.bind(
-						this
-					)}
-				/>
-				<p>{rating}</p>
+				<div>
+					<p>{nameCapitalized}</p>
+				</div>
+				<div>
+					<StarRatingComponent
+						name={name}
+						starCount={5}
+						starColor={'#00A699'}
+						value={rating}
+						onStarClick={this.onStarClick.bind(
+							this
+						)}
+					/>
+				</div>
+				<div>
+					<p>{rating}</p>
+				</div>
 			</div>
 		);
 	}
@@ -84,7 +90,7 @@ class ReviewWrite extends Component {
 
 					<div className='commentContainer'>
 						<textarea
-							className='commentComponent'
+							className='writeComment'
 							name='comment'
 							value={comment}
 							placeholder='Write Comment...'
@@ -94,7 +100,7 @@ class ReviewWrite extends Component {
 					</div>
 					<div className='reviewSubmitContainer'>
 						<button
-							className='reviewSubmitbtn'
+							className='reviewSubmit'
 							onClick={
 								this
 									.onSubmitReview

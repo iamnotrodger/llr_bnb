@@ -2,7 +2,7 @@
 	display: flex;
 }
 
-.commentComponent {
+.writeComment {
 	padding: 5px;
 	min-height: 15vh;
 	width: 100%;
@@ -10,4 +10,8 @@
 	resize: none;
 	/*the part below removes the blue border that appears everytime you focus in the textarea*/
 	outline: none;
+}
+
+.reviewSubmit {
+	right: 0;
 }
