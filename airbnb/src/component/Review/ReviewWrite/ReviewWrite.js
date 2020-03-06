@@ -13,6 +13,16 @@ class ReviewWrite extends Component {
 		};
 	}
 
+	onChange = e => {
+		this.setState({ [e.target.name]: e.target.value });
+	};
+
+	onSubmitReview = () => {
+		if (this.state.comment.length > 0) {
+			console.log('submit review');
+		}
+	};
+
 	onStarClick = (nextValue, prevValue, name) => {
 		this.setState({ [name]: nextValue });
 	};
@@ -31,9 +41,7 @@ class ReviewWrite extends Component {
 						starCount={5}
 						starColor={'#00A699'}
 						value={rating}
-						onStarClick={this.onStarClick.bind(
-							this
-						)}
+						onStarClick={this.onStarClick}
 					/>
 				</div>
 				<div>
@@ -41,25 +49,6 @@ class ReviewWrite extends Component {
 				</div>
 			</div>
 		);
-	};
-
-	onChange = e => {
-		this.setState({ [e.target.name]: e.target.value });
-	};
-
-	handleKeyPress = e => {
-		if (e.keyCode === 8) {
-			this.setState({
-				comment: this.state.comment.substring(
-					0,
-					this.state.comment.length - 1
-				)
-			});
-		}
-	};
-
-	onSubmitReview = () => {
-		console.log('submit review');
 	};
 
 	render() {

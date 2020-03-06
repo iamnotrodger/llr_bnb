@@ -1,0 +1,27 @@
+.profileContainer {
+	margin: 0 auto;
+	width: auto;
+	padding: 0 24px;
+	padding-top: 32px;
+	margin-bottom: 48px;
+	display: flex;
+}
+
+@media (min-width: 1128px) {
+	.profileContainer {
+		max-width: 1080px;
+	}
+
+	.profileImg {
+		border: 1px solid #e4e4e4;
+		border-radius: 1px;
+		padding: 24px;
+	}
+}
+
+@media (min-width: 744px) {
+	.profileConainter {
+		max-width: 696px;
+		padding-top: 40px;
+	}
+}

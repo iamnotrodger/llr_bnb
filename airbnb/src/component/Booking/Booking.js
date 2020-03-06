@@ -79,6 +79,13 @@ class Booking extends Component {
 	};
 
 	onSubmitReserve = () => {
+		if (
+			this.state.endDate === null ||
+			this.state.startDate === null
+		) {
+			console.log('one of date is null');
+			return;
+		}
 		console.log('Reserve');
 	};
 

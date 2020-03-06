@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReviewList from '../Review/ReviewList/ReviewList';
+import ReviewWrite from '../Review/ReviewWrite/ReviewWrite';
 import Booking from '../Booking/Booking';
 import './PropertyPage.css';
 
@@ -10,7 +11,6 @@ class PropertyPage extends Component {
 	constructor() {
 		super();
 		this.state = {
-			property: {},
 			reviews: [
 				{
 					id: 1,
@@ -53,12 +53,6 @@ class PropertyPage extends Component {
 				numBath: 1
 			}
 		};
-	}
-
-	componentDidMount() {
-		this.setState({
-			property: this.props.property
-		});
 	}
 
 	render() {
@@ -114,6 +108,9 @@ class PropertyPage extends Component {
 						<div className='lml'></div>
 					</div>
 					<ReviewList reviews={reviews} />
+					<div>
+						<ReviewWrite />
+					</div>
 				</div>
 
 				<div className='bookingDiv'>
