@@ -6,6 +6,7 @@ import PropertyPage from './component/PropertyPage/PropertyPage';
 import ProfilePage from './component/ProfilePage/ProfilePage';
 import About from './component/About/About';
 import PropertyList from './component/Property/PropertyList/PropertyList';
+import LoginPage from './component/LoginPage/LoginPage';
 
 const initialState = {
 	isSignedIn: false,
@@ -48,7 +49,7 @@ const initialState = {
 	],
 
 	links: [
-		{ label: 'Become a host', link: '/' },
+		{ label: 'Become a host', link: '/hostregister' },
 		{ label: 'About', link: '/about' }
 	],
 
@@ -124,6 +125,10 @@ class App extends Component {
 					<Route
 						path='/about'
 						component={About}
+					/>
+					<Route
+						path='/login'
+						component={LoginPage}
 					/>
 					<Route
 						path='/property'
