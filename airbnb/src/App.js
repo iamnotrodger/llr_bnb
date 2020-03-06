@@ -53,6 +53,21 @@ const initialState = {
 		{ label: 'About', link: '/about' }
 	],
 
+	menuList: [
+		{
+			label: 'Profile',
+			link: '/profile'
+		},
+		{
+			label: 'Login',
+			link: '/login'
+		},
+		{
+			label: 'Logout',
+			link: '/logout'
+		}
+	],
+
 	property: JSON.parse(localStorage.getItem('property'))
 };
 
@@ -71,11 +86,14 @@ class App extends Component {
 	};
 
 	render() {
-		const { properties, links, property } = this.state;
+		const { properties, links, menuList, property } = this.state;
 		return (
 			<Router>
 				<div>
-					<NavBar links={links} />
+					<NavBar
+						links={links}
+						menuList={menuList}
+					/>
 					<Route
 						exact
 						path='/'
