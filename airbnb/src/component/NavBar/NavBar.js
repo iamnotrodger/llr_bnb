@@ -4,8 +4,6 @@ import logo from '../../2132GLogo_500x500.png';
 import ProfileMenu from './ProfileMenu';
 import './NavBar.css';
 
-//TODO: Make list more dynamic
-
 class NavBar extends Component {
 	constructor() {
 		super();
@@ -77,6 +75,11 @@ class NavBar extends Component {
 											toggleMenu={
 												this
 													.toggleMenu
+											}
+											menuList={
+												this
+													.props
+													.menuList
 											}
 										/>
 									) : null}
