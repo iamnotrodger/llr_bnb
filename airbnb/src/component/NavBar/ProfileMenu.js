@@ -22,6 +22,26 @@ const ProfileMenu = ({ toggleMenu }) => {
 
 							<li>
 								<div className='profile-item'>
+									<Link to='/login'>
+										<div>
+											Login
+										</div>
+									</Link>
+								</div>
+							</li>
+
+							<li>
+								<div className='profile-item'>
+									<Link to='/register'>
+										<div>
+											Register
+										</div>
+									</Link>
+								</div>
+							</li>
+
+							<li>
+								<div className='profile-item'>
 									<div>
 										Log
 										out
