@@ -37,8 +37,6 @@ nav {
 .nav-menu li {
 	display: table-cell;
 	vertical-align: middle;
-	list-style: none;
-	/* padding: 0 12px; */
 	white-space: nowrap;
 }
 

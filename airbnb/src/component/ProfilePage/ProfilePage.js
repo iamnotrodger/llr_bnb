@@ -47,7 +47,9 @@ const ProfilePage = () => {
 						<p>{`Joined in ${user.joined}`}</p>
 					</div>
 					<div className='profileNav'>
-						<ul>{provileNav}</ul>
+						<div className='profileLinkList'>
+							<ul>{provileNav}</ul>
+						</div>
 						<div className='lml'></div>
 					</div>
 				</div>

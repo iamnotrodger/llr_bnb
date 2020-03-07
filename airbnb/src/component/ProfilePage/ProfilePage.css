@@ -51,6 +51,15 @@
 	margin-bottom: 16px;
 }
 
+.porifleLinkList {
+	bottom: 0;
+}
+
+.profileLinkList ul {
+	display: flex;
+	text-align: center;
+}
+
 @media (min-width: 1128px) {
 	.profileContainer {
 		max-width: 1080px;
