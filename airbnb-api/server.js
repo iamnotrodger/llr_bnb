@@ -8,7 +8,7 @@ const db_pool = new Pool({
     database: connection.database,
     port: 15432
 }) // pooled database client
-db_pool.connect()
+// db_pool.connect()
 
 /*set up web server*/
 const express = require('express')
