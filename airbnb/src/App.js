@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import NavBar from './component/NavBar/NavBar';
 import PropertyPage from './component/PropertyPage/PropertyPage';
@@ -7,6 +7,7 @@ import ProfilePage from './component/ProfilePage/ProfilePage';
 import About from './component/About/About';
 import PropertyList from './component/Property/PropertyList/PropertyList';
 import LoginPage from './component/LoginPage/LoginPage';
+import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 
 const initialState = {
 	isSignedIn: false,
@@ -50,7 +51,8 @@ const initialState = {
 
 	links: [
 		{ label: 'Become a host', link: '/hostregister' },
-		{ label: 'About', link: '/about' }
+		{ label: 'About', link: '/about' },
+		{ label: 'Register', link: '/register' }
 	],
 
 	menuList: [
@@ -59,11 +61,7 @@ const initialState = {
 			link: '/profile'
 		},
 		{
-			label: 'Login',
-			link: '/login'
-		},
-		{
-			label: 'Logout',
+			label: 'Log Out',
 			link: '/logout'
 		}
 	],
@@ -86,13 +84,24 @@ class App extends Component {
 	};
 
 	render() {
-		const { properties, links, menuList, property } = this.state;
+		const {
+			isSignedIn,
+			properties,
+			links,
+			menuList,
+			property
+		} = this.state;
 		return (
 			<Router>
-				<div>
-					<NavBar
-						links={links}
-						menuList={menuList}
+				<NavBar
+					links={links}
+					menuList={menuList}
+					isSignedIn={isSignedIn}
+				/>
+				<Switch>
+					<Route
+						path='/login'
+						component={LoginPage}
 					/>
 					<Route
 						exact
@@ -144,12 +153,9 @@ class App extends Component {
 						path='/about'
 						component={About}
 					/>
-					<Route
-						path='/login'
-						component={LoginPage}
-					/>
-					<Route
+					<PrivateRoute
 						path='/property'
+						isSignedIn={isSignedIn}
 						component={props => (
 							<PropertyPage
 								{...props}
@@ -163,15 +169,16 @@ class App extends Component {
 						)}
 					/>
 
-					<Route
+					<PrivateRoute
 						path='/profile'
+						isSignedIn={isSignedIn}
 						component={props => (
 							<ProfilePage
 								{...props}
 							/>
 						)}
 					/>
-				</div>
+				</Switch>
 			</Router>
 		);
 	}

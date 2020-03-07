@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
+import ProfileSide from './ProfileSide';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
-	const [onProfile, setOnProfile] = useState({
-		onProfile: true
-	});
+	// const [onProfile, setOnProfile] = useState({
+	// 	onProfile: true
+	// });
+	const dummyUser = {
+		firstName: 'Rodger',
+		lastName: 'Retanal',
+		email: 'rodger@email.com',
+		phone: '420-666-6969',
+		joined: '2020'
+	};
+
 	return (
 		<div className='profileContainer'>
-			<div className='profileImg'>Profile Image</div>
+			<div className='profileSide'>
+				<ProfileSide user={dummyUser} />
+			</div>
 			<div className='profileContent'>
 				<h2>Profile Page</h2>
 				<div className='profileHeader'>

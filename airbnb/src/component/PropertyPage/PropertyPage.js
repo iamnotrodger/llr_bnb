@@ -61,7 +61,7 @@ class PropertyPage extends Component {
 		return (
 			<div className='propertyPage'>
 				<div className='propertyContent'>
-					<div>
+					<div className='propertyHeader'>
 						<h2> {property.title} </h2>
 						<p> {property.location} </p>
 						<p>Host</p>
@@ -79,29 +79,7 @@ class PropertyPage extends Component {
 						</div>
 					</div>
 					<div>
-						<p>
-							Id dolor do mollit Lorem
-							dolore adipisicing.
-							Aliquip sint esse mollit
-							eu ad. Esse duis sit
-							occaecat ullamco eu aute
-							in adipisicing
-							exercitation dolor
-							aliquip adipisicing
-							culpa. Ea duis nisi
-							eiusmod tempor aliqua
-							commodo pariatur
-							exercitation non
-							adipisicing pariatur in
-							duis commodo. Duis
-							commodo velit irure do
-							sint nostrud minim
-							deserunt consectetur
-							laboris fugiat dolore
-							aute. Velit amet dolor
-							enim non. Ea eu irure ex
-							sunt.
-						</p>
+						<p>Description</p>
 					</div>
 
 					<div className='lineMargin'>
