@@ -10,7 +10,7 @@ import LoginPage from './component/LoginPage/LoginPage';
 import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 
 const initialState = {
-	isSignedIn: true,
+	isSignedIn: false,
 	properties: [
 		{
 			id: 1,
