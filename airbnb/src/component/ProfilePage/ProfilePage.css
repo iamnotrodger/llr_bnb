@@ -20,19 +20,35 @@
 }
 
 .profileContainer .profile img {
-	background-color: #d8d8d8 !important;
-	border-radius: 50% !important;
-	border-width: 2px !important;
-	border-style: solid !important;
-	border-color: #ffffff !important;
-	overflow: hidden !important;
-	display: block !important;
+	background-color: #d8d8d8;
+	border-radius: 50%;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #ffffff;
+	overflow: hidden;
+	display: block;
 	height: 120px;
 	width: 120px;
 }
 
 .profileInput {
 	width: 100%;
+	border-image: initial;
+	border: none;
+}
+
+.profileInput:focus {
+	outline: 0;
+}
+
+.profileContent {
+	padding-left: 8px;
+	padding-right: 8px;
+	min-height: 1px;
+}
+
+.headerContent {
+	margin-bottom: 16px;
 }
 
 @media (min-width: 1128px) {
@@ -49,6 +65,11 @@
 		border-radius: 1px;
 		padding: 24px;
 		margin-right: 8px;
+	}
+
+	.profileContent {
+		width: 66.66666666666666%;
+		margin-left: 80px;
 	}
 }
 
