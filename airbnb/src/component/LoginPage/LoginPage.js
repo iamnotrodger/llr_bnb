@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import './LoginPage.css';
 
 class LoginPage extends Component {
@@ -37,11 +38,12 @@ class LoginPage extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-                    <p className='register-hint'>
-                        <a href='/register'>
-                            Don't have an account?
-                        </a>
-                    </p>
+                    <div>
+                        <Link to = '/register'>
+                            <p className="login-register-hint">Don't have an account?</p>
+                        </Link>
+                    </div>
+                    
                     <div>
                         <button
                             type='submit'
