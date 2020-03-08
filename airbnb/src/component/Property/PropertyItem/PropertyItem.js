@@ -6,7 +6,7 @@ import StarRatingComponent from 'react-star-rating-component';
 const PropertyItem = ({ property, setProperty }) => {
 	return (
 		<div className='property'>
-			<Link to='/property'>
+			<Link to={`/property/${property.id}`}>
 				<div onClick={() => setProperty(property)}>
 					<h3> {property.location} </h3>
 					<h2> {property.title} </h2>

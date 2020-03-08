@@ -47,47 +47,24 @@ const dummyProps = [
 	}
 ];
 
+const dummyUser = {
+	id: 420,
+	hostId: 69,
+	firstName: 'Rodger',
+	lastName: 'Retanal',
+	email: 'rodger@email.com',
+	phone: '420-666-6969',
+	joined: '2020'
+};
+
 const initialState = {
-	user: {
-		id: null,
-		hostID: null,
-		firstName: '',
-		lastName: '',
-		email: '',
-		joined: ''
-	},
-	isSignedIn: true,
+	user: JSON.parse(localStorage.getItem('user')),
+	isSignedIn: false,
 	isHost: false,
 	apartmentProps: [],
 	hotelProps: [],
 	houseProps: [],
-	links: [
-		{
-			role: 'Guest',
-			label: 'Become a host',
-			link: '/host-register'
-		},
-		{
-			role: 'Host',
-			label: 'Add Property',
-			link: '/add-property'
-		},
-		{ role: 'Guest', label: 'About', link: '/about' }
-	],
-
-	menuList: [
-		{
-			role: 'Guest',
-			label: 'Profile',
-			link: '/profile'
-		},
-		{
-			role: 'Guest',
-			label: 'Log Out',
-			link: '/logout'
-		}
-	],
-
+	//This state is just for testing purposes.
 	property: JSON.parse(localStorage.getItem('property'))
 };
 
@@ -97,17 +74,22 @@ class App extends Component {
 		this.state = initialState;
 	}
 
+	//React Life Cycle Method: will run before render and is used to load data from the backend
 	componentDidMount() {
 		this.setState({
+			user: dummyUser,
 			apartmentProps: dummyProps,
 			houseProps: dummyProps,
 			hotelProps: dummyProps
 		});
+		localStorage.setItem('user', JSON.stringify(dummyUser));
+		localStorage.setItem('userID', JSON.stringify(dummyUser.id));
 	}
 
 	loadUser = data => {
 		this.setState({
 			user: {
+				isSignedIn: true,
 				id: data.id,
 				hostID: data.hostID,
 				firstName: data.firstName,
@@ -116,8 +98,15 @@ class App extends Component {
 				joined: data.joined
 			}
 		});
+
+		if (data.user.hostID !== null) {
+			this.setState({
+				isHost: true
+			});
+		}
 	};
 
+	//This function is just for testing pusposes.
 	setProperty = property => {
 		this.setState({ property: property });
 		localStorage.setItem('property', JSON.stringify(property));
@@ -127,34 +116,18 @@ class App extends Component {
 		const {
 			isSignedIn,
 			isHost,
+			user,
 			apartmentProps,
 			hotelProps,
 			houseProps,
-			links,
-			menuList,
 			property
 		} = this.state;
-
-		const filteredList = isHost
-			? links.filter(link => {
-					return (
-						link.role === 'Host' ||
-						link.label === 'About'
-					);
-			  })
-			: links.filter(link => {
-					return (
-						link.role === 'Guest' ||
-						link.label === 'About'
-					);
-			  });
 
 		return (
 			<Router>
 				<NavBar
-					links={filteredList}
-					menuList={menuList}
 					isSignedIn={isSignedIn}
+					isHost={isHost}
 				/>
 				<Switch>
 					<Route
@@ -212,14 +185,11 @@ class App extends Component {
 						component={About}
 					/>
 					<PrivateRoute
-						path='/property'
+						path='/property/:id'
 						isSignedIn={isSignedIn}
 						component={props => (
 							<PropertyPage
 								{...props}
-								propertyID={
-									property.id
-								}
 								property={
 									property
 								}
@@ -228,11 +198,12 @@ class App extends Component {
 					/>
 
 					<PrivateRoute
-						path='/profile'
+						path='/profile/:userID'
 						isSignedIn={isSignedIn}
 						component={props => (
 							<ProfilePage
 								{...props}
+								user={user}
 								setProperty={
 									this
 										.setProperty

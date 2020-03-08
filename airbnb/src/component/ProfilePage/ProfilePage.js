@@ -1,17 +1,9 @@
-import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Link, useParams } from 'react-router-dom';
 import ProfileSide from './ProfileSide';
 import PropertyMap from '../Property/PropertyList/PropertyMap';
 import ReviewList from '../Review/ReviewList/ReviewList';
 import './ProfilePage.css';
-
-const user = {
-	firstName: 'Rodger',
-	lastName: 'Retanal',
-	email: 'rodger@email.com',
-	phone: '420-666-6969',
-	joined: '2020'
-};
 
 const properties = [
 	{
@@ -86,13 +78,22 @@ const reviews = [
 	}
 ];
 
-const ProfilePage = ({ setProperty, isHost }) => {
+const ProfilePage = ({ user, setProperty, isHost }) => {
 	//TODO: get reveiws, past reservation, rental agreement, owned properties
-	// const [Reviews, setReviews] = useState([]);
-	// const [Reservations, setReservations] = useState([]);
-	// const [Agreements, setAgreements] = useState([]);
-	// const [OwnedProperties, setOwnedProperties] = useState([]);
+	//These are Hooks for using states in a function.
+	const [Reviews, setReviews] = useState([]);
+	const [Reservations, setReservations] = useState([]);
+	const [Agreements, setAgreements] = useState([]);
+	const [OwnedProperties, setOwnedProperties] = useState([]);
 
+	const { id } = useParams();
+
+	//Lifecycle Method (Hook) much like componentWillMount
+	useEffect(() => {
+		console.log(id);
+	}, [id]);
+
+	//The list of available links
 	const linkList = [
 		{
 			role: 'Guest',
@@ -116,6 +117,7 @@ const ProfilePage = ({ setProperty, isHost }) => {
 		}
 	];
 
+	//Will filter out Depending on the type of user
 	const filteredList = !isHost
 		? linkList.filter(link => {
 				return link.role !== 'Host';
@@ -164,6 +166,7 @@ const ProfilePage = ({ setProperty, isHost }) => {
 							/>
 						)}
 					/>
+
 					<Route
 						path='/profile/past-booking'
 						component={props => (
@@ -178,6 +181,9 @@ const ProfilePage = ({ setProperty, isHost }) => {
 							/>
 						)}
 					/>
+
+					<Route path='/profile/rental-agreements' />
+
 					<Route
 						path='/profile/owned-property'
 						component={props => (

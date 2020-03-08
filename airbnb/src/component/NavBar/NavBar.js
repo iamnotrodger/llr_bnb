@@ -4,8 +4,36 @@ import logo from '../../2132GLogo_500x500.png';
 import ProfileIcon from './ProfileIcon';
 import './NavBar.css';
 
-const NavBar = ({ links, menuList, isSignedIn }) => {
-	const linkMarkup = links.map((link, i) => {
+const NavBar = ({ isHost, isSignedIn }) => {
+	const links = [
+		{
+			role: 'Guest',
+			label: 'Become a host',
+			link: '/host-register'
+		},
+		{
+			role: 'Host',
+			label: 'Add Property',
+			link: '/add-property'
+		},
+		{ role: 'Guest', label: 'About', link: '/about' }
+	];
+
+	const filteredList = isHost
+		? links.filter(link => {
+				return (
+					link.role === 'Host' ||
+					link.label === 'About'
+				);
+		  })
+		: links.filter(link => {
+				return (
+					link.role === 'Guest' ||
+					link.label === 'About'
+				);
+		  });
+
+	const linkMarkup = filteredList.map((link, i) => {
 		return (
 			<li key={i}>
 				<Link to={link.link}>
@@ -38,7 +66,6 @@ const NavBar = ({ links, menuList, isSignedIn }) => {
 					<ul className='nav-menu'>
 						{linkMarkup}
 						<ProfileIcon
-							menuList={menuList}
 							isSignedIn={isSignedIn}
 						/>
 					</ul>

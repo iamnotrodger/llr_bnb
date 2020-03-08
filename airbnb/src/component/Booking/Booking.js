@@ -12,18 +12,30 @@ class Booking extends Component {
 	constructor() {
 		super();
 		this.state = {
+			userID: null,
+			hostID: null,
+			propertyID: null,
 			startDate: null,
 			endDate: null,
 			numDays: 0,
 			total: 0,
-			unavailableDays: [
+			unavailableDays: []
+		};
+	}
+
+	componentDidMount() {
+		this.setState({
+			userID: localStorage.getItem('userID'),
+			hostID: 666,
+			propertyID: this.props.propertyID,
+			unavailableDay: [
 				'2020-03-07',
 				'2020-03-08',
 				'2020-03-09',
 				'2020-03-11',
 				'2020-03-12'
 			]
-		};
+		});
 	}
 
 	//Sets the unavailable dates in the calendar.
@@ -90,7 +102,7 @@ class Booking extends Component {
 	};
 
 	render() {
-		const { price } = this.props;
+		const { price, numRev } = this.props;
 		const { total } = this.state;
 		return (
 			<div className='bookingContainer'>
@@ -108,7 +120,7 @@ class Booking extends Component {
 							value={1}
 						/>
 						<span>3.25</span>
-						<span>(2 reviews)</span>
+						<span>{`${numRev} reviews`}</span>
 					</div>
 
 					<div className='lineMargin'>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ProfileMenu from './ProfileMenu';
 
-const ProfileIcon = ({ menuList, isSignedIn }) => {
+const ProfileIcon = ({ isSignedIn }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const toggleMenu = () => {
@@ -20,10 +20,7 @@ const ProfileIcon = ({ menuList, isSignedIn }) => {
 			</div>
 			<div>
 				{menuOpen ? (
-					<ProfileMenu
-						toggleMenu={toggleMenu}
-						menuList={menuList}
-					/>
+					<ProfileMenu toggleMenu={toggleMenu} />
 				) : null}
 			</div>
 		</li>

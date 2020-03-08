@@ -5,55 +5,63 @@ import ReviewWrite from '../Review/ReviewWrite/ReviewWrite';
 import Booking from '../Booking/Booking';
 import './PropertyPage.css';
 
-//TODO: also needs to pass the user information.
-//TODO: also needs to grab the host id when we query database
+const dummyReviews = [
+	{
+		id: 1,
+		username: 'Dummy 1',
+		rating: 4.5,
+		date: 'Febuary 2020',
+		comment:
+			'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
+	},
+	{
+		id: 2,
+		username: 'Dummy 2',
+		rating: 2,
+		date: 'March 2020',
+		comment:
+			'Est reprehenderit eu tempor et excepteur dolor. Eu aliqua culpa dolore in sint reprehenderit laborum nisi amet ullamco. Minim ipsum aliqua consequat ea occaecat. Quis magna reprehenderit mollit exercitation occaecat amet esse elit consectetur esse magna. Et proident est labore cupidatat velit ea Lorem esse commodo cupidatat. Ipsum Lorem culpa ea fugiat anim ea. Ad nisi cillum sit excepteur reprehenderit sint.'
+	},
+	{
+		id: 3,
+		username: 'Dummy 1',
+		rating: 4.5,
+		date: 'Febuary 2020',
+		comment:
+			'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
+	},
+	{
+		id: 4,
+		username: 'Dummy 1',
+		rating: 4.5,
+		date: 'Febuary 2020',
+		comment:
+			'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
+	}
+];
+
+const dummyRoom = { numGuest: 2, numBedroom: 1, numBed: 1, numBath: 1 };
 
 class PropertyPage extends Component {
 	constructor() {
 		super();
 		this.state = {
-			reviews: [
-				{
-					id: 1,
-					username: 'Dummy 1',
-					rating: 4.5,
-					date: 'Febuary 2020',
-					comment:
-						'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
-				},
-				{
-					id: 2,
-					username: 'Dummy 2',
-					rating: 2,
-					date: 'March 2020',
-					comment:
-						'Est reprehenderit eu tempor et excepteur dolor. Eu aliqua culpa dolore in sint reprehenderit laborum nisi amet ullamco. Minim ipsum aliqua consequat ea occaecat. Quis magna reprehenderit mollit exercitation occaecat amet esse elit consectetur esse magna. Et proident est labore cupidatat velit ea Lorem esse commodo cupidatat. Ipsum Lorem culpa ea fugiat anim ea. Ad nisi cillum sit excepteur reprehenderit sint.'
-				},
-				{
-					id: 3,
-					username: 'Dummy 1',
-					rating: 4.5,
-					date: 'Febuary 2020',
-					comment:
-						'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
-				},
-				{
-					id: 4,
-					username: 'Dummy 1',
-					rating: 4.5,
-					date: 'Febuary 2020',
-					comment:
-						'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
-				}
-			],
+			property: {},
+			reviews: [],
 
-			room: {
-				numGuest: 2,
-				numBedroom: 1,
-				numBed: 1,
-				numBath: 1
-			}
+			room: {}
 		};
+	}
+
+	componentDidMount() {
+		const { id } = this.props.match.params;
+		this.setState({
+			property: {
+				propertyID: id
+			},
+			reviews: dummyReviews,
+			room: dummyRoom
+		});
 	}
 
 	render() {
@@ -112,6 +120,12 @@ class PropertyPage extends Component {
 								<Booking
 									price={
 										property.price
+									}
+									propertyID={
+										property.id
+									}
+									numRev={
+										reviews.length
 									}
 								/>
 							</div>
