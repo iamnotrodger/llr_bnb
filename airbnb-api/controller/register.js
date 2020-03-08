@@ -1,4 +1,6 @@
 // WARNING: without encryption
+// TODO: encrypt the password 
+// TODO: send email and password to the login page
 const handleRegister = async (req, res, db_pool) => {
     // handle http request
     const {email, password, firstName, middleName, lastName, address} = req.body;
