@@ -17,6 +17,7 @@ const ProfileSide = ({ user }) => {
 
 	//TODO: talk to API to update the user information
 	//This function doesn't belong here, should be in the APP class
+	//TODO: if one of the propery is empty, cancel
 	const updateProfile = () => {
 		console.log('Submit Changes');
 		console.log(User);

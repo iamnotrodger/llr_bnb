@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReviewHeader from '../Review/ReviewList/ReviewHeader';
 import ReviewList from '../Review/ReviewList/ReviewList';
 import ReviewWrite from '../Review/ReviewWrite/ReviewWrite';
 import Booking from '../Booking/Booking';
@@ -85,7 +86,13 @@ class PropertyPage extends Component {
 					<div className='lineMargin'>
 						<div className='lml'></div>
 					</div>
-					<ReviewList reviews={reviews} />
+					<div>
+						<ReviewHeader
+							rating={3.25}
+							length={reviews.length}
+						/>
+						<ReviewList reviews={reviews} />
+					</div>
 					<div>
 						<ReviewWrite />
 					</div>

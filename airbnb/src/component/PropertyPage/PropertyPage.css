@@ -39,22 +39,15 @@
 	.propertyPage {
 		max-width: 1080px !important;
 	}
-}
 
-@media (min-width: 1128px) {
 	.propertyContent {
 		width: 58.333333333333336% !important;
 		padding-right: 8px !important;
 	}
-}
 
-@media (min-width: 1128px) {
 	.bookingDiv {
 		padding-left: 8px;
 	}
-}
-
-@media (min-width: 1128px) {
 	.innerBooking {
 		position: fixed;
 	}

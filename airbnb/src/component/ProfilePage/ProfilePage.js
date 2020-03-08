@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Route, Link } from 'react-router-dom';
 import ProfileSide from './ProfileSide';
+import PropertyMap from '../Property/PropertyList/PropertyMap';
+import ReviewList from '../Review/ReviewList/ReviewList';
 import './ProfilePage.css';
 
 const user = {
@@ -11,19 +13,116 @@ const user = {
 	joined: '2020'
 };
 
-const ProfilePage = () => {
-	const [profileList, setProffileList] = useState([
+const properties = [
+	{
+		id: 1,
+		location: 'Canada',
+		title: 'Hotel',
+		type: 'Hotel',
+		price: 100,
+		rating: 3.4
+	},
+
+	{
+		id: 2,
+		location: 'Canada',
+		title: 'House',
+		type: 'House',
+		price: 102,
+		rating: 4.0
+	},
+
+	{
+		id: 3,
+		location: 'Canada',
+		title: 'Apartment',
+		type: 'Apartment',
+		price: 101,
+		rating: 4.0
+	},
+
+	{
+		id: 4,
+		location: 'Canada',
+		title: 'Apartment',
+		type: 'Apartment',
+		price: 101,
+		rating: 4.0
+	}
+];
+
+const reviews = [
+	{
+		id: 1,
+		username: 'Dummy 1',
+		rating: 4.5,
+		date: 'Febuary 2020',
+		comment:
+			'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
+	},
+	{
+		id: 2,
+		username: 'Dummy 2',
+		rating: 2,
+		date: 'March 2020',
+		comment:
+			'Est reprehenderit eu tempor et excepteur dolor. Eu aliqua culpa dolore in sint reprehenderit laborum nisi amet ullamco. Minim ipsum aliqua consequat ea occaecat. Quis magna reprehenderit mollit exercitation occaecat amet esse elit consectetur esse magna. Et proident est labore cupidatat velit ea Lorem esse commodo cupidatat. Ipsum Lorem culpa ea fugiat anim ea. Ad nisi cillum sit excepteur reprehenderit sint.'
+	},
+	{
+		id: 3,
+		username: 'Dummy 1',
+		rating: 4.5,
+		date: 'Febuary 2020',
+		comment:
+			'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
+	},
+	{
+		id: 4,
+		username: 'Dummy 1',
+		rating: 4.5,
+		date: 'Febuary 2020',
+		comment:
+			'Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum.'
+	}
+];
+
+const ProfilePage = ({ setProperty, isHost }) => {
+	//TODO: get reveiws, past reservation, rental agreement, owned properties
+	// const [Reviews, setReviews] = useState([]);
+	// const [Reservations, setReservations] = useState([]);
+	// const [Agreements, setAgreements] = useState([]);
+	// const [OwnedProperties, setOwnedProperties] = useState([]);
+
+	const linkList = [
 		{
+			role: 'Guest',
 			label: 'Reviews',
 			link: '/profile/reviews'
 		},
 		{
+			role: 'Guest',
 			label: 'History',
 			link: '/profile/past-booking'
+		},
+		{
+			role: 'Host',
+			label: 'Rental Agreement',
+			link: '/profile/rental-agreement'
+		},
+		{
+			role: 'Host',
+			label: 'Property',
+			link: '/profile/owned-property'
 		}
-	]);
+	];
 
-	const provileNav = profileList.map((link, i) => {
+	const filteredList = !isHost
+		? linkList.filter(link => {
+				return link.role !== 'Host';
+		  })
+		: linkList;
+
+	const provileNav = filteredList.map((link, i) => {
 		return (
 			<li key={i}>
 				<Link to={link.link}>
@@ -54,12 +153,45 @@ const ProfilePage = () => {
 					</div>
 				</div>
 				<div className='profileMain'>
-					<div className='guestContent'>
-						Guest Content
-					</div>
-					<div className='hostContent'>
-						Host Content (if applicable)
-					</div>
+					<Route
+						path='/profile/reviews'
+						component={props => (
+							<ReviewList
+								{...props}
+								reviews={
+									reviews
+								}
+							/>
+						)}
+					/>
+					<Route
+						path='/profile/past-booking'
+						component={props => (
+							<PropertyMap
+								{...props}
+								properties={
+									properties
+								}
+								setProperty={
+									setProperty
+								}
+							/>
+						)}
+					/>
+					<Route
+						path='/profile/owned-property'
+						component={props => (
+							<PropertyMap
+								{...props}
+								properties={
+									properties
+								}
+								setProperty={
+									setProperty
+								}
+							/>
+						)}
+					/>
 				</div>
 			</div>
 		</div>
