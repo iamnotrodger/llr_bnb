@@ -24,3 +24,7 @@ app.get('/', function (req, res) {
 /*handle register*/
 const register = require('./controller/register')
 app.post('/register', (req, res) => register.handleRegister(req, res, db_pool))
+
+/*handle login*/
+const login = require('./controller/login')
+app.post('/login', (req, res) => login.handleLogin(req, res, db_pool))
