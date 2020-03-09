@@ -3,7 +3,6 @@
 // TODO: send email and password to the login page
 const handleRegister = async (req, res, db_pool) => {
 	// handle http request
-
 	const schema = {
 		email: Joi.string()
 			.email()
@@ -22,14 +21,11 @@ const handleRegister = async (req, res, db_pool) => {
 			.required(),
 		phoneNumber: Joi.string().max(15)
 	};
-
 	const { error } = Joi.validate(req.body, schema);
-
 	if (error) {
 		res.status(400).send(error.details[0].message);
 		return;
 	}
-
 	const {
 		email,
 		password,
@@ -37,23 +33,25 @@ const handleRegister = async (req, res, db_pool) => {
 		middleName,
 		lastName,
 		address,
-		phoneNumber
+		phoneNum
 	} = req.body;
 
+    // Make the transaction with the database
 	try {
 		const client = await db_pool.connect();
 		await client.query('BEGIN');
 
 		// insert into user table
 		const userText =
-			'INSERT INTO project.usr(firstName, middleName, lastName, email, address) VALUES($1, $2, $3, $4, $5) RETURNING uid;';
+			'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid;';
 		await client
 			.query(userText, [
 				firstName,
 				middleName,
 				lastName,
 				email,
-				address
+                address,
+                phoneNum
 			])
 			.then(res => {
 				// get auto-generated uid
