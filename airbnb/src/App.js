@@ -78,6 +78,8 @@ class App extends Component {
 	componentDidMount() {
 		this.setState({
 			user: dummyUser,
+			isSignedIn: true,
+			isHost: true,
 			apartmentProps: dummyProps,
 			houseProps: dummyProps,
 			hotelProps: dummyProps

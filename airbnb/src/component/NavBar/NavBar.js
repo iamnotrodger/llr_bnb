@@ -16,20 +16,27 @@ const NavBar = ({ isHost, isSignedIn }) => {
 			label: 'Add Property',
 			link: '/add-property'
 		},
-		{ role: 'Guest', label: 'About', link: '/about' }
+		{ role: 'Guest', label: 'About', link: '/about' },
+		{
+			role: 'Guest',
+			label: 'Log in',
+			link: '/login'
+		}
 	];
 
 	const filteredList = isHost
 		? links.filter(link => {
 				return (
 					link.role === 'Host' ||
-					link.label === 'About'
+					link.label === 'About' ||
+					(!isSignedIn && link.link === '/login')
 				);
 		  })
 		: links.filter(link => {
 				return (
 					link.role === 'Guest' ||
-					link.label === 'About'
+					link.label === 'About' ||
+					(!isSignedIn && link.link === '/login')
 				);
 		  });
 
