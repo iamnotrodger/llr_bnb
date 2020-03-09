@@ -16,13 +16,14 @@ const cors = require('cors');
 const app = express();
 const Joi = require('joi');
 
+//Required Functions
 const login = require('./controller/login');
 const register = require('./controller/register');
 
 app.use(express.json());
 app.use(cors());
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
 	res.end('The server is running on port 3000...');
 });
 

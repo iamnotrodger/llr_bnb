@@ -11,12 +11,10 @@ const handleLogin = async (req, res, db_pool, Joi) => {
 			.required()
 	};
 
-	const result = Joi.validate(req.body, schema);
+	const { error } = Joi.validate(req.body, schema);
 
-	if (result.error) {
-		// res.end();
-		// res.status(400).send(result.error.details[0].message);
-		res.status(400).send('Invalid Inputs');
+	if (error) {
+		res.status(400).send(error.details[0].message);
 		return;
 	}
 
@@ -37,9 +35,7 @@ const handleLogin = async (req, res, db_pool, Joi) => {
 						'Login successfully'
 					);
 				} else {
-					res.status(400).send(
-						'Incorrect password'
-					);
+					res.status(400).send('Invalid Inputs.');
 				}
 			})
 			.catch(err => {
@@ -47,7 +43,7 @@ const handleLogin = async (req, res, db_pool, Joi) => {
 					'Error during the query.',
 					err.stack
 				);
-				res.status(400).send('No such email.');
+				res.status(400).send('Invalid Inputs.');
 			});
 	} finally {
 		client.release();
