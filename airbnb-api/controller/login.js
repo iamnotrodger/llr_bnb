@@ -5,9 +5,10 @@ const handleLogin = async (req, res, db_pool, Joi) => {
 	const schema = {
 		email: Joi.string()
 			.min(3)
+			.email()
 			.required(),
 		password: Joi.string()
-			.min(8)
+			// .min(8)
 			.required()
 	};
 
@@ -22,8 +23,8 @@ const handleLogin = async (req, res, db_pool, Joi) => {
 
 	const input_password = password;
 	// check the email and password
-	const client = await db_pool.connect();
 	try {
+		const client = await db_pool.connect();
 		const queryText =
 			'SELECT password FROM project.login WHERE email = $1';
 		client.query(queryText, [email])
