@@ -20,13 +20,14 @@ class LoginPage extends Component {
     render() {
         return (
             <div className = 'login-page'>
-                <div className='login-content'>
-                    <p className = 'login-welcome'>
+                <div className='login-box'>
+                    <p className = 'login-title'>
                         Welcome to LLB
                     </p>
                     <div>
                         <input className = 'login-input'
                                 name='email'
+                                type='email'
                                 placeholder='Email'
                                 onChange={this.onChange}
                             />
@@ -34,6 +35,7 @@ class LoginPage extends Component {
                     <div>
                         <input className = 'login-input'
                             name='password'
+                            type='password'
                             placeholder='Password'
                             onChange={this.onChange}
                         />

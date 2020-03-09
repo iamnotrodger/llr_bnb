@@ -20,17 +20,17 @@
     position: static !important;
 }
 
-.login-content{
+.login-box{
     margin-top: 50px;
     margin-left: 60%;
     background:rgb(255, 255, 255) none repeat scroll 0% 0% !important;
     border-radius: 4px !important;
     padding: 20px 30px 30px 30px;
-    width: 440px !important;
+    width: 450px !important;
     box-shadow:rgba(0, 0, 0, 0.20) 0px 10px 20px !important;
 }
 
-.login-welcome{
+.login-title{
     white-space: pre-wrap;
     font-weight: 400;
     font-style: italic;
@@ -44,15 +44,6 @@
     padding: 13px 0px;
     width: 100%;
     font-size: 18px;
-    font-family: var(
-		--font-button-font-family,
-		Circular,
-		-apple-system,
-		BlinkMacSystemFont,
-		Roboto,
-		Helvetica Neue,
-		sans-serif
-	);
     outline-style: none;
     border: 1px solid #ccc;
     border-radius: 4px;
