@@ -8,6 +8,7 @@ import About from './component/About/About';
 import PropertyList from './component/Property/PropertyList/PropertyList';
 import LoginPage from './component/LoginPage/LoginPage';
 import PrivateRoute from './component/PrivateRoute/PrivateRoute';
+import RegisterPage from './component/RegisterPage/RegisterPage';
 
 const dummyProps = [
 	{
@@ -135,6 +136,10 @@ class App extends Component {
 					<Route
 						path='/login'
 						component={LoginPage}
+					/>
+					<Route
+						path='/register'
+						component={RegisterPage}
 					/>
 					<Route
 						exact
