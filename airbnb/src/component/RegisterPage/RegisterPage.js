@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import TabsControl from './ReactTab.jsx'
 import './RegisterPage.css'
 
-export class RegisterPage extends Component {
+export class RegisterPage extends Component {    
     render() {
+        let _this = this
         return (
             <div className = 'register-page'>
                 <div className='login-background'>
@@ -16,18 +18,28 @@ export class RegisterPage extends Component {
                     <p className = 'login-title'>
                         Register
                     </p>
-                    <div>
-                        <input className = 'login-input register-fn-input'
-                        name='firstName'
-                        type='name'
-                        placeholder='First Name'/>
-                        <input className = 'login-input register-fn-input'
-                        name='lastName'
-                        type='name'
-                        placeholder='Last Name'/>
-                        <input className = 'login-input register-fn-input'
-                        type='email'
-                        placeholder='Email Address'/>
+
+                    <div className='container'>
+                        <TabsControl>
+                            <div name = 'Guest'>
+                            <div>
+                                <input className = 'login-input register-fn-input'
+                                name='firstName'
+                                type='name'
+                                placeholder='First Name'/>
+                                <input className = 'login-input register-fn-input'
+                                name='lastName'
+                                type='name'
+                                placeholder='Last Name'/>
+                                <input className = 'login-input register-fn-input'
+                                type='email'
+                                placeholder='Email Address'/>
+                            </div>
+                            </div>
+                            <div name = 'Host'>
+                                Not Applicable
+                            </div>
+                        </TabsControl>
                     </div>
                     <div>
                         <button

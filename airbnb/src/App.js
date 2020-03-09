@@ -107,7 +107,7 @@ class App extends Component {
 		}
 	};
 
-	//This function is just for testing pusposes.
+	//This function is just for testing purposes.
 	setProperty = property => {
 		this.setState({ property: property });
 		localStorage.setItem('property', JSON.stringify(property));
