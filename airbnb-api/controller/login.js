@@ -1,6 +1,4 @@
-// WARNING: without encryption
-// TODO: encrypt the password
-const handleLogin = async (req, res, db_pool, Joi) => {
+const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 	// handle http request
 	const schema = {
 		email: Joi.string()
@@ -17,7 +15,7 @@ const handleLogin = async (req, res, db_pool, Joi) => {
 		return;
 	}
 	const { email, password } = req.body;
-	const input_password = password;
+	const { words } = CryptoJS.SHA256(password)
 
 	// check the email and password
 	try {
@@ -27,7 +25,11 @@ const handleLogin = async (req, res, db_pool, Joi) => {
 				'SELECT password FROM project.login WHERE email = $1';
 			const {rows} = await client.query(queryText, [email]);
 			const {password} = rows[0];
-			if (input_password == password) {
+			
+			// console.log(password) // test
+			// console.log(words.toString()) // test
+			
+			if (words.toString() == password) { // compare the encrypted password
 				res.status(200).send('Login successfully');
 			} else {
 				res.status(400).send('Incorrect password.');

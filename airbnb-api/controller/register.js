@@ -1,7 +1,5 @@
-// WARNING: without encryption
-// TODO: encrypt the password
 // TODO: send email and password to the login page
-const handleRegister = async (req, res, db_pool, Joi) => {
+const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 	// handle http request
 	const schema = {
 		email: Joi.string()
@@ -37,7 +35,11 @@ const handleRegister = async (req, res, db_pool, Joi) => {
 		lastName,
 		address,
 		phoneNum
-	} = req.body;
+    } = req.body;
+    
+    // test: encryption
+    const {words} = CryptoJS.SHA256(password)
+    console.log(words.toString().length)
 
 	// Make the transaction with the database
 	try {
@@ -56,7 +58,6 @@ const handleRegister = async (req, res, db_pool, Joi) => {
 					phoneNum
             ]);
             const {uid} = rows[0];
-            console.log(uid); // test
             // insert into guest table
             const guestText =
                 'INSERT INTO project.guest(uid) VALUES($1);';
@@ -66,7 +67,7 @@ const handleRegister = async (req, res, db_pool, Joi) => {
                 'INSERT INTO project.login(email, password) VALUES($1, $2);';
             client.query(loginText, [
                 email,
-                password
+                words.toString() // encrypted password
             ]);
 			await client.query('COMMIT');
 			res.status(200).send('Successful registration');

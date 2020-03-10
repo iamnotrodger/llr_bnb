@@ -33,11 +33,13 @@ app.get('/', (req, res) => {
 
 /*handle register*/
 app.post('/api/register', (req, res) =>
-	register.handleRegister(req, res, db_pool, Joi)
+	register.handleRegister(req, res, db_pool, Joi, CryptoJS)
 );
 
 /*handle login*/
-app.post('/api/login', (req, res) => login.handleLogin(req, res, db_pool, Joi));
+app.post('/api/login', (req, res) => 
+	login.handleLogin(req, res, db_pool, Joi, CryptoJS)
+);
 
 //Add property
 app.post('/api/property/add-property', (req, res) =>
