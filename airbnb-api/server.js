@@ -14,9 +14,12 @@ const db_pool = new Pool({
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const Joi = require('joi');
 
-//Required Functions
+/*require modules*/
+const Joi = require('joi');
+const CryptoJS = require('crypto-js');
+
+/*require controllers*/
 const login = require('./controller/login');
 const register = require('./controller/register');
 
@@ -33,7 +36,9 @@ app.post('/api/register', (req, res) =>
 );
 
 /*handle login*/
-app.post('/api/login', (req, res) => login.handleLogin(req, res, db_pool, Joi));
+app.post('/api/login', 
+	(req, res) => login.handleLogin(req, res, db_pool, Joi)
+);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
