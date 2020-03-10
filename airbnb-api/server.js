@@ -46,12 +46,12 @@ app.post('/api/property/add-property', (req, res) =>
 
 //Gets all the list of property according to the type
 app.get('/api/property/property-list/:category', (req, res) =>
-	property.handlePropertyList(req, res, db_pool)
+	property.handlePropertyList(req, res, db_pool, Joi)
 );
 
 //Gets a number of property according to the type
 app.get('/api/property/property-list/:category/:num', (req, res) =>
-	property.handlePropertyListNum(req, res, db_pool)
+	property.handlePropertyListNum(req, res, db_pool, Joi)
 );
 
 const port = process.env.PORT || 3000;
