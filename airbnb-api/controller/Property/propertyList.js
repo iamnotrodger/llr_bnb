@@ -1,60 +1,12 @@
-// Route (GET): /api/property/property-list/:category
-//This will grap every property with the category
+// Route (GET):  /api/property/property-list/:category/:num?
+// Grabs the property according to the type and returns a number of property acording to the params
 const handlePropertyList = async (req, res, db_pool, Joi) => {
-	const schema = {
-		category: Joi.string()
-			.max(15)
-			.valid([
-				'House',
-				'Apartment',
-				'Hotel',
-				'Bed and Breakfast'
-			])
-			.required()
+	// Request params with default values.
+	const request = {
+		category: req.params.category,
+		num: req.params.num || 0
 	};
 
-	const { error } = Joi.validate(req.params, schema);
-
-	if (error) {
-		res.status(400).send(error.details[0].message);
-		return;
-	}
-
-	const { category } = req.params;
-
-	try {
-		const client = await db_pool.connect();
-		try {
-			const queryText =
-				'SELECT * FROM project.property WHERE category = $1';
-			const { rows } = await client.query(queryText, [
-				category
-			]);
-
-			if (rows.length === 0) {
-				res.status(400).send('No property was found');
-				return;
-			}
-
-			res.status(200).json(rows);
-		} catch (err) {
-			console.error('Error during the query.', err.stack);
-			res.status(400).send('Invalid Inputs.');
-		} finally {
-			client.release();
-		}
-	} catch (err) {
-		res.status(503).send('Service Unavailable');
-		console.error(
-			'Error during the connection to the database',
-			err.stack
-		);
-	}
-};
-
-// Route (GET):  /api/property/property-list/:category/:num
-// Grabs the property according to the type and returns a number of property acording to the params
-const handlePropertyListNum = async (req, res, db_pool, Joi) => {
 	const schema = {
 		category: Joi.string()
 			.max(15)
@@ -67,18 +19,17 @@ const handlePropertyListNum = async (req, res, db_pool, Joi) => {
 			.required(),
 		num: Joi.number()
 			.integer()
-			.min(1)
-			.required()
+			.min(0)
 	};
 
-	const { error } = Joi.validate(req.params, schema);
+	const { error } = Joi.validate(request, schema);
 
 	if (error) {
 		res.status(400).send(error.details[0].message);
 		return;
 	}
 
-	const { category, num } = req.params;
+	const { category, num } = request;
 	try {
 		const client = await db_pool.connect();
 		try {
@@ -88,13 +39,15 @@ const handlePropertyListNum = async (req, res, db_pool, Joi) => {
 				category
 			]);
 
-			if (rows.length === 0) {
+			const length = rows.length;
+
+			if (length === 0) {
 				res.status(400).send('No property was found');
 				return;
 			}
 
-			const apartmentList = rows.slice(0, num);
-			res.status(200).json(apartmentList);
+			const sliceEnd = num > 0 ? num : length;
+			res.status(200).json(rows.slice(0, sliceEnd));
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
 			res.status(400).send('Invalid Inputs.');
@@ -111,6 +64,5 @@ const handlePropertyListNum = async (req, res, db_pool, Joi) => {
 };
 
 module.exports = {
-	handlePropertyList,
-	handlePropertyListNum
+	handlePropertyList
 };

@@ -38,7 +38,7 @@ app.post('/api/register', (req, res) =>
 );
 
 /*handle login*/
-app.post('/api/login', (req, res) => 
+app.post('/api/login', (req, res) =>
 	login.handleLogin(req, res, db_pool, Joi, CryptoJS)
 );
 
@@ -52,14 +52,9 @@ app.post('/api/property/add-property', (req, res) =>
 	property.handleAddProperty(req, res, db_pool, Joi)
 );
 
-//Gets all the list of property according to the type
-app.get('/api/property/property-list/:category', (req, res) =>
-	propertyList.handlePropertyList(req, res, db_pool, Joi)
-);
-
 //Gets a number of property according to the type
-app.get('/api/property/property-list/:category/:num', (req, res) =>
-	propertyList.handlePropertyListNum(req, res, db_pool, Joi)
+app.get('/api/property/property-list/:category/:num?', (req, res) =>
+	propertyList.handlePropertyList(req, res, db_pool, Joi)
 );
 
 const port = process.env.PORT || 3000;

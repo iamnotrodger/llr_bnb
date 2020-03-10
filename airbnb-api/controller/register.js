@@ -35,11 +35,11 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 		lastName,
 		address,
 		phoneNum
-    } = req.body;
-    
-    // test: encryption
-    const {words} = CryptoJS.SHA256(password)
-    console.log(words.toString().length)
+	} = req.body;
+
+	// test: encryption
+	const { words } = CryptoJS.SHA256(password);
+	console.log(words.toString().length);
 
 	// Make the transaction with the database
 	try {
@@ -48,27 +48,27 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 			await client.query('BEGIN');
 			// insert into user table
 			const userText =
-                'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid;';
-            const {rows} = await client.query(userText, [
-					firstName,
-					middleName,
-					lastName,
-					email,
-					address,
-					phoneNum
-            ]);
-            const {uid} = rows[0];
-            // insert into guest table
-            const guestText =
-                'INSERT INTO project.guest(uid) VALUES($1);';
-            client.query(guestText, [uid]);
-            // insert into login table
-            const loginText =
-                'INSERT INTO project.login(email, password) VALUES($1, $2);';
-            client.query(loginText, [
-                email,
-                words.toString() // encrypted password
-            ]);
+				'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid;';
+			const { rows } = await client.query(userText, [
+				firstName,
+				middleName,
+				lastName,
+				email,
+				address,
+				phoneNum
+			]);
+			const { uid } = rows[0];
+			// insert into guest table
+			const guestText =
+				'INSERT INTO project.guest(uid) VALUES($1);';
+			await client.query(guestText, [uid]);
+			// insert into login table
+			const loginText =
+				'INSERT INTO project.login(email, password) VALUES($1, $2);';
+			await client.query(loginText, [
+				email,
+				words.toString() // encrypted password
+			]);
 			await client.query('COMMIT');
 			res.status(200).send('Successful registration');
 		} catch (err) {
