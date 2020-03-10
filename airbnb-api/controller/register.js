@@ -46,38 +46,28 @@ const handleRegister = async (req, res, db_pool, Joi) => {
 			await client.query('BEGIN');
 			// insert into user table
 			const userText =
-				'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid;';
-			await client
-				.query(userText, [
+                'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid;';
+            const {rows} = await client.query(userText, [
 					firstName,
 					middleName,
 					lastName,
 					email,
 					address,
 					phoneNum
-				])
-				.then(res => {
-					// get auto-generated uid
-					const { uid } = res.rows[0];
-					console.log(uid); // test
-					// insert into guest table
-					const guestText =
-						'INSERT INTO project.guest(uid) VALUES($1);';
-					client.query(guestText, [uid]);
-					// insert into login table
-					const loginText =
-						'INSERT INTO project.login(email, password) VALUES($1, $2);';
-					client.query(loginText, [
-						email,
-						password
-					]);
-				})
-				.catch(err => {
-					console.error(
-						'Postgresql Error.',
-						err.stack
-					);
-				});
+            ]);
+            const {uid} = rows[0];
+            console.log(uid); // test
+            // insert into guest table
+            const guestText =
+                'INSERT INTO project.guest(uid) VALUES($1);';
+            client.query(guestText, [uid]);
+            // insert into login table
+            const loginText =
+                'INSERT INTO project.login(email, password) VALUES($1, $2);';
+            client.query(loginText, [
+                email,
+                password
+            ]);
 			await client.query('COMMIT');
 			res.status(200).send('Successful registration');
 		} catch (err) {
