@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './TabStyle.css'
+import './ReactTab.css'
 
 export class ReactTab extends Component {
     constructor(){

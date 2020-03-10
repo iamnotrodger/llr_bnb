@@ -4,10 +4,8 @@ import GuestInput from './GuestInput.js'
 import HostInput from './HostInput.js'
 import './RegisterPage.css'
 
-
 export class RegisterPage extends Component {    
     render() {
-        let _this = this
         return (
             <div className = 'register-page'>
                 <div className='login-background'>
