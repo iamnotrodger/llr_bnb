@@ -22,6 +22,7 @@ const CryptoJS = require('crypto-js');
 /*require controllers*/
 const login = require('./controller/login');
 const register = require('./controller/register');
+const property = require('./controller/property');
 
 app.use(express.json());
 app.use(cors());
@@ -36,8 +37,21 @@ app.post('/api/register', (req, res) =>
 );
 
 /*handle login*/
-app.post('/api/login', 
-	(req, res) => login.handleLogin(req, res, db_pool, Joi)
+app.post('/api/login', (req, res) => login.handleLogin(req, res, db_pool, Joi));
+
+//Add property
+app.post('/api/property/add-property', (req, res) =>
+	property.handleAddProperty(req, res, db_pool, Joi)
+);
+
+//Gets all the list of property according to the type
+app.get('/api/property/property-list/:category', (req, res) =>
+	property.handlePropertyList(req, res, db_pool)
+);
+
+//Gets a number of property according to the type
+app.get('/api/property/property-list/:category/:num', (req, res) =>
+	property.handlePropertyListNum(req, res, db_pool)
 );
 
 const port = process.env.PORT || 3000;
