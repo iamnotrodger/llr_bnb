@@ -37,7 +37,7 @@ app.post('/api/register', (req, res) =>
 );
 
 /*handle login*/
-app.post('/api/login', (req, res) => 
+app.post('/api/login', (req, res) =>
 	login.handleLogin(req, res, db_pool, Joi, CryptoJS)
 );
 
