@@ -22,6 +22,8 @@ const CryptoJS = require('crypto-js');
 /*require controllers*/
 const login = require('./controller/login');
 const register = require('./controller/register');
+const profile = require('./controller/Profile/profile');
+const profileUpdate = require('./controller/Profile/profifleUpdate');
 const property = require('./controller/Property/property');
 const propertyList = require('./controller/Property/propertyList');
 
@@ -40,6 +42,32 @@ app.post('/api/register', (req, res) =>
 /*handle login*/
 app.post('/api/login', (req, res) =>
 	login.handleLogin(req, res, db_pool, Joi, CryptoJS)
+);
+
+//Get all the user infromation from Usr table
+app.get('/api/profile/:uid', (req, res) =>
+	profile.handleProfile(req, res, db_pool)
+);
+
+//Update the user's email
+app.put('/api/profile/update/email', (req, res) =>
+	profileUpdate.handleProfileEmail(req, res, db_pool, Joi)
+);
+//Update the user's password
+app.put('/api/profile/update/password', (req, res) =>
+	profileUpdate.handleProfilePasswrod(req, res, db_pool, Joi)
+);
+//Update the user's name
+app.put('/api/profile/update/name', (req, res) =>
+	profileUpdate.handleProfileName(req, res, db_pool, Joi)
+);
+//Update the user's address
+app.put('/api/profile/update/address', (req, res) =>
+	profileUpdate.handleProfileAddress(req, res, db_pool, Joi)
+);
+//Update the user's phone number
+app.put('/api/profile/update/phone', (req, res) =>
+	profileUpdate.handleProfilePhone(req, res, db_pool, Joi)
 );
 
 //Get all the information about the property, reviews, rooms, and unavailable dates
