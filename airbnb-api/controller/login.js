@@ -6,7 +6,7 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 			.email()
 			.required(),
 		password: Joi.string()
-			// .min(8)
+			.min(8)
 			.required()
 	};
 	const { error } = Joi.validate(req.body, schema);
@@ -15,7 +15,7 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 		return;
 	}
 	const { email, password } = req.body;
-	const { words } = CryptoJS.SHA256(password)
+	const { words } = CryptoJS.SHA256(password);
 
 	// check the email and password
 	try {
@@ -23,13 +23,14 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 		try {
 			const queryText =
 				'SELECT password FROM project.login WHERE email = $1';
-			const {rows} = await client.query(queryText, [email]);
-			const {password} = rows[0];
-			
+			const { rows } = await client.query(queryText, [email]);
+			const { password } = rows[0];
+
 			// console.log(password) // test
 			// console.log(words.toString()) // test
-			
-			if (words.toString() == password) { // compare the encrypted password
+
+			if (words.toString() === password) {
+				// compare the encrypted password
 				res.status(200).send('Login successfully');
 			} else {
 				res.status(400).send('Incorrect password.');
@@ -38,7 +39,7 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 			console.error('Error during the query.', err.stack);
 			res.status(400).send('Invalid Inputs.');
 		} finally {
-			client.release()
+			client.release();
 		}
 	} catch (err) {
 		res.status(503).send('Service Unavailable');
