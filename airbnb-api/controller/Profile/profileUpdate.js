@@ -6,7 +6,7 @@ const handleUpdateEmail = async (req, res, db_pool, Joi) => {
 			.min(3)
 			.max(256)
 			.required(),
-		uid: Joi.numeric()
+		uid: Joi.number()
 			.min(0)
 			.required()
 	};
@@ -105,7 +105,7 @@ const handleUpdateName = async (req, res, db_pool, Joi) => {
 		lastName: Joi.string()
 			.max(35)
 			.required(),
-		uid: Joi.numeric().required()
+		uid: Joi.number().required()
 	};
 
 	const { error } = Joi.validate(req.body, schema);
@@ -150,7 +150,7 @@ const handleUpdateAddress = async (req, res, db_pool, Joi) => {
 		address: Joi.string()
 			.max(256)
 			.required(),
-		uid: Joi.numeric().requried()
+		uid: Joi.number().requried()
 	};
 
 	const { error } = Joi.validate(req.body, schema);
@@ -177,7 +177,7 @@ const handleUpdatePhone = async (req, res, db_pool, Joi) => {
 		phone: Joi.string()
 			.max(256)
 			.required(),
-		uid: Joi.numeric().requried()
+		uid: Joi.number().requried()
 	};
 
 	const { error } = Joi.validate(req.body, schema);
