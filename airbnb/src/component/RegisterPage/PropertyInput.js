@@ -5,7 +5,9 @@ import './PropertyInput.css'
 const amountOptions = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },
-    { value: '3', label: '3' }
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' }
 ];
 
 const propTypeOptions = [
@@ -18,39 +20,37 @@ export class PropertyInput extends Component {
     render() {
         return (
             <div>
-                <div>
+                <div className='opt-prop'>
                     <p className='subtitle-prop'>Property type:</p>
                     <Select
-                        className='select type-of-prop'
-                        defaultValue={propTypeOptions[0]}
+                        className='select'
+                        placeholder='Select...'
                         options={propTypeOptions}
                     />
                 </div>
-                <div className='options-prop'>
-                    <div>
-                        <p className='subtitle-prop'>Number of Guest(s):</p>
-                        <Select
-                            className='select'
-                            defaultValue={amountOptions[0]}
-                            options={amountOptions}
-                        />
-                    </div>
-                    <div>
-                        <p className='subtitle-prop'>Number of Bed(s):</p>
-                        <Select
-                            className='select'
-                            defaultValue={amountOptions[0]}
-                            options={amountOptions}
-                        />
-                    </div>
-                    <div>
-                        <p className='subtitle-prop'>Number of Washroom(s):</p>
-                        <Select
-                            className='select'
-                            defaultValue={amountOptions[0]}
-                            options={amountOptions}
-                        />
-                    </div>
+                <div className='opt-prop'>
+                    <p className='subtitle-prop'>Guest(s):</p>
+                    <Select
+                        className='select'
+                        placeholder='Select...'
+                        options={amountOptions}
+                    />
+                </div>
+                <div className='opt-prop'>
+                    <p className='subtitle-prop'>Bed(s):</p>
+                    <Select
+                        className='select'
+                        placeholder='Select...'
+                        options={amountOptions}
+                    />
+                </div>
+                <div className='opt-prop'>
+                    <p className='subtitle-prop'>Washroom(s):</p>
+                    <Select
+                        className='select'
+                        placeholder='Select...'
+                        options={amountOptions}
+                    />
                 </div>
             </div>
         )

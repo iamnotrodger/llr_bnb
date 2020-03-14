@@ -8,7 +8,6 @@ export class HostInput extends Component {
         return (
             <div>
                 <GuestInput/>
-                <div style={{marginBottom: 10 + 'px'}}></div>
                 <PropInput/>
             </div>
         )

@@ -22,6 +22,7 @@ export class GuestInput extends Component {
                         type='email'
                         placeholder='Email Address'/>
                 </div>
+                <div style={{marginBottom: 10 + 'px'}}></div>
             </div>
         )
     }
