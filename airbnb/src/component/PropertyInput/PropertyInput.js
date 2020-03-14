@@ -8,11 +8,11 @@ import cx from 'classnames';
 import './PropertyInput.css';
 
 const amountOptions = [
-	{ value: '1', label: '1' },
-	{ value: '2', label: '2' },
-	{ value: '3', label: '3' },
-	{ value: '4', label: '4' },
-	{ value: '5', label: '5' }
+	{ value: 1, label: '1' },
+	{ value: 2, label: '2' },
+	{ value: 3, label: '3' },
+	{ value: 4, label: '4' },
+	{ value: 5, label: '5' }
 ];
 
 const propTypeOptions = [
@@ -42,6 +42,12 @@ export class PropertyInput extends Component {
 		}));
 	};
 
+	handleSelectChange = name => {
+		return newValue => {
+			this.props.onChange(name, newValue.value);
+		};
+	};
+
 	render() {
 		return (
 			<div>
@@ -53,25 +59,37 @@ export class PropertyInput extends Component {
 						Property type:
 					</p>
 					<Select
+						name='propertyType'
 						className='select'
 						placeholder='Select...'
 						options={propTypeOptions}
+						onChange={this.handleSelectChange(
+							'propertyType'
+						)}
 					/>
 				</div>
 				<div className='opt-prop'>
 					<p className='subtitle-prop'>Guests:</p>
 					<Select
+						name='guest'
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
+						onChange={this.handleSelectChange(
+							'guest'
+						)}
 					/>
 				</div>
 				<div className='opt-prop'>
 					<p className='subtitle-prop'>Beds:</p>
 					<Select
+						name='bed'
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
+						onChange={this.handleSelectChange(
+							'bed'
+						)}
 					/>
 				</div>
 				<div className='opt-prop'>
@@ -79,9 +97,13 @@ export class PropertyInput extends Component {
 						Washrooms:
 					</p>
 					<Select
+						name='washroom'
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
+						onChange={this.handleSelectChange(
+							'washroom'
+						)}
 					/>
 				</div>
 				<div className='list-amenity'>

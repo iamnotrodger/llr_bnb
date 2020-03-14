@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TabsControl from '../React-Tab/ReactTab';
 import GuestInput from './GuestInput/GuestInput';
 import PropertyInput from '../PropertyInput/PropertyInput';
 import './RegisterPage.css';
 
 const RegisterPage = () => {
+	const [inputValue, setInputValue] = useState({
+		firstName: '',
+		lastName: '',
+		email: ''
+	});
+	const [isHostRegister, setIsHostRegister] = useState(false);
+	const [propertyInput, setPropertyInput] = useState({
+		propertyType: '',
+		guest: 0,
+		bed: 0,
+		washroom: 0
+	});
+
+	const onChange = event => {
+		const { name, value } = event.target;
+		console.log(name, ':', value);
+		setInputValue({ ...inputValue, [name]: value });
+	};
+
+	const onSelectChange = (name, value) => {
+		console.log(name, ':', value);
+		if (!isHostRegister) {
+			setIsHostRegister(true);
+		}
+		setPropertyInput({ ...propertyInput, [name]: value });
+	};
+
 	const handleButtonSubmit = () => {
-		console.log('hit that');
+		if (isHostRegister) {
+			console.log(propertyInput);
+		}
+		console.log(inputValue);
 	};
 
 	return (
@@ -23,10 +53,18 @@ const RegisterPage = () => {
 				<div className='tabs-container'>
 					<TabsControl>
 						<div name='Guest'>
-							<GuestInput />
+							<GuestInput
+								onChange={
+									onChange
+								}
+							/>
 						</div>
 						<div name='Host'>
-							<PropertyInput />
+							<PropertyInput
+								onChange={
+									onSelectChange
+								}
+							/>
 						</div>
 					</TabsControl>
 				</div>

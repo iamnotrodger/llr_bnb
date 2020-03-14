@@ -104,21 +104,16 @@ const linkList = [
 const ProfilePage = ({ user, isHost }) => {
 	//TODO: get reveiws, past reservation, rental agreement, owned properties
 	//These are Hooks for using states in a function.
-	const [profile, setProfile] = useState({
-		reviews: [],
-		reservations: [],
-		rentalAgreements: [],
-		ownedProperties: []
-	});
-
+	const [reviews, setReviews] = useState([]);
+	const [reservation, setReservation] = useState([]);
+	const [rentalAgreements, setRentalAgreements] = useState([]);
+	const [ownedProperties, setOwnedProperties] = useState([]);
 	const { id } = useParams();
 
 	//Lifecycle Method (Hook) much like componentWillMount
 	useEffect(() => {
 		console.log(id);
 	}, [id]);
-
-	//The list of available links
 
 	//Will filter out Depending on the type of user
 	const filteredList = !isHost
@@ -139,12 +134,6 @@ const ProfilePage = ({ user, isHost }) => {
 		);
 	});
 
-	const {
-		reviews,
-		reservations,
-		rentalAgreements,
-		ownedProperties
-	} = profile;
 	return (
 		<div className='profileContainer'>
 			<div className='profileSide'>

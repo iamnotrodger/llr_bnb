@@ -1,18 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './GuestInput.css';
 
-const GuestInput = () => {
-	const [inputValue, setInputValue] = useState({
-		firstName: '',
-		lastName: '',
-		email: ''
-	});
-
-	const onChange = event => {
-		const { name, value } = event.target;
-		setInputValue({ ...inputValue, [name]: value });
-	};
-
+const GuestInput = ({ onChange }) => {
 	return (
 		<div>
 			<div>
