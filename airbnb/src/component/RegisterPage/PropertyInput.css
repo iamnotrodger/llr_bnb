@@ -1,0 +1,15 @@
+.subtitle-prop{
+    text-align: left;
+    margin-bottom: 3px;
+}
+
+.select{
+    margin-bottom: 10px;
+}
+
+.options-prop{
+    width: auto;
+    clear: both;
+    margin: 0 auto;
+    text-align: center;
+}

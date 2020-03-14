@@ -23,6 +23,7 @@ export class RegisterPage extends Component {
                         <TabsControl>
                             <div name = 'Guest'>
                                 <GuestInput/>
+                                <div style={{marginBottom: 10 + 'px'}}></div>
                             </div>
                             <div name = 'Host'>
                                 <HostInput/>
@@ -31,7 +32,6 @@ export class RegisterPage extends Component {
                     </div>
                     <div>
                         <button
-                            type='submit'
                             className='submitButton'
                         >
                             Register
