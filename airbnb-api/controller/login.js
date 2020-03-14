@@ -34,28 +34,9 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 					hid: null
 				}
 				try {
-					{   // get uid
-						const uidQueryText = 'SELECT uid from project.usr WHERE email = $1;';
-						const { rows } = await client.query(uidQueryText, [email]);
-						if (rows[0] != undefined) {
-							ids.uid = rows[0].uid
-						}
-					}
-					{   // get gid
-						const gidQueryText = 'SELECT gid from project.guest WHERE uid = $1;';
-						const { rows } = await client.query(gidQueryText, [ids.uid])
-						if (rows[0] != undefined) {
-							ids.gid = rows[0].gid
-						}
-					}
-					{   // get hid
-						const hidQueryText = 'SELECT hid from project.host WHERE uid = $1;';
-						const { rows } = await client.query(hidQueryText, [ids.uid])
-						// console.log(rows[0] === undefined) // test
-						if (rows[0] != undefined) {
-							ids.hid = rows[0].hid
-						}
-					}
+					await getUid(client, email, ids)
+					await getGid(client, ids)
+					await getHid(client, ids)
 					res.status(200).send(ids);
 				} catch (err) {
 					console.error('Error during the query.', err.stack);
@@ -78,6 +59,30 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 		);
 	}
 };
+
+const getUid = async (client, email, ids) => {
+	const uidQueryText = 'SELECT uid from project.usr WHERE email = $1;';
+	const { rows } = await client.query(uidQueryText, [email]);
+	if (rows[0] != undefined) {
+		ids.uid = rows[0].uid
+	}
+}
+
+const getGid = async (client, ids) => {
+	const gidQueryText = 'SELECT gid from project.guest WHERE uid = $1;';
+	const { rows } = await client.query(gidQueryText, [ids.uid])
+	if (rows[0] != undefined) {
+		ids.gid = rows[0].gid
+	}
+}
+
+const getHid = async (client, ids) => {
+	const hidQueryText = 'SELECT hid from project.host WHERE uid = $1;';
+	const { rows } = await client.query(hidQueryText, [ids.uid])
+	if (rows[0] != undefined) {
+		ids.hid = rows[0].hid
+	}
+}
 
 module.exports = {
 	handleLogin
