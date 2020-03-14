@@ -26,7 +26,7 @@
     background:rgb(255, 255, 255) none repeat scroll 0% 0% !important;
     border-radius: 4px !important;
     padding: 20px 30px 30px 30px;
-    width: 450px !important;
+    width: 450px;
     box-shadow:rgba(0, 0, 0, 0.20) 0px 10px 20px !important;
 }
 
