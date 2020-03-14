@@ -21,6 +21,11 @@ const NavBar = ({ isHost, isSignedIn }) => {
 			role: 'Guest',
 			label: 'Log in',
 			link: '/login'
+		},
+		{
+			role: 'Guest',
+			label: 'Register',
+			link: '/register'
 		}
 	];
 
@@ -29,14 +34,14 @@ const NavBar = ({ isHost, isSignedIn }) => {
 				return (
 					link.role === 'Host' ||
 					link.label === 'About' ||
-					(!isSignedIn && link.link === '/login')
+					(!isSignedIn && (link.link === '/login' || link.link ==='/register'))
 				);
 		  })
 		: links.filter(link => {
 				return (
 					link.role === 'Guest' ||
 					link.label === 'About' ||
-					(!isSignedIn && link.link === '/login')
+					(!isSignedIn && (link.link === '/login' || link.link ==='/register'))
 				);
 		  });
 
