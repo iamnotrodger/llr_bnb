@@ -5,7 +5,7 @@ import PropertyMap from '../Property/PropertyList/PropertyMap';
 import ReviewList from '../Review/ReviewList/ReviewList';
 import './ProfilePage.css';
 
-const properties = [
+const dummyProperties = [
 	{
 		id: 1,
 		location: 'Canada',
@@ -43,7 +43,7 @@ const properties = [
 	}
 ];
 
-const reviews = [
+const dummyReviews = [
 	{
 		id: 1,
 		username: 'Dummy 1',
@@ -78,13 +78,38 @@ const reviews = [
 	}
 ];
 
-const ProfilePage = ({ user, setProperty, isHost }) => {
+const linkList = [
+	{
+		role: 'Guest',
+		label: 'Reviews',
+		link: '/profile/reviews'
+	},
+	{
+		role: 'Guest',
+		label: 'History',
+		link: '/profile/past-booking'
+	},
+	{
+		role: 'Host',
+		label: 'Rental Agreement',
+		link: '/profile/rental-agreement'
+	},
+	{
+		role: 'Host',
+		label: 'Property',
+		link: '/profile/owned-property'
+	}
+];
+
+const ProfilePage = ({ user, isHost }) => {
 	//TODO: get reveiws, past reservation, rental agreement, owned properties
 	//These are Hooks for using states in a function.
-	const [Reviews, setReviews] = useState([]);
-	const [Reservations, setReservations] = useState([]);
-	const [Agreements, setAgreements] = useState([]);
-	const [OwnedProperties, setOwnedProperties] = useState([]);
+	const [profile, setProfile] = useState({
+		reviews: [],
+		reservations: [],
+		rentalAgreements: [],
+		ownedProperties: []
+	});
 
 	const { id } = useParams();
 
@@ -94,28 +119,6 @@ const ProfilePage = ({ user, setProperty, isHost }) => {
 	}, [id]);
 
 	//The list of available links
-	const linkList = [
-		{
-			role: 'Guest',
-			label: 'Reviews',
-			link: '/profile/reviews'
-		},
-		{
-			role: 'Guest',
-			label: 'History',
-			link: '/profile/past-booking'
-		},
-		{
-			role: 'Host',
-			label: 'Rental Agreement',
-			link: '/profile/rental-agreement'
-		},
-		{
-			role: 'Host',
-			label: 'Property',
-			link: '/profile/owned-property'
-		}
-	];
 
 	//Will filter out Depending on the type of user
 	const filteredList = !isHost
@@ -136,6 +139,12 @@ const ProfilePage = ({ user, setProperty, isHost }) => {
 		);
 	});
 
+	const {
+		reviews,
+		reservations,
+		rentalAgreements,
+		ownedProperties
+	} = profile;
 	return (
 		<div className='profileContainer'>
 			<div className='profileSide'>
@@ -161,7 +170,7 @@ const ProfilePage = ({ user, setProperty, isHost }) => {
 							<ReviewList
 								{...props}
 								reviews={
-									reviews
+									dummyReviews
 								}
 							/>
 						)}
@@ -173,10 +182,7 @@ const ProfilePage = ({ user, setProperty, isHost }) => {
 							<PropertyMap
 								{...props}
 								properties={
-									properties
-								}
-								setProperty={
-									setProperty
+									dummyProperties
 								}
 							/>
 						)}
@@ -190,10 +196,7 @@ const ProfilePage = ({ user, setProperty, isHost }) => {
 							<PropertyMap
 								{...props}
 								properties={
-									properties
-								}
-								setProperty={
-									setProperty
+									dummyProperties
 								}
 							/>
 						)}
