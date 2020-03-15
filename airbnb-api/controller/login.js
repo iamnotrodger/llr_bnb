@@ -11,7 +11,7 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 	};
 	const { error } = Joi.validate(req.body, schema);
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 	const { email, password } = req.body;
@@ -32,27 +32,32 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 					uid: null,
 					gid: null,
 					hid: null
-				}
+				};
 				try {
-					await getUid(client, email, ids)
-					await getGid(client, ids)
-					await getHid(client, ids)
-					res.status(200).send(ids);
+					await getUid(client, email, ids);
+					await getGid(client, ids);
+					await getHid(client, ids);
+					res.status(200).json(ids);
 				} catch (err) {
-					console.error('Error during the query.', err.stack);
-					res.status(400).send('Something wrong.');
+					console.error(
+						'Error during the query.',
+						err.stack
+					);
+					res.status(400).json(
+						'Something wrong.'
+					);
 				}
 			} else {
-				res.status(400).send('Incorrect password.');
+				res.status(400).json('Incorrect password.');
 			}
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).send('Invalid Inputs.');
+			res.status(400).json('Invalid Inputs.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack
@@ -64,25 +69,25 @@ const getUid = async (client, email, ids) => {
 	const uidQueryText = 'SELECT uid from project.usr WHERE email = $1;';
 	const { rows } = await client.query(uidQueryText, [email]);
 	if (rows[0] != undefined) {
-		ids.uid = rows[0].uid
+		ids.uid = rows[0].uid;
 	}
-}
+};
 
 const getGid = async (client, ids) => {
 	const gidQueryText = 'SELECT gid from project.guest WHERE uid = $1;';
-	const { rows } = await client.query(gidQueryText, [ids.uid])
+	const { rows } = await client.query(gidQueryText, [ids.uid]);
 	if (rows[0] != undefined) {
-		ids.gid = rows[0].gid
+		ids.gid = rows[0].gid;
 	}
-}
+};
 
 const getHid = async (client, ids) => {
 	const hidQueryText = 'SELECT hid from project.host WHERE uid = $1;';
-	const { rows } = await client.query(hidQueryText, [ids.uid])
+	const { rows } = await client.query(hidQueryText, [ids.uid]);
 	if (rows[0] != undefined) {
-		ids.hid = rows[0].hid
+		ids.hid = rows[0].hid;
 	}
-}
+};
 
 module.exports = {
 	handleLogin

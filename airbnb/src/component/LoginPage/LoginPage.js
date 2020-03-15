@@ -1,62 +1,110 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './LoginPage.css';
 
-const LoginPage = () => {
+const LoginPage = ({ loadUser }) => {
 	const [inputValue, setInputValue] = useState({
-		firstName: '',
-		lastName: '',
-		email: ''
+		email: '',
+		password: ''
 	});
+	//TODO: make this error styling more responsive
+	const [errorStyle, setErrorStyle] = useState({});
+	const history = useHistory();
 
 	const onChange = event => {
 		const { name, value } = event.target;
 		setInputValue({ ...inputValue, [name]: value });
 	};
 
-	const handleButtonSubmit = () => {
-		console.log('hit that login');
+	const handleButtonSubmit = async () => {
+		if (
+			inputValue.email.length === 0 ||
+			inputValue.password.length === 0
+		) {
+			setErrorStyle({
+				...errorStyle,
+				border: '1px solid red'
+			});
+			return;
+		}
+		try {
+			const response = await fetch(
+				'http://localhost:3000/api/login',
+				{
+					method: 'post',
+					headers: {
+						'Content-Type':
+							'application/json'
+					},
+					body: JSON.stringify({
+						email: inputValue.email,
+						password: inputValue.password
+					})
+				}
+			);
+			const data = await response.json();
+			if (data.uid) {
+				loadUser(data);
+				history.push('/');
+			} else {
+				setErrorStyle({
+					...errorStyle,
+					border: '1px solid red'
+				});
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
 		<div className='login-page'>
 			<div className='login-box'>
-				<p className='login-title'>Welcome to LLB</p>
-				<div>
-					<input
-						className='login-input'
-						name='email'
-						type='email'
-						placeholder='Email'
-						onChange={onChange}
-					/>
-				</div>
-				<div>
-					<input
-						className='login-input'
-						name='password'
-						type='password'
-						placeholder='Password'
-						onChange={onChange}
-					/>
-				</div>
-				<div>
-					<Link to='/register'>
-						<p className='login-register-hint'>
-							Don't have an account?
-						</p>
-					</Link>
-				</div>
+				<form onSubmit={handleButtonSubmit}>
+					<p className='login-title'>
+						Welcome to LLB
+					</p>
+					<div>
+						<input
+							style={errorStyle}
+							className='login-input'
+							name='email'
+							type='email'
+							placeholder='Email'
+							onChange={onChange}
+						/>
+					</div>
+					<div>
+						<input
+							style={errorStyle}
+							className='login-input'
+							name='password'
+							type='password'
+							placeholder='Password'
+							onChange={onChange}
+						/>
+					</div>
+					<div>
+						<Link to='/register'>
+							<p className='login-register-hint'>
+								Don't have an
+								account?
+							</p>
+						</Link>
+					</div>
 
-				<div>
-					<button
-						type='submit'
-						className='submitButton'
-						onClick={handleButtonSubmit}
-					>
-						Login
-					</button>
-				</div>
+					<div>
+						<button
+							type='submit'
+							className='submitButton'
+							onClick={
+								handleButtonSubmit
+							}
+						>
+							Login
+						</button>
+					</div>
+				</form>
 			</div>
 			<div className='login-background'>
 				<img

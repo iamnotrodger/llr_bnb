@@ -78,35 +78,31 @@ class App extends Component {
 	//React Life Cycle Method: will run before render and is used to load data from the backend
 	componentDidMount() {
 		this.setState({
-			user: dummyUser,
-			isSignedIn: false,
-			isHost: false,
 			apartmentProps: dummyProps,
 			houseProps: dummyProps,
 			hotelProps: dummyProps
 		});
 		localStorage.setItem('user', JSON.stringify(dummyUser));
-		localStorage.setItem('userID', JSON.stringify(dummyUser.id));
+		localStorage.setItem('userID', JSON.stringify(dummyUser.uid));
 	}
 
 	loadUser = data => {
 		this.setState({
 			user: {
-				isSignedIn: true,
-				id: data.id,
-				hostID: data.hostID,
-				firstName: data.firstName,
-				lastName: data.lastName,
-				email: data.email,
-				joined: data.joined
-			}
+				uid: data.uid,
+				gid: data.gid,
+				hid: data.id
+			},
+			isSignedIn: true
 		});
 
-		if (data.user.hostID !== null) {
+		if (data.hid) {
 			this.setState({
 				isHost: true
 			});
 		}
+
+		console.log(this.state);
 	};
 
 	//This function is just for testing purposes.
@@ -135,7 +131,14 @@ class App extends Component {
 				<Switch>
 					<Route
 						path='/login'
-						component={LoginPage}
+						component={props => (
+							<LoginPage
+								loadUser={
+									this
+										.loadUser
+								}
+							/>
+						)}
 					/>
 					<Route
 						path='/register'
