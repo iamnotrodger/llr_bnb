@@ -8,7 +8,9 @@ const RegisterPage = () => {
 	const [inputValue, setInputValue] = useState({
 		firstName: '',
 		lastName: '',
-		email: ''
+		email: '',
+		address: '',
+		phoneNum: ''
 	});
 	const [isHostRegister, setIsHostRegister] = useState(false);
 	const [propertyInput, setPropertyInput] = useState({

@@ -31,6 +31,24 @@ const GuestInput = ({ onChange }) => {
 					onChange={onChange}
 				/>
 			</div>
+			<div>
+				<input
+					className='login-input register-ln'
+					name='address'
+					type='name'
+					placeholder='Address'
+					onChange={onChange}
+				/>
+			</div>
+			<div>
+				<input
+					className='login-input register-ln'
+					name='phoneNum'
+					type='name'
+					placeholder='Phone Number'
+					onChange={onChange}
+				/>
+			</div>
 			<div style={{ marginBottom: 10 + 'px' }}></div>
 		</div>
 	);
