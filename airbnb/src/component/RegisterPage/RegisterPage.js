@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TabsControl from '../React-Tab/ReactTab';
+import TabsControl from '../ReactTab/ReactTab.js';
 import GuestInput from './GuestInput/GuestInput';
 import PropertyInput from '../PropertyInput/PropertyInput';
 import './RegisterPage.css';
@@ -59,7 +59,7 @@ const RegisterPage = () => {
 								}
 							/>
 						</div>
-						<div name='Host'>
+						<div name='Add Property'>
 							<PropertyInput
 								onChange={
 									onSelectChange
