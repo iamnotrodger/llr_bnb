@@ -22,8 +22,12 @@ const CryptoJS = require('crypto-js');
 /*require controllers*/
 const login = require('./controller/login');
 const register = require('./controller/register');
+const profile = require('./controller/Profile/profile');
+const profileUpdate = require('./controller/Profile/profileUpdate');
 const property = require('./controller/Property/property');
 const propertyList = require('./controller/Property/propertyList');
+const review = require('./controller/Review/review');
+const reviewList = require('./controller/Review/reviewList');
 
 app.use(express.json());
 app.use(cors());
@@ -42,6 +46,37 @@ app.post('/api/login', (req, res) =>
 	login.handleLogin(req, res, db_pool, Joi, CryptoJS)
 );
 
+//Get all the user infromation from Usr table
+app.get('/api/profile/:uid', (req, res) =>
+	profile.handleProfile(req, res, db_pool)
+);
+
+//Update the user's email
+app.put('/api/profile/update/email', (req, res) =>
+	profileUpdate.handleProfileEmail(req, res, db_pool, Joi)
+);
+//Update the user's password
+app.put('/api/profile/update/password', (req, res) =>
+	profileUpdate.handleProfilePasswrod(req, res, db_pool, Joi)
+);
+//Update the user's name
+app.put('/api/profile/update/name', (req, res) =>
+	profileUpdate.handleProfileName(req, res, db_pool, Joi)
+);
+//Update the user's address
+app.put('/api/profile/update/address', (req, res) =>
+	profileUpdate.handleProfileAddress(req, res, db_pool, Joi)
+);
+//Update the user's phone number
+app.put('/api/profile/update/phone', (req, res) =>
+	profileUpdate.handleProfilePhone(req, res, db_pool, Joi)
+);
+
+//Gets all the review that the user has made
+app.get('/api/profile/review/review-list/:gid/:num?', (req, res) =>
+	reviewList.handleReviewProfile(req, res, db_pool)
+);
+
 //Get all the information about the property, reviews, rooms, and unavailable dates
 app.get('/api/property/:prid', (req, res) =>
 	property.handleProperty(req, res, db_pool)
@@ -55,6 +90,16 @@ app.post('/api/property/add-property', (req, res) =>
 //Gets a number of property according to the type
 app.get('/api/property/property-list/:category/:num?', (req, res) =>
 	propertyList.handlePropertyList(req, res, db_pool, Joi)
+);
+
+//Add reviews to property
+app.post('/api/review/add-review', (req, res) =>
+	review.handleReviewAdd(req, res, db_pool, Joi)
+);
+
+//Gets all the reveiw made about the property
+app.get('/api/property/review/review-list/:prid/:num?', (req, res) =>
+	reviewList.handleReviewProperty(req, res, db_pool)
 );
 
 const port = process.env.PORT || 3000;

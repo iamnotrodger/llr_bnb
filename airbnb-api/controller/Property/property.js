@@ -10,7 +10,7 @@ const handleProperty = async (req, res, db_pool) => {
 		const client = await db_pool.connect();
 		try {
 			const queryText =
-				'SELECT * FROM project.property WHERE prid = $1 ';
+				'SELECT * FROM project.property WHERE prid = $1;';
 			const { rows } = await client.query(queryText, [prid]);
 			res.status(200).json(rows[0]);
 		} catch (err) {
