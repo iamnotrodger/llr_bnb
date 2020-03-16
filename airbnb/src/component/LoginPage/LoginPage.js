@@ -16,7 +16,8 @@ const LoginPage = ({ loadUser }) => {
 		setInputValue({ ...inputValue, [name]: value });
 	};
 
-	const handleButtonSubmit = async () => {
+	const handleButtonSubmit = async event => {
+		event.preventDefault();
 		if (
 			inputValue.email.length === 0 ||
 			inputValue.password.length === 0
@@ -60,7 +61,7 @@ const LoginPage = ({ loadUser }) => {
 	return (
 		<div className='login-page'>
 			<div className='login-box'>
-				<form onSubmit={handleButtonSubmit}>
+				<form onSubmit={handleButtonSubmit} noValidate>
 					<p className='login-title'>
 						Welcome to LLB
 					</p>
@@ -70,8 +71,10 @@ const LoginPage = ({ loadUser }) => {
 							className='login-input'
 							name='email'
 							type='email'
+							value={inputValue.email}
 							placeholder='Email'
 							onChange={onChange}
+							required
 						/>
 					</div>
 					<div>
@@ -80,8 +83,12 @@ const LoginPage = ({ loadUser }) => {
 							className='login-input'
 							name='password'
 							type='password'
+							value={
+								inputValue.password
+							}
 							placeholder='Password'
 							onChange={onChange}
+							required
 						/>
 					</div>
 					<div>
