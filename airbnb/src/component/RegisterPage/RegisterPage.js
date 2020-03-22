@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TabsControl from '../ReactTab/ReactTab.js';
 import GuestInput from './GuestInput/GuestInput';
+import EmployeeInput from './EmployeeInput/EmployeeInput';
 import PropertyInput from '../PropertyInput/PropertyInput';
 import './RegisterPage.css';
 
@@ -52,7 +53,7 @@ const RegisterPage = () => {
 				<p className='login-title'>Register</p>
 				<div className='tabs-container'>
 					<TabsControl>
-						<div name='Guest'>
+						<div name='User Info'>
 							<GuestInput
 								onChange={
 									onChange
@@ -61,6 +62,13 @@ const RegisterPage = () => {
 						</div>
 						<div name='Add Property'>
 							<PropertyInput
+								onChange={
+									onSelectChange
+								}
+							/>
+						</div>
+						<div name='Employee'>
+							<EmployeeInput
 								onChange={
 									onSelectChange
 								}

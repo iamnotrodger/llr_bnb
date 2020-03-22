@@ -56,7 +56,6 @@ export class PropertyInput extends Component {
 						<p className='register-title'>Property Information:</p>
 						<p className='register-hint'>*Leave this page blank if you don't want to be a host.</p>
 					</div>
-					<div style={{ marginBottom: 10 + 'px' }}></div>
 					<div>
 						<input
 							className='login-input register-addr'
