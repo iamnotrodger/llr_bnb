@@ -7,8 +7,7 @@ const LoginPage = ({ loadUser }) => {
 		email: '',
 		password: ''
 	});
-	//TODO: make this error styling more responsive
-	const [errorStyle, setErrorStyle] = useState({});
+	const [error, setError] = useState(false);
 	const history = useHistory();
 
 	const onChange = event => {
@@ -17,17 +16,14 @@ const LoginPage = ({ loadUser }) => {
 	};
 
 	const handleButtonSubmit = async event => {
-		event.preventDefault();
 		if (
 			inputValue.email.length === 0 ||
 			inputValue.password.length === 0
 		) {
-			setErrorStyle({
-				...errorStyle,
-				border: '1px solid red'
-			});
+			setError(true);
 			return;
 		}
+
 		try {
 			const response = await fetch(
 				'http://localhost:3000/api/login',
@@ -48,26 +44,27 @@ const LoginPage = ({ loadUser }) => {
 				loadUser(data);
 				history.push('/');
 			} else {
-				setErrorStyle({
-					...errorStyle,
-					border: '1px solid red'
-				});
+				setError(true);
 			}
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
+	let errorClause = error ? (
+		<div className='error'>An error occured.</div>
+	) : null;
+
 	return (
 		<div className='login-page'>
 			<div className='login-box'>
-				<form onSubmit={handleButtonSubmit} noValidate>
+				<form onSubmit={handleButtonSubmit}>
 					<p className='login-title'>
 						Welcome to LLB
 					</p>
+					{errorClause}
 					<div>
 						<input
-							style={errorStyle}
 							className='login-input'
 							name='email'
 							type='email'
@@ -79,7 +76,6 @@ const LoginPage = ({ loadUser }) => {
 					</div>
 					<div>
 						<input
-							style={errorStyle}
 							className='login-input'
 							name='password'
 							type='password'
