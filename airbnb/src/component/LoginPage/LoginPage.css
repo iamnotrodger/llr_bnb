@@ -63,6 +63,7 @@
 .login-register-hint {
 	text-align: right;
 	color: #695757;
+	display: inline-block;
 	margin: 0px 10px 10px 10px;
 }
 
@@ -71,7 +72,7 @@
 }
 
 .error {
-	padding: 13px;
+	padding: 5px;
 	margin: 0 20%;
 	border-radius: 4px;
 	text-align: center;

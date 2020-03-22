@@ -16,6 +16,7 @@ const LoginPage = ({ loadUser }) => {
 	};
 
 	const handleButtonSubmit = async event => {
+		event.preventDefault();
 		if (
 			inputValue.email.length === 0 ||
 			inputValue.password.length === 0
@@ -58,11 +59,9 @@ const LoginPage = ({ loadUser }) => {
 	return (
 		<div className='login-page'>
 			<div className='login-box'>
+				<p className='login-title'>Welcome to LLB</p>
+				{errorClause}
 				<form onSubmit={handleButtonSubmit}>
-					<p className='login-title'>
-						Welcome to LLB
-					</p>
-					{errorClause}
 					<div>
 						<input
 							className='login-input'
@@ -87,7 +86,7 @@ const LoginPage = ({ loadUser }) => {
 							required
 						/>
 					</div>
-					<div>
+					<div style={{ float: 'right' }}>
 						<Link to='/register'>
 							<p className='login-register-hint'>
 								Don't have an
