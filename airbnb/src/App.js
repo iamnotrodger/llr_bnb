@@ -5,7 +5,7 @@ import NavBar from './component/NavBar/NavBar';
 import PropertyPage from './component/PropertyPage/PropertyPage';
 import ProfilePage from './component/ProfilePage/ProfilePage';
 import About from './component/About/About';
-import PropertyList from './component/Property/PropertyList/PropertyList';
+import PropertyLibrary from './component/Property/PropertyList/PropertyLibrary';
 import LoginPage from './component/LoginPage/LoginPage';
 import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 import RegisterPage from './component/RegisterPage/RegisterPage';
@@ -62,9 +62,9 @@ const initialState = {
 	user: JSON.parse(localStorage.getItem('user')),
 	isSignedIn: false,
 	isHost: false,
-	apartmentProps: [],
-	hotelProps: [],
-	houseProps: [],
+	Apartment: [],
+	Hotel: [],
+	House: [],
 	//This state is just for testing purposes.
 	property: JSON.parse(localStorage.getItem('property'))
 };
@@ -73,17 +73,35 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = initialState;
+		this.loadAllProperty = this.loadAllProperty.bind(this);
 	}
 
 	//React Life Cycle Method: will run before render and is used to load data from the backend
-	componentDidMount() {
-		this.setState({
-			apartmentProps: dummyProps,
-			houseProps: dummyProps,
-			hotelProps: dummyProps
-		});
-		localStorage.setItem('user', JSON.stringify(dummyUser));
-		localStorage.setItem('userID', JSON.stringify(dummyUser.uid));
+	async componentDidMount() {
+		try {
+			const responseOne = await fetch(
+				'http://localhost:3000/api/property/property-list/Hotel/4'
+			);
+			const hotels = await responseOne.json();
+
+			const responseTwo = await fetch(
+				'http://localhost:3000/api/property/property-list/House/4'
+			);
+			const houses = await responseTwo.json();
+
+			const responseThree = await fetch(
+				'http://localhost:3000/api/property/property-list/Apartment/4'
+			);
+			const apartments = await responseThree.json();
+
+			this.setState({
+				Hotel: hotels,
+				House: houses,
+				Apartment: apartments
+			});
+		} catch (err) {
+			console.log(err);
+		}
 	}
 
 	loadUser = data => {
@@ -105,6 +123,20 @@ class App extends Component {
 		console.log(this.state);
 	};
 
+	async loadAllProperty(category) {
+		try {
+			const response = await fetch(
+				`http://localhost:3000/api/property/property-list/${category}`
+			);
+			const properties = await response.json();
+			this.setState({
+				[category]: properties
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	//This function is just for testing purposes.
 	setProperty = property => {
 		this.setState({ property: property });
@@ -116,9 +148,9 @@ class App extends Component {
 			isSignedIn,
 			isHost,
 			user,
-			apartmentProps,
-			hotelProps,
-			houseProps,
+			Apartment,
+			Hotel,
+			House,
 			property
 		} = this.state;
 
@@ -150,40 +182,23 @@ class App extends Component {
 						render={props => (
 							<React.Fragment>
 								<div className='main'>
-									<PropertyList
-										properties={
-											hotelProps
+									<PropertyLibrary
+										hotel={
+											Hotel
 										}
-										type={
-											'Hotel'
+										house={
+											House
 										}
-										setProperty={
-											this
-												.setProperty
-										}
-									/>
-									<PropertyList
-										properties={
-											houseProps
-										}
-										type={
-											'House'
+										apartment={
+											Apartment
 										}
 										setProperty={
 											this
 												.setProperty
 										}
-									/>
-									<PropertyList
-										properties={
-											apartmentProps
-										}
-										type={
-											'Apartment'
-										}
-										setProperty={
+										loadAllProperty={
 											this
-												.setProperty
+												.loadAllProperty
 										}
 									/>
 								</div>

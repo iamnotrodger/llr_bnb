@@ -2,15 +2,19 @@ import React from 'react';
 import PropertyMap from './PropertyMap';
 import './PropertyList.css';
 
-const PropertyList = ({ properties, type, setProperty }) => {
+const PropertyList = ({ properties, type, setProperty, loadAllProperty }) => {
 	return (
 		<div className='list'>
 			<h2>{type}</h2>
 			<PropertyMap
+				type={type}
 				properties={properties}
 				setProperty={setProperty}
+				loadAllProperty={loadAllProperty}
 			/>
-			<span>Show All ></span>
+			<span onClick={e => loadAllProperty(type)}>
+				Show All >
+			</span>
 		</div>
 	);
 };
