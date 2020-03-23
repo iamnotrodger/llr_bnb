@@ -21,15 +21,6 @@ const propTypeOptions = [
 	{ value: 'Apartment', label: 'Apartment' }
 ];
 
-// function CheckboxLabels() {
-//     const [state, setState] = React.useState({
-//       checkedA: true,
-//       checkedB: true,
-//       checkedF: true,
-//       checkedG: true,
-//     });
-// }
-
 export class PropertyInput extends Component {
 	state = {
 		listOpen1: false
@@ -69,6 +60,13 @@ export class PropertyInput extends Component {
 							name='prop-address'
 							type='address'
 							placeholder='Property Address'
+						/>
+					</div>
+					<div>
+						<input
+							className='login-input register-pricing'
+							name='prop-price'
+							placeholder='Price (C$)'
 						/>
 					</div>
 					<p className='subtitle-prop'>
@@ -149,52 +147,26 @@ export class PropertyInput extends Component {
 						elementType='checkbox'
 						render={collapseState => (
 							<React.Fragment>
-								<div className='list-content'>
-									<FormGroup
-										col
-									>
-										<FormControlLabel
-											control={
-												<Checkbox
-													defaultChecked
-													value='Essentials'
-												/>
-											}
-											label='Essentials'
-										/>
-										<FormControlLabel
-											control={
-												<Checkbox
-													defaultChecked
-													value='TV'
-												/>
-											}
-											label='TV'
-										/>
-										<FormControlLabel
-											control={
-												<Checkbox
-													defaultChecked
-													value='Wifi'
-												/>
-											}
-											label='Wifi'
-										/>
-										<FormControlLabel
-											control={
-												<Checkbox
-													defaultChecked
-													value='Heat'
-												/>
-											}
-											label='Heat'
-										/>
-									</FormGroup>
-								</div>
+								<input type="checkbox" id="Essentials" name="Essentials" value="essentials"/>
+								<label for="Essentials"> Essentials</label>
+								<input type="checkbox" id="TV" name="TV" value="tv"/>
+								<label for="TV"> TV</label>
+								<input type="checkbox" id="Wi-fi" name="Wi-fi" value="wifi"/>
+								<label for="Wi-fi"> Wi-Fi</label>
 							</React.Fragment>
 						)}
 					/>
 				</div>
+				<div className='commentContainer'>
+					<textarea
+						className='writeComment'
+						name='rule'
+						placeholder='Write Some rules for you property...'
+						maxLength={140}
+						onChange={this.onChange}
+					/>
+				</div>
+				<div style={{ marginBottom: 10 + 'px' }}></div>
 			</div>
 		);
 	}
