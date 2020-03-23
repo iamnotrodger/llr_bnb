@@ -36,7 +36,7 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 			// const queryText =
 			// 	'SELECT * FROM project.property, project.pricing  WHERE property_type = $1 AND project.property.prid = project.pricing.prid';
 			const queryText =
-				'SELECT P.prid, P.title, P.country, AVG(PR.price) as price, AVG(R.rating) as rating FROM project.property as P, project.pricing as PR, project.review as R WHERE property_type = $1 AND P.prid = R.prid AND P.prid = PR.prid GROUP BY P.prid';
+				'SELECT P.prid, P.title, P.country, AVG(PR.price) as price, AVG(R.rating) as rating, COUNT(R.rating) as num_reviews FROM project.property as P, project.pricing as PR, project.review as R WHERE property_type = $1 AND P.prid = R.prid AND P.prid = PR.prid GROUP BY P.prid';
 			const { rows } = await client.query(queryText, [
 				category
 			]);
@@ -44,7 +44,7 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 			const length = rows.length;
 
 			if (length === 0) {
-				res.status(400).json('No property was found');
+				res.status(400).json([]);
 				return;
 			}
 			shuffle(rows);
@@ -52,12 +52,12 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 			res.status(200).json(rows.slice(0, sliceEnd));
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).json('Invalid Inputs.');
+			res.status(400).json([]);
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).json('Service Unavailable');
+		res.status(503).json([]);
 		console.error(
 			'Error during the connection to the database',
 			err.stack

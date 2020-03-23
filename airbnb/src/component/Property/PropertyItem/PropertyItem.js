@@ -8,7 +8,7 @@ const PropertyItem = ({ property, setProperty }) => {
 		<div className='property'>
 			<Link to={`/property/${property.id}`}>
 				<div onClick={() => setProperty(property)}>
-					<h3> {property.address} </h3>
+					<h3> {property.country} </h3>
 					<h2> {property.title} </h2>
 					<p> {`$${property.price} CAD/night`}</p>
 
@@ -20,6 +20,9 @@ const PropertyItem = ({ property, setProperty }) => {
 							starColor={'#00A699'}
 							value={property.rating}
 						/>
+						<p className='review-num'>
+							{`(${property.num_reviews})`}
+						</p>
 					</div>
 				</div>
 			</Link>
