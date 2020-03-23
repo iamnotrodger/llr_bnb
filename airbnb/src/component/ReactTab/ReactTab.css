@@ -11,23 +11,24 @@
 	height: 40px;
 }
 .tab_title {
-	width: 100px;
+	width: 150px;
 	height: 40px;
 	text-align: center;
 	line-height: 40px;
 	color: #000000;
+	font-weight: bold;
 	background-color: #ffffff;
 	display: inline-block;
 	cursor: pointer;
 }
 
 .tab_title:hover {
-	background-color: #dadada;
+	background-color: #cccccc;
 }
 
 .active {
-	color: #ffffff;
-	background-color: #c7bdb4;
+	color:#ffffff;
+	background-color:#705e5e;
 }
 .tab_item_wrap {
 	width: auto;

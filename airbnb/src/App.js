@@ -9,6 +9,7 @@ import PropertyLibrary from './component/Property/PropertyList/PropertyLibrary';
 import LoginPage from './component/LoginPage/LoginPage';
 import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 import RegisterPage from './component/RegisterPage/RegisterPage';
+import AddPropertyPage from './component/AddPropertyPage/AddPropertyPage';
 
 const initialState = {
 	user: JSON.parse(localStorage.getItem('user')),
@@ -126,6 +127,10 @@ class App extends Component {
 					<Route
 						path='/register'
 						component={RegisterPage}
+					/>
+					<Route
+						path='/add-property'
+						component={AddPropertyPage}
 					/>
 					<Route
 						exact

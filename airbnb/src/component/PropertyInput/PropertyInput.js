@@ -51,10 +51,26 @@ export class PropertyInput extends Component {
 	render() {
 		return (
 			<div>
-				<div>
-					<h2>Register a Property</h2>
-				</div>
 				<div className='opt-prop'>
+					<div>
+						<p className='register-title'>Property Information:</p>
+					</div>
+					<div>
+						<input
+							className='login-input register-addr'
+							name='prop-name'
+							type='name'
+							placeholder='Property Name'
+						/>
+					</div>
+					<div>
+						<input
+							className='login-input register-addr'
+							name='prop-address'
+							type='address'
+							placeholder='Property Address'
+						/>
+					</div>
 					<p className='subtitle-prop'>
 						Property type:
 					</p>
