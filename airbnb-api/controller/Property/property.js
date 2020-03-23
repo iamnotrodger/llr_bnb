@@ -96,9 +96,8 @@ const addProperty = async (db_pool, property, rooms, pricing, Joi) => {
 			// insert the property into the property table
 			const addPropertyText =
 				'INSERT INTO project.property(address, property_type, hid, country, title) VALUES($1, $2, $3, $4, $5) RETURNING prid;';
-			const {rows} = await client.query(addPropertyText, [address, property_type, hid, country, title]);
-			// get prid
-			const {prid} = rows[0];
+			const { rows } = await client.query(addPropertyText, [address, property_type, hid, country, title]);
+			const { prid } = rows[0]; // get prid
 			// console.log(prid) // test
 			// insert the rooms into the room table
 			const addRoomText = 
