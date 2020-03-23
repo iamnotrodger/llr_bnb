@@ -14,7 +14,7 @@ const handleUpdateEmail = async (req, res, db_pool, Joi) => {
 	const { error } = Joi.validate(req.body, schema);
 
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 
@@ -33,19 +33,19 @@ const handleUpdateEmail = async (req, res, db_pool, Joi) => {
 				'UPDATE project.login SET email = $1 WHERE email = $1;';
 			await client.query(loginText, [email]);
 			await client.query('COMMIT');
-			res.status(200).send('Successful registration');
+			res.status(200).json('Successful registration');
 		} catch (err) {
 			console.error(
 				'Error during the transaction, ROLLBACK.',
 				err.stack
 			);
 			await client.query('ROLLBACK');
-			res.status(400).send('Error during the update.');
+			res.status(400).json('Error during the update.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack
@@ -67,7 +67,7 @@ const handleUpdatePassword = async (req, res, db_pool, Joi) => {
 	const { error } = Joi.validate(req.body, schema);
 
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 
@@ -79,15 +79,15 @@ const handleUpdatePassword = async (req, res, db_pool, Joi) => {
 			const queryText =
 				'UPDATE project.login SET password = $1 WHERE email = $2';
 			await client.query(queryText, [password, email]);
-			res.status(200).send('Updated passwrod');
+			res.status(200).json('Updated passwrod');
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).send('Invalid Inputs.');
+			res.status(400).json('Invalid Inputs.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack
@@ -111,7 +111,7 @@ const handleUpdateName = async (req, res, db_pool, Joi) => {
 	const { error } = Joi.validate(req.body, schema);
 
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 
@@ -128,15 +128,15 @@ const handleUpdateName = async (req, res, db_pool, Joi) => {
 				lastName,
 				uid
 			]);
-			res.status(200).send('Updated passwrod');
+			res.status(200).json('Updated passwrod');
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).send('Invalid Inputs.');
+			res.status(400).json('Invalid Inputs.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack
@@ -156,7 +156,7 @@ const handleUpdateAddress = async (req, res, db_pool, Joi) => {
 	const { error } = Joi.validate(req.body, schema);
 
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 
@@ -168,7 +168,7 @@ const handleUpdateAddress = async (req, res, db_pool, Joi) => {
 		uid,
 		db_pool
 	);
-	res.status(code).send(message);
+	res.status(code).json(message);
 };
 
 //Route (PUT): /api/profile/update/phone
@@ -183,7 +183,7 @@ const handleUpdatePhone = async (req, res, db_pool, Joi) => {
 	const { error } = Joi.validate(req.body, schema);
 
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 
@@ -195,7 +195,7 @@ const handleUpdatePhone = async (req, res, db_pool, Joi) => {
 		uid,
 		db_pool
 	);
-	res.status(code).send(message);
+	res.status(code).json(message);
 };
 
 const updateUsrTable = async (column, value, uid, db_pool) => {
