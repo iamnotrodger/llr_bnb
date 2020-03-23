@@ -29,16 +29,21 @@ const handleProperty = async (req, res, db_pool) => {
 };
 
 // Route (POST): /api/property/add-property
-//TODO: get hid first
-//TODO: must do a transaction, insert into the Room table
-//TODO: must get the price from the Pricing table
 const handleAddProperty = async (req, res, db_pool, Joi) => {
-	const { code, message } = await addProperty(db_pool, req.body, Joi);
+	const {property, rooms} = req.body;
+	/*
+	console.log(property); // test
+	console.log(rooms); // test
+	for (i in rooms) {
+		console.log(rooms[i]) // test
+	}
+	*/
+	const { code, message } = await addProperty(db_pool, property, rooms, Joi);
 	res.status(code).json(message);
 };
 
-const addProperty = async (db_pool, property, Joi) => {
-	const schema = {
+const addProperty = async (db_pool, property, rooms, Joi) => {
+	const propertySchema = {
 		address: Joi.string()
 			.max(255)
 			.required(),
@@ -52,25 +57,35 @@ const addProperty = async (db_pool, property, Joi) => {
 			])
 			.required()
 	};
-
-	const { error } = Joi.validate(property, schema);
-
-	if (error) {
+	const { propertyError } = Joi.validate(property, propertySchema);
+	if (propertyError) {
 		return { code: 400, message: error.details[0].message };
 	}
-
-	const { address, property_type } = property;
-	console.log(address, property_type);
+	const { address, property_type, hid, country } = property;
 
 	try {
 		const client = await db_pool.connect();
 		try {
-			const queryText =
-				'INSERT INTO project.property(address, property_type) VALUES($1, $2);';
-			await client.query(queryText, [address, property_type]);
+			await client.query('BEGIN');
+			// insert the property into the property table
+			const addPropertyText =
+				'INSERT INTO project.property(address, property_type, hid, country) VALUES($1, $2, $3, $4) RETURNING prid;';
+			const {rows} = await client.query(addPropertyText, [address, property_type, hid, country]);
+			// get prid
+			const {prid} = rows[0];
+			console.log(prid) // test
+			// insert the rooms into the room table
+			const addRoomText = 
+				'INSERT INTO project.room(prid, room_type, bed_num) VALUES($1, $2, $3);';
+			for (i in rooms) {
+				const {room_type, bed_num} = rooms[i];
+				await client.query(addRoomText, [prid, room_type, bed_num]);
+			}
+			await client.query('COMMIT');
 			return { code: 200, message: 'Property was added.' };
 		} catch (err) {
-			console.error('Error during the query.', err.stack);
+			console.error('Error during the transaction, ROLLBACK.', err.stack);
+			await client.query('ROLLBACK');
 			return {
 				code: 400,
 				message: 'Unable to add property'
@@ -84,14 +99,22 @@ const addProperty = async (db_pool, property, Joi) => {
 			err.stack
 		);
 		return {
-			code: 500,
+			code: 503,
 			message: 'Error during the connection to the database'
 		};
 	}
 };
 
+const handleAddRooms = async (req, res, db_pool) => {
+
+};
+
+const addRooms = async (db_pool, rooms) => {
+
+};
+
 module.exports = {
-	addProperty,
 	handleProperty,
-	handleAddProperty
+	addProperty,
+	handleAddProperty,
 };
