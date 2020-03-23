@@ -55,6 +55,9 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 				'Hotel',
 				'Bed and Breakfast'
 			])
+			.required(),
+		title: Joi.string()
+			.max(60)
 			.required()
 	};
 	const { propertyError } = Joi.validate(property, propertySchema);
