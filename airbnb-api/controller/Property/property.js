@@ -106,15 +106,47 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 };
 
 const handleAddRooms = async (req, res, db_pool) => {
-
+	const {prid, rooms} = req.body;
+	const { code, message } = await addRooms(db_pool, prid, rooms);
+	res.status(code).json(message);
 };
 
-const addRooms = async (db_pool, rooms) => {
-
+const addRooms = async (db_pool, prid, rooms) => {
+	try {
+		const client = await db_pool.connect();
+		try {
+			const addRoomText =
+				'INSERT INTO project.room(prid, room_type, bed_num) VALUES($1, $2, $3);';
+			for (i in rooms) {
+				const { room_type, bed_num } = rooms[i];
+				await client.query(addRoomText, [prid, room_type, bed_num]);
+			}
+			return { code: 200, message: 'Property was added.' };
+		} catch (err) {
+			console.error('Error during inserting values to the room table.', err.stack);
+			return {
+				code: 400,
+				message: 'Unable to add rooms'
+			};
+		} finally {
+			client.release();
+		}
+	} catch (err) {
+		console.error(
+			'Error during the connection to the database',
+			err.stack
+		);
+		return {
+			code: 503,
+			message: 'Error during the connection to the database'
+		};
+	}
 };
 
 module.exports = {
 	handleProperty,
-	addProperty,
 	handleAddProperty,
+	addProperty,
+	handleAddRooms,
+	addRooms
 };
