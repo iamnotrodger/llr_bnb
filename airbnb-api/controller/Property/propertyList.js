@@ -33,8 +33,10 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 	try {
 		const client = await db_pool.connect();
 		try {
+			// const queryText =
+			// 	'SELECT * FROM project.property, project.pricing  WHERE property_type = $1 AND project.property.prid = project.pricing.prid';
 			const queryText =
-				'SELECT * FROM project.property,  WHERE property_type = $1';
+				'SELECT P.prid, P.title, P.country, AVG(PR.price) as price, AVG(R.rating) as rating FROM project.property as P, project.pricing as PR, project.review as R WHERE property_type = $1 AND P.prid = R.prid AND P.prid = PR.prid GROUP BY P.prid';
 			const { rows } = await client.query(queryText, [
 				category
 			]);
