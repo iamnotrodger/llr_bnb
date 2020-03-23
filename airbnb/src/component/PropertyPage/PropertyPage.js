@@ -48,7 +48,6 @@ class PropertyPage extends Component {
 		this.state = {
 			property: {},
 			reviews: [],
-
 			room: {}
 		};
 	}
