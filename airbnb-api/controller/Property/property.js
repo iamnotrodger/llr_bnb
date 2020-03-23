@@ -61,7 +61,7 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 	if (propertyError) {
 		return { code: 400, message: error.details[0].message };
 	}
-	const { address, property_type, hid, country } = property;
+	const { address, property_type, hid, country, title} = property;
 
 	try {
 		const client = await db_pool.connect();
@@ -69,8 +69,8 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 			await client.query('BEGIN');
 			// insert the property into the property table
 			const addPropertyText =
-				'INSERT INTO project.property(address, property_type, hid, country) VALUES($1, $2, $3, $4) RETURNING prid;';
-			const {rows} = await client.query(addPropertyText, [address, property_type, hid, country]);
+				'INSERT INTO project.property(address, property_type, hid, country, title) VALUES($1, $2, $3, $4, $5) RETURNING prid;';
+			const {rows} = await client.query(addPropertyText, [address, property_type, hid, country, title]);
 			// get prid
 			const {prid} = rows[0];
 			console.log(prid) // test
