@@ -15,12 +15,12 @@ const handleProperty = async (req, res, db_pool) => {
 			res.status(200).json(rows[0]);
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).send('Unable to get property.');
+			res.status(400).json('Unable to get property.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack
@@ -29,19 +29,25 @@ const handleProperty = async (req, res, db_pool) => {
 };
 
 // Route (POST): /api/property/add-property
-//TODO: must do a transaction, insert into the Room table
-//TODO: must get the price from the Pricing table
 const handleAddProperty = async (req, res, db_pool, Joi) => {
-	const { code, message } = await addProperty(db_pool, req.body, Joi);
-	res.status(code).send(message);
+	const {property, rooms} = req.body;
+	/*
+	console.log(property); // test
+	console.log(rooms); // test
+	for (i in rooms) {
+		console.log(rooms[i]) // test
+	}
+	*/
+	const { code, message } = await addProperty(db_pool, property, rooms, Joi);
+	res.status(code).json(message);
 };
 
-const addProperty = async (db_pool, property, Joi) => {
+const addProperty = async (db_pool, property, rooms, Joi) => {
 	const schema = {
 		address: Joi.string()
 			.max(255)
 			.required(),
-		category: Joi.string()
+		property_type: Joi.string()
 			.max(15)
 			.valid([
 				'House',
@@ -49,27 +55,40 @@ const addProperty = async (db_pool, property, Joi) => {
 				'Hotel',
 				'Bed and Breakfast'
 			])
+			.required(),
+		title: Joi.string()
+			.max(60)
 			.required()
 	};
-
 	const { error } = Joi.validate(property, schema);
-
 	if (error) {
 		return { code: 400, message: error.details[0].message };
 	}
-
-	const { address, category } = property;
-	console.log(address, category);
+	const { address, property_type, hid, country, title} = property;
 
 	try {
 		const client = await db_pool.connect();
 		try {
-			const queryText =
-				'INSERT INTO project.property(address, category) VALUES($1, $2);';
-			await client.query(queryText, [address, category]);
+			await client.query('BEGIN');
+			// insert the property into the property table
+			const addPropertyText =
+				'INSERT INTO project.property(address, property_type, hid, country, title) VALUES($1, $2, $3, $4, $5) RETURNING prid;';
+			const {rows} = await client.query(addPropertyText, [address, property_type, hid, country, title]);
+			// get prid
+			const {prid} = rows[0];
+			console.log(prid) // test
+			// insert the rooms into the room table
+			const addRoomText = 
+				'INSERT INTO project.room(prid, room_type, bed_num) VALUES($1, $2, $3);';
+			for (i in rooms) {
+				const {room_type, bed_num} = rooms[i];
+				await client.query(addRoomText, [prid, room_type, bed_num]);
+			}
+			await client.query('COMMIT');
 			return { code: 200, message: 'Property was added.' };
 		} catch (err) {
-			console.error('Error during the query.', err.stack);
+			console.error('Error during the transaction, ROLLBACK.', err.stack);
+			await client.query('ROLLBACK');
 			return {
 				code: 400,
 				message: 'Unable to add property'
@@ -83,14 +102,54 @@ const addProperty = async (db_pool, property, Joi) => {
 			err.stack
 		);
 		return {
-			code: 500,
+			code: 503,
+			message: 'Error during the connection to the database'
+		};
+	}
+};
+
+const handleAddRooms = async (req, res, db_pool) => {
+	const {prid, rooms} = req.body;
+	const { code, message } = await addRooms(db_pool, prid, rooms);
+	res.status(code).json(message);
+};
+
+const addRooms = async (db_pool, prid, rooms) => {
+	try {
+		const client = await db_pool.connect();
+		try {
+			const addRoomText =
+				'INSERT INTO project.room(prid, room_type, bed_num) VALUES($1, $2, $3);';
+			for (i in rooms) {
+				const { room_type, bed_num } = rooms[i];
+				await client.query(addRoomText, [prid, room_type, bed_num]);
+			}
+			return { code: 200, message: 'Property was added.' };
+		} catch (err) {
+			console.error('Error during inserting values to the room table.', err.stack);
+			return {
+				code: 400,
+				message: 'Unable to add rooms'
+			};
+		} finally {
+			client.release();
+		}
+	} catch (err) {
+		console.error(
+			'Error during the connection to the database',
+			err.stack
+		);
+		return {
+			code: 503,
 			message: 'Error during the connection to the database'
 		};
 	}
 };
 
 module.exports = {
-	addProperty,
 	handleProperty,
-	handleAddProperty
+	handleAddProperty,
+	addProperty,
+	handleAddRooms,
+	addRooms
 };

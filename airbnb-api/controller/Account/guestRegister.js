@@ -24,7 +24,7 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 	};
 	const { error } = Joi.validate(req.body, schema);
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 	const {
@@ -37,9 +37,8 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 		phoneNum
 	} = req.body;
 
-	// test: encryption
+	// Encrypte the password
 	const { words } = CryptoJS.SHA256(password);
-	console.log(words.toString().length);
 
 	// Make the transaction with the database
 	try {
@@ -70,19 +69,19 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 				words.toString() // encrypted password
 			]);
 			await client.query('COMMIT');
-			res.status(200).send('Successful registration');
+			res.status(200).json('Successful registration');
 		} catch (err) {
 			console.error(
 				'Error during the transaction, ROLLBACK.',
 				err.stack
 			);
 			await client.query('ROLLBACK');
-			res.status(400).send('Error during the registration');
+			res.status(400).json('Error during the registration');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack

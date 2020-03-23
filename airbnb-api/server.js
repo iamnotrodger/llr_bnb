@@ -21,9 +21,10 @@ const CryptoJS = require('crypto-js');
 
 /*require controllers*/
 const login = require('./controller/login');
-const register = require('./controller/register');
-const profile = require('./controller/Profile/profile');
-const profileUpdate = require('./controller/Profile/profileUpdate');
+const guestRegister = require('./controller/Account/guestRegister');
+const hostRegister = require('./controller/Account/hostRegister')
+const profile = require('./controller/Account/profile');
+const profileUpdate = require('./controller/Account/profileUpdate');
 const property = require('./controller/Property/property');
 const propertyList = require('./controller/Property/propertyList');
 const review = require('./controller/Review/review');
@@ -36,9 +37,14 @@ app.get('/', (req, res) => {
 	res.end('The server is running on port 3000...');
 });
 
-/*handle register*/
-app.post('/api/register', (req, res) =>
-	register.handleRegister(req, res, db_pool, Joi, CryptoJS)
+/*handle guestRegister*/
+app.post('/api/guest-register', (req, res) =>
+	guestRegister.handleRegister(req, res, db_pool, Joi, CryptoJS)
+);
+
+/*handle hostRegister*/
+app.post('/api/host-register', (req, res) =>
+	hostRegister.handleRegister(req, res, db_pool, Joi)
 );
 
 /*handle login*/
