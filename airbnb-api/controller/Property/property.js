@@ -30,20 +30,16 @@ const handleProperty = async (req, res, db_pool) => {
 
 // Route (POST): /api/property/add-property
 const handleAddProperty = async (req, res, db_pool, Joi) => {
-	const {property, rooms} = req.body;
-	/*
-	console.log(property); // test
-	console.log(rooms); // test
-	for (i in rooms) {
-		console.log(rooms[i]) // test
-	}
-	*/
-	const { code, message } = await addProperty(db_pool, property, rooms, Joi);
+	// handle http request
+	const {property, rooms, pricing} = req.body;
+	// console.log(pricing); // test
+	const { code, message } = await addProperty(db_pool, property, rooms, pricing, Joi);
 	res.status(code).json(message);
 };
 
-const addProperty = async (db_pool, property, rooms, Joi) => {
-	const schema = {
+const addProperty = async (db_pool, property, rooms, pricing, Joi) => {
+	// validate
+	const propertySchema = {
 		address: Joi.string()
 			.max(255)
 			.required(),
@@ -56,15 +52,42 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 				'Bed and Breakfast'
 			])
 			.required(),
+		hid: Joi.number()
+			.required(),
+		country: Joi.string()
+			.required(),
 		title: Joi.string()
 			.max(60)
 			.required()
 	};
-	const { error } = Joi.validate(property, schema);
-	if (error) {
-		return { code: 400, message: error.details[0].message };
+	const res1 = Joi.validate(property, propertySchema);
+	const pricingSchema = {
+		guest_num: Joi.number()
+			.integer()
+			.required(),
+		price: Joi.number()
+			.required()
+	};
+	const res2 = Joi.validate(pricing, pricingSchema);
+	if (res1.error && res2.error) {
+		return {
+			code: 400,
+			message: res1.error.details[0].message + '\n'
+				+ res2.message.error.details[0].message
+		}
+	} else if (res1.error) {
+		return { 
+			code: 400, 
+			message: res1.error.details[0].message 
+		};
+	} else if (res2.error) {
+		return {
+			code: 400, 
+			message: res2.error.details[0].message
+		};
 	}
 	const { address, property_type, hid, country, title} = property;
+	const { guest_num, price } = pricing;
 
 	try {
 		const client = await db_pool.connect();
@@ -76,7 +99,7 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 			const {rows} = await client.query(addPropertyText, [address, property_type, hid, country, title]);
 			// get prid
 			const {prid} = rows[0];
-			console.log(prid) // test
+			// console.log(prid) // test
 			// insert the rooms into the room table
 			const addRoomText = 
 				'INSERT INTO project.room(prid, room_type, bed_num) VALUES($1, $2, $3);';
@@ -84,6 +107,10 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 				const {room_type, bed_num} = rooms[i];
 				await client.query(addRoomText, [prid, room_type, bed_num]);
 			}
+			// insert the pricing into the pricing table
+			const addPricingText = 
+				'INSERT INTO project.pricing(guest_num, prid, price) VALUES($1, $2, $3);';
+			await client.query(addPricingText, [guest_num, prid, price]);
 			await client.query('COMMIT');
 			return { code: 200, message: 'Property was added.' };
 		} catch (err) {
