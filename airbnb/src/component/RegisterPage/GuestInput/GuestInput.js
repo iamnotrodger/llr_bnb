@@ -11,7 +11,7 @@ const GuestInput = ({ onChange }) => {
 				<input
 					className='login-input register-fn'
 					name='firstName'
-					type='name'
+					type='firstName'
 					placeholder='First Name'
 					onChange={onChange}
 				/>
@@ -20,7 +20,7 @@ const GuestInput = ({ onChange }) => {
 				<input
 					className='login-input register-ln'
 					name='lastName'
-					type='name'
+					type='lastName'
 					placeholder='Last Name'
 					onChange={onChange}
 				/>
@@ -47,8 +47,26 @@ const GuestInput = ({ onChange }) => {
 				<input
 					className='login-input register-phone'
 					name='phone'
-					type='phone'
+					type='tel'
 					placeholder='Phone number'
+					onChange={onChange}
+				/>
+			</div>
+			<div>
+				<input
+					className='login-input register-pwd'
+					name='password'
+					type='password'
+					placeholder='Password'
+					onChange={onChange}
+				/>
+			</div>
+			<div>
+				<input
+					className='login-input register-pwd'
+					name='confirm-password'
+					type='password'
+					placeholder='Confirm Password'
 					onChange={onChange}
 				/>
 			</div>
