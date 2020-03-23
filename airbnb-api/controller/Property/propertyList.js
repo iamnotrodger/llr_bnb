@@ -34,7 +34,7 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 		const client = await db_pool.connect();
 		try {
 			const queryText =
-				'SELECT * FROM project.property WHERE property_type = $1';
+				'SELECT * FROM project.property,  WHERE property_type = $1';
 			const { rows } = await client.query(queryText, [
 				category
 			]);
@@ -45,7 +45,7 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 				res.status(400).json('No property was found');
 				return;
 			}
-
+			shuffle(rows);
 			const sliceEnd = num > 0 ? num : length;
 			res.status(200).json(rows.slice(0, sliceEnd));
 		} catch (err) {
@@ -61,6 +61,21 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 			err.stack
 		);
 	}
+};
+
+const shuffle = array => {
+	let currentIndex = array.length,
+		temporaryValue,
+		randomIndex;
+	while (0 !== currentIndex) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
 };
 
 module.exports = {
