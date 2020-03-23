@@ -43,7 +43,7 @@ const handleAddProperty = async (req, res, db_pool, Joi) => {
 };
 
 const addProperty = async (db_pool, property, rooms, Joi) => {
-	const propertySchema = {
+	const schema = {
 		address: Joi.string()
 			.max(255)
 			.required(),
@@ -60,8 +60,8 @@ const addProperty = async (db_pool, property, rooms, Joi) => {
 			.max(60)
 			.required()
 	};
-	const { propertyError } = Joi.validate(property, propertySchema);
-	if (propertyError) {
+	const { error } = Joi.validate(property, schema);
+	if (error) {
 		return { code: 400, message: error.details[0].message };
 	}
 	const { address, property_type, hid, country, title} = property;
