@@ -44,8 +44,8 @@ app.post('/api/guest-register', (req, res) =>
 
 /*handle hostRegister*/
 app.post('/api/host-register', (req, res) =>
-	hostRegister.handleRegister(req, res, db_pool)
-)
+	hostRegister.handleRegister(req, res, db_pool, Joi)
+);
 
 /*handle login*/
 app.post('/api/login', (req, res) =>
