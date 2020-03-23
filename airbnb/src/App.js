@@ -25,7 +25,6 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = initialState;
-		this.loadAllProperty = this.loadAllProperty.bind(this);
 	}
 
 	//React Life Cycle Method: will run before render and is used to load data from the backend
@@ -75,7 +74,7 @@ class App extends Component {
 		console.log(this.state);
 	};
 
-	async loadAllProperty(category) {
+	loadAllProperty = async category => {
 		try {
 			const response = await fetch(
 				`http://localhost:3000/api/property/property-list/${category}`
@@ -87,7 +86,7 @@ class App extends Component {
 		} catch (err) {
 			console.log(err);
 		}
-	}
+	};
 
 	//This function is just for testing purposes.
 	setProperty = property => {
