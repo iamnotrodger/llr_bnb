@@ -9,6 +9,7 @@ import PropertyList from './component/Property/PropertyList/PropertyList';
 import LoginPage from './component/LoginPage/LoginPage';
 import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 import RegisterPage from './component/RegisterPage/RegisterPage';
+import AddPropertyPage from './component/AddPropertyPage/AddPropertyPage';
 
 const dummyProps = [
 	{
@@ -79,8 +80,8 @@ class App extends Component {
 	componentDidMount() {
 		this.setState({
 			user: dummyUser,
-			isSignedIn: false,
-			isHost: false,
+			isSignedIn: true,
+			isHost: true,
 			apartmentProps: dummyProps,
 			houseProps: dummyProps,
 			hotelProps: dummyProps
@@ -140,6 +141,10 @@ class App extends Component {
 					<Route
 						path='/register'
 						component={RegisterPage}
+					/>
+					<Route
+						path='/add-property'
+						component={AddPropertyPage}
 					/>
 					<Route
 						exact
