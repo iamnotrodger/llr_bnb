@@ -20,7 +20,7 @@ const handleReviewProperty = async (req, res, db_pool) => {
 			reviews: reviews
 		});
 	} else {
-		res.status(code).send(message);
+		res.status(code).json(message);
 	}
 };
 
@@ -39,7 +39,7 @@ const handleReviewProfile = async (req, res, db_pool) => {
 	if (reviews) {
 		res.status(code).json(reviews);
 	} else {
-		res.status(code).send(message);
+		res.status(code).json(message);
 	}
 };
 

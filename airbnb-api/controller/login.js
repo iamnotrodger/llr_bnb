@@ -11,7 +11,7 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 	};
 	const { error } = Joi.validate(req.body, schema);
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 	const { email, password } = req.body;
@@ -37,22 +37,22 @@ const handleLogin = async (req, res, db_pool, Joi, CryptoJS) => {
 					await getUid(client, email, ids)
 					await getGid(client, ids)
 					await getHid(client, ids)
-					res.status(200).send(ids);
+					res.status(200).json(ids);
 				} catch (err) {
 					console.error('Error during the query.', err.stack);
-					res.status(400).send('Something wrong.');
+					res.status(400).json('Something wrong.');
 				}
 			} else {
-				res.status(400).send('Incorrect password.');
+				res.status(400).json('Incorrect password.');
 			}
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).send('Invalid Inputs.');
+			res.status(400).json('Invalid Inputs.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack

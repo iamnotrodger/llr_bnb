@@ -30,7 +30,7 @@ const handleReviewAdd = async (req, res, db_pool, Joi) => {
 	const { error } = Joi.validate(req.body, schema);
 
 	if (error) {
-		res.status(400).send(error.details[0].message);
+		res.status(400).json(error.details[0].message);
 		return;
 	}
 
@@ -59,15 +59,15 @@ const handleReviewAdd = async (req, res, db_pool, Joi) => {
 				comment
 			]);
 
-			res.status(200).send('Review was added.');
+			res.status(200).json('Review was added.');
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).send('Invalid Inputs.');
+			res.status(400).json('Invalid Inputs.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack

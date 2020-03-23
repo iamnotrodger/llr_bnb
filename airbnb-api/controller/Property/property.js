@@ -15,12 +15,12 @@ const handleProperty = async (req, res, db_pool) => {
 			res.status(200).json(rows[0]);
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
-			res.status(400).send('Unable to get property.');
+			res.status(400).json('Unable to get property.');
 		} finally {
 			client.release();
 		}
 	} catch (err) {
-		res.status(503).send('Service Unavailable');
+		res.status(503).json('Service Unavailable');
 		console.error(
 			'Error during the connection to the database',
 			err.stack
@@ -33,7 +33,7 @@ const handleProperty = async (req, res, db_pool) => {
 //TODO: must get the price from the Pricing table
 const handleAddProperty = async (req, res, db_pool, Joi) => {
 	const { code, message } = await addProperty(db_pool, req.body, Joi);
-	res.status(code).send(message);
+	res.status(code).json(message);
 };
 
 const addProperty = async (db_pool, property, Joi) => {
