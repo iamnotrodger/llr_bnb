@@ -29,6 +29,7 @@ const handleProperty = async (req, res, db_pool) => {
 };
 
 // Route (POST): /api/property/add-property
+//TODO: get hid first
 //TODO: must do a transaction, insert into the Room table
 //TODO: must get the price from the Pricing table
 const handleAddProperty = async (req, res, db_pool, Joi) => {
@@ -41,7 +42,7 @@ const addProperty = async (db_pool, property, Joi) => {
 		address: Joi.string()
 			.max(255)
 			.required(),
-		category: Joi.string()
+		property_type: Joi.string()
 			.max(15)
 			.valid([
 				'House',
@@ -58,15 +59,15 @@ const addProperty = async (db_pool, property, Joi) => {
 		return { code: 400, message: error.details[0].message };
 	}
 
-	const { address, category } = property;
-	console.log(address, category);
+	const { address, property_type } = property;
+	console.log(address, property_type);
 
 	try {
 		const client = await db_pool.connect();
 		try {
 			const queryText =
-				'INSERT INTO project.property(address, category) VALUES($1, $2);';
-			await client.query(queryText, [address, category]);
+				'INSERT INTO project.property(address, property_type) VALUES($1, $2);';
+			await client.query(queryText, [address, property_type]);
 			return { code: 200, message: 'Property was added.' };
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
