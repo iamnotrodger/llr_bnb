@@ -10,54 +10,6 @@ import LoginPage from './component/LoginPage/LoginPage';
 import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 import RegisterPage from './component/RegisterPage/RegisterPage';
 
-const dummyProps = [
-	{
-		id: 1,
-		location: 'Canada',
-		title: 'Hotel',
-		type: 'Hotel',
-		price: 100,
-		rating: 3.4
-	},
-
-	{
-		id: 2,
-		location: 'Canada',
-		title: 'House',
-		type: 'House',
-		price: 102,
-		rating: 4.0
-	},
-
-	{
-		id: 3,
-		location: 'Canada',
-		title: 'Apartment',
-		type: 'Apartment',
-		price: 101,
-		rating: 4.0
-	},
-
-	{
-		id: 4,
-		location: 'Canada',
-		title: 'Apartment',
-		type: 'Apartment',
-		price: 101,
-		rating: 4.0
-	}
-];
-
-const dummyUser = {
-	id: 420,
-	hostId: 69,
-	firstName: 'Rodger',
-	lastName: 'Retanal',
-	email: 'rodger@email.com',
-	phone: '420-666-6969',
-	joined: '2020'
-};
-
 const initialState = {
 	user: JSON.parse(localStorage.getItem('user')),
 	isSignedIn: false,
