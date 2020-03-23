@@ -34,7 +34,7 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 		const client = await db_pool.connect();
 		try {
 			const queryText =
-				'SELECT * FROM project.property WHERE category = $1';
+				'SELECT * FROM project.property WHERE property_type = $1';
 			const { rows } = await client.query(queryText, [
 				category
 			]);
