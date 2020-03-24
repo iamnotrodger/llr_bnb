@@ -13,8 +13,8 @@ import AddPropertyPage from './component/AddPropertyPage/AddPropertyPage';
 
 const initialState = {
 	user: JSON.parse(localStorage.getItem('user')),
-	isSignedIn: false,
-	isHost: false,
+	isSignedIn: true,
+	isHost: true,
 	Apartment: [],
 	Hotel: [],
 	House: [],

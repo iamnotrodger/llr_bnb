@@ -1,15 +1,37 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropertyInput from '../PropertyInput/PropertyInput';
 import './AddPropertyPage.css';
 
-export class AddProperty extends Component {
-    render() {
-        return (
-            <div className = 'add-prop-page'>
-                <PropertyInput className = 'add-prop-input'/>
-            </div>
-        )
-    }
-}
+const AddPropertyPage = ({ hid }) => {
+	const [propertyInput, setPropertyInput] = useState({
+		property_type: '',
+		title: '',
+		address: '',
+		country: '',
+		hid: hid
+	});
+	const [price, setPrice] = useState({
+		guest: 0,
+		price: 0,
+		rule: ''
+	});
+	const [rooms, setRooms] = useState({
+		bed: 0,
+		washroom: 0
+	});
 
-export default AddProperty
+	const propertySubmit = async () => {};
+
+	return (
+		<div className='add-prop-page'>
+			<PropertyInput className='add-prop-input' />
+			<div>
+				<button className='submitButton'>Submit</button>
+			</div>
+		</div>
+	);
+};
+
+const createRooms = (numWashroom, numBedrooms) => {};
+
+export default AddPropertyPage;
