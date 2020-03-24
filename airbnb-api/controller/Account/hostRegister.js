@@ -8,7 +8,7 @@ const handleRegister = async (req, res, db_pool, Joi) => {
             .max(255)
             .required(),
         property_type: Joi.string()
-            .max(15)
+            .max(25)
             .valid([
                 'House',
                 'Apartment',
@@ -17,6 +17,7 @@ const handleRegister = async (req, res, db_pool, Joi) => {
             ])
             .required(),
         country: Joi.string()
+            .max(30)
             .required(),
         title: Joi.string()
             .max(60)

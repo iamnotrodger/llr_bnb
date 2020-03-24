@@ -44,7 +44,7 @@ const addProperty = async (db_pool, property, rooms, pricing, Joi) => {
 			.max(255)
 			.required(),
 		property_type: Joi.string()
-			.max(15)
+			.max(25)
 			.valid([
 				'House',
 				'Apartment',
@@ -55,6 +55,7 @@ const addProperty = async (db_pool, property, rooms, pricing, Joi) => {
 		hid: Joi.number()
 			.required(),
 		country: Joi.string()
+			.max(30)
 			.required(),
 		title: Joi.string()
 			.max(60)
