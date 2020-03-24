@@ -100,7 +100,7 @@ app.get('/api/property/property-list/:category/:num?', (req, res) =>
 
 //Add reviews to property
 app.post('/api/review/add-review', (req, res) =>
-	review.handleReviewAdd(req, res, db_pool, Joi)
+	review.handleAddReview(req, res, db_pool, Joi)
 );
 
 //Gets all the reveiw made about the property

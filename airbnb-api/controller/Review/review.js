@@ -1,5 +1,5 @@
 // Route (POST): /api/property/add-review
-const handleReviewAdd = async (req, res, db_pool, Joi) => {
+const handleAddReview = async (req, res, db_pool, Joi) => {
 	const schema = {
 		communication: Joi.number()
 			.integer()
@@ -76,5 +76,5 @@ const handleReviewAdd = async (req, res, db_pool, Joi) => {
 };
 
 module.exports = {
-	handleReviewAdd
+	handleAddReview
 };
