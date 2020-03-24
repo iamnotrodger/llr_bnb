@@ -78,7 +78,10 @@ const handleRegister = async (req, res, db_pool, Joi) => {
                 'INSERT INTO project.pricing(guest_num, prid, price) VALUES($1, $2, $3);';
             await client.query(addPricingText, [guest_num, prid, price]);
             await client.query('COMMIT');
-            res.status(200).json('Successfully become a host');
+
+            res.status(200).jsonp({
+                hid: hid
+            });
         } catch (err) {
             console.error(
                 'Error during the transaction, ROLLBACK.',
