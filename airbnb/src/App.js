@@ -13,8 +13,8 @@ import AddPropertyPage from './component/AddPropertyPage/AddPropertyPage';
 
 const initialState = {
 	user: JSON.parse(localStorage.getItem('user')),
-	isSignedIn: true,
-	isHost: true,
+	isSignedIn: false,
+	isHost: false,
 	Apartment: [],
 	Hotel: [],
 	House: [],
@@ -72,7 +72,7 @@ class App extends Component {
 			});
 		}
 
-		console.log(this.state);
+		localStorage.setItem('user', JSON.stringify(data));
 	};
 
 	loadAllProperty = async category => {
@@ -125,14 +125,6 @@ class App extends Component {
 						)}
 					/>
 					<Route
-						path='/register'
-						component={RegisterPage}
-					/>
-					<Route
-						path='/add-property'
-						component={AddPropertyPage}
-					/>
-					<Route
 						exact
 						path='/'
 						render={props => (
@@ -164,6 +156,16 @@ class App extends Component {
 					<Route
 						path='/about'
 						component={About}
+					/>
+
+					<Route
+						path='/add-property'
+						component={AddPropertyPage}
+					/>
+
+					<Route
+						path='/register'
+						component={RegisterPage}
 					/>
 					<PrivateRoute
 						path='/property/:id'

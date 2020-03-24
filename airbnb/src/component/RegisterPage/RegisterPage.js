@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TabsControl from '../ReactTab/ReactTab.js';
 import GuestInput from './GuestInput/GuestInput';
 import EmployeeInput from './EmployeeInput/EmployeeInput';
@@ -13,13 +13,30 @@ const RegisterPage = () => {
 		address: '',
 		phoneNum: ''
 	});
-	const [isHostRegister, setIsHostRegister] = useState(false);
 	const [propertyInput, setPropertyInput] = useState({
-		propertyType: '',
+		property_type: '',
+		title: '',
+		address: '',
+		country: '',
+		hid: localStorage.getItem('user').hid
+	});
+	const [price, setPrice] = useState({
 		guest: 0,
+		price: 0,
+		rule: ''
+	});
+	const [rooms, setRooms] = useState({
 		bed: 0,
 		washroom: 0
 	});
+	const [registerHost, setRegisterHost] = useState(false);
+	const [registerEmployee, setRegisterEmployee] = useState(false);
+
+	useEffect(() => {
+		if (!registerHost) {
+			setRegisterHost(true);
+		}
+	}, [propertyInput, price, rooms, registerHost]);
 
 	const onChange = event => {
 		const { name, value } = event.target;
@@ -27,19 +44,30 @@ const RegisterPage = () => {
 		setInputValue({ ...inputValue, [name]: value });
 	};
 
-	const onSelectChange = (name, value) => {
-		console.log(name, ':', value);
-		if (!isHostRegister) {
-			setIsHostRegister(true);
-		}
+	const onPropertyChange = (name, value) => {
 		setPropertyInput({ ...propertyInput, [name]: value });
 	};
 
-	const handleButtonSubmit = () => {
-		if (isHostRegister) {
-			console.log(propertyInput);
+	const onRoomsChange = (name, value) => {
+		setRooms({ ...rooms, [name]: value });
+	};
+
+	const onPriceChange = (name, value) => {
+		setPrice({ ...price, [name]: value });
+	};
+
+	const handleButtonSubmit = async () => {
+		if (registerHost) {
+			try {
+				await hostRegister(propertyInput, rooms, price);
+			} catch (err) {
+				console.log(err);
+			}
+		} else if (registerEmployee) {
+			console.log('Employee Register');
+		} else {
+			console.log('Guest Register');
 		}
-		console.log(inputValue);
 	};
 
 	return (
@@ -64,17 +92,19 @@ const RegisterPage = () => {
 						</div>
 						<div name='Add Property'>
 							<PropertyInput
-								onChange={
-									onSelectChange
+								onPropertyChange={
+									onPropertyChange
+								}
+								onPriceChange={
+									onPriceChange
+								}
+								onRoomsChange={
+									onRoomsChange
 								}
 							/>
 						</div>
 						<div name='Employee'>
-							<EmployeeInput
-								onChange={
-									onSelectChange
-								}
-							/>
+							<EmployeeInput />
 						</div>
 					</TabsControl>
 				</div>
@@ -89,6 +119,29 @@ const RegisterPage = () => {
 			</div>
 		</div>
 	);
+};
+
+const hostRegister = async (propertyInput, rooms, price) => {
+	let roomsOne = () => {
+		let rooms = [];
+		for (let i = 0; i < rooms.bed; i++) {
+			let tempRoom = {
+				room_type: 'bedroom',
+				bed_num: 1
+			};
+			rooms.push(tempRoom);
+		}
+
+		for (let i = 0; i < rooms.washroom; i++) {
+			let tempRoom = {
+				room_type: 'washroom',
+				bed_num: 1
+			};
+			rooms.push(tempRoom);
+		}
+
+		return rooms;
+	};
 };
 
 export default RegisterPage;

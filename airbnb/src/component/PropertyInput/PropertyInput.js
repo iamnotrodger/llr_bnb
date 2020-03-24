@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import Collapse from '@kunukn/react-collapse';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+// import FormGroup from '@material-ui/core/FormGroup';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Checkbox from '@material-ui/core/Checkbox';
 import cx from 'classnames';
 import './PropertyInput.css';
 
@@ -21,6 +21,13 @@ const propTypeOptions = [
 	{ value: 'Apartment', label: 'Apartment' }
 ];
 
+const countryOption = [
+	{ value: 'Canada', label: 'Canada' },
+	{ value: 'United States', label: 'United States' },
+	{ value: 'China', label: 'China' },
+	{ value: 'Philippines', label: 'Philippines' }
+];
+
 export class PropertyInput extends Component {
 	state = {
 		listOpen1: false
@@ -33,9 +40,21 @@ export class PropertyInput extends Component {
 		}));
 	};
 
-	handleSelectChange = name => {
+	handlePropertyChange = name => {
 		return newValue => {
-			this.props.onChange(name, newValue.value);
+			this.props.onPropertyChange(name, newValue.value);
+		};
+	};
+
+	handlePriceChange = name => {
+		return newValue => {
+			this.props.onPriceChange(name, newValue.value);
+		};
+	};
+
+	handleRoomsChange = name => {
+		return newValue => {
+			this.props.onRoomsChange(name, newValue.value);
 		};
 	};
 
@@ -44,7 +63,9 @@ export class PropertyInput extends Component {
 			<div>
 				<div className='opt-prop'>
 					<div>
-						<p className='register-title'>Property Information:</p>
+						<p className='register-title'>
+							Property Information:
+						</p>
 					</div>
 					<div>
 						<input
@@ -52,6 +73,9 @@ export class PropertyInput extends Component {
 							name='prop-name'
 							type='name'
 							placeholder='Property Name'
+							onChange={this.handlePropertyChange(
+								'property_type'
+							)}
 						/>
 					</div>
 					<div>
@@ -60,13 +84,20 @@ export class PropertyInput extends Component {
 							name='prop-address'
 							type='address'
 							placeholder='Property Address'
+							onChange={this.handlePropertyChange(
+								'property_type'
+							)}
 						/>
 					</div>
 					<div>
 						<input
 							className='login-input register-pricing'
 							name='prop-price'
+							type='number'
 							placeholder='Price (C$)'
+							onChange={this.handlePriceChange(
+								'price'
+							)}
 						/>
 					</div>
 					<p className='subtitle-prop'>
@@ -77,8 +108,22 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={propTypeOptions}
-						onChange={this.handleSelectChange(
-							'propertyType'
+						onChange={this.handlePropertyChange(
+							'property_type'
+						)}
+					/>
+				</div>
+				<div className='opt-prop'>
+					<p className='subtitle-prop'>
+						Country:
+					</p>
+					<Select
+						name='bed'
+						className='select'
+						placeholder='Select...'
+						options={countryOption}
+						onChange={this.handlePropertyChange(
+							'country'
 						)}
 					/>
 				</div>
@@ -89,7 +134,7 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
-						onChange={this.handleSelectChange(
+						onChange={this.handlePriceChange(
 							'guest'
 						)}
 					/>
@@ -101,8 +146,8 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
-						onChange={this.handleSelectChange(
-							'bed'
+						onChange={this.handleRoomsChange(
+							'washroom'
 						)}
 					/>
 				</div>
@@ -115,7 +160,7 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
-						onChange={this.handleSelectChange(
+						onChange={this.handleRoomsChange(
 							'washroom'
 						)}
 					/>
@@ -147,12 +192,36 @@ export class PropertyInput extends Component {
 						elementType='checkbox'
 						render={collapseState => (
 							<React.Fragment>
-								<input type="checkbox" id="Essentials" name="Essentials" value="essentials"/>
-								<label for="Essentials"> Essentials</label>
-								<input type="checkbox" id="TV" name="TV" value="tv"/>
-								<label for="TV"> TV</label>
-								<input type="checkbox" id="Wi-fi" name="Wi-fi" value="wifi"/>
-								<label for="Wi-fi"> Wi-Fi</label>
+								<input
+									type='checkbox'
+									id='Essentials'
+									name='Essentials'
+									value='essentials'
+								/>
+								<label for='Essentials'>
+									{' '}
+									Essentials
+								</label>
+								<input
+									type='checkbox'
+									id='TV'
+									name='TV'
+									value='tv'
+								/>
+								<label for='TV'>
+									{' '}
+									TV
+								</label>
+								<input
+									type='checkbox'
+									id='Wi-fi'
+									name='Wi-fi'
+									value='wifi'
+								/>
+								<label for='Wi-fi'>
+									{' '}
+									Wi-Fi
+								</label>
 							</React.Fragment>
 						)}
 					/>
@@ -163,7 +232,9 @@ export class PropertyInput extends Component {
 						name='rule'
 						placeholder='Write Some rules for you property...'
 						maxLength={140}
-						onChange={this.onChange}
+						onChange={this.handlePriceChange(
+							'price'
+						)}
 					/>
 				</div>
 				<div style={{ marginBottom: 10 + 'px' }}></div>
