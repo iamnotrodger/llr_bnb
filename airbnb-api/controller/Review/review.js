@@ -1,5 +1,6 @@
 // Route (POST): /api/property/add-review
 const handleAddReview = async (req, res, db_pool, Joi) => {
+	// handle http request
 	const schema = {
 		communication: Joi.number()
 			.integer()
@@ -26,14 +27,11 @@ const handleAddReview = async (req, res, db_pool, Joi) => {
 			.integer()
 			.required()
 	};
-
 	const { error } = Joi.validate(req.body, schema);
-
 	if (error) {
 		res.status(400).json(error.details[0].message);
 		return;
 	}
-
 	const {
 		communication,
 		cleanliness,
@@ -42,7 +40,8 @@ const handleAddReview = async (req, res, db_pool, Joi) => {
 		prid,
 		gid
 	} = req.body;
-	const rating = (communication + cleanliness + value) / 3;
+	const rating = (communication + cleanliness + value) / 3; // rating is the avg of three
+	console.log(rating); // test
 
 	try {
 		const client = await db_pool.connect();
