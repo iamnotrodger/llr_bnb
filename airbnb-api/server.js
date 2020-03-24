@@ -85,7 +85,7 @@ app.get('/api/profile/review/review-list/:gid/:num?', (req, res) =>
 
 //Get all the information about the property, reviews, rooms, and unavailable dates
 app.get('/api/property/:prid', (req, res) =>
-	property.handleProperty(req, res, db_pool)
+	property.handleViewProperty(req, res, db_pool)
 );
 
 //Add property

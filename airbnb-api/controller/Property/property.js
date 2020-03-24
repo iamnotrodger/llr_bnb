@@ -3,16 +3,48 @@
 //TODO: grab all the rooms with the property id, this will probably will be a array of room objects.
 //TODO: grab the pricing of the property
 //TODO: grab rental agreement to see the available dates, then create an array of unavailable dates according to every start and end dates in every rental agreement the rental agreement
-const handleProperty = async (req, res, db_pool) => {
+const handleViewProperty = async (req, res, db_pool) => {
+	// get the path parameter
 	const { prid } = req.params;
 
+	// console.log(prid); // test
+	// res.status(200).json('OK'); // test
 	try {
 		const client = await db_pool.connect();
 		try {
-			const queryText =
+			// get title and address
+			const propertyQueryText =
 				'SELECT * FROM project.property WHERE prid = $1;';
-			const { rows } = await client.query(queryText, [prid]);
-			res.status(200).json(rows[0]);
+			const res1 = await client.query(propertyQueryText, [prid]);
+			const { hid, title, address } = res1.rows[0]; // hid is used to get host uid
+			// get host name
+			const hostQueryText = 
+				'SELECT uid FROM project.host WHERE hid = $1;';
+			const res2 = await client.query(hostQueryText, [hid]);
+			const { uid } = res2.rows[0]; // uid is used to get the host name
+			const usrQueryText = 
+				'SELECT firstname, lastname FROM project.usr WHERE uid = $1;';
+			const res3 = await client.query(usrQueryText, [uid]);
+			const { firstname, lastname } = res3.rows[0];
+			// get bed number
+			const bedQueryText = 
+				'SELECT SUM(bed_num) AS bed_num FROM project.room WHERE prid = $1 AND room_type = \'bedroom\' GROUP BY prid;';
+			const res4 = await client.query(bedQueryText, [prid]);
+			const { bed_num } = res4.rows[0];
+			// console.log(bed_num); // test
+			// get washroom num
+			const washroomQueryText = 
+				'SELECT COUNT(*) AS washroom_num FROM project.room WHERE prid = $1 AND room_type = \'washroom\' GROUP BY prid;';
+			const res5 = await client.query(washroomQueryText, [prid]);
+			const { washroom_num } = res5.rows[0];
+			// console.log(washroom_num); // test
+			res.status(200).jsonp({
+				title: title,
+				location: address,
+				host_name: firstname + ' ' + lastname, 
+				bed_num: bed_num,
+				washroom_num: washroom_num
+			});
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
 			res.status(400).json('Unable to get property.');
@@ -174,7 +206,7 @@ const addRooms = async (db_pool, prid, rooms) => {
 };
 
 module.exports = {
-	handleProperty,
+	handleViewProperty,
 	handleAddProperty,
 	addProperty,
 	handleAddRooms,
