@@ -40,19 +40,34 @@ export class PropertyInput extends Component {
 		}));
 	};
 
-	handlePropertyChange = name => {
+	handlePropertyChange = event => {
+		const { name, value } = event.target;
+		this.props.onPropertyChange(name, value);
+	};
+
+	handleSelectPropertyChange = name => {
 		return newValue => {
 			this.props.onPropertyChange(name, newValue.value);
 		};
 	};
 
-	handlePriceChange = name => {
+	handlePriceChange = event => {
+		const { name, value } = event.target;
+		this.props.onPriceChange(name, value);
+	};
+
+	handleSelectPriceChange = name => {
 		return newValue => {
 			this.props.onPriceChange(name, newValue.value);
 		};
 	};
 
-	handleRoomsChange = name => {
+	handleRoomsChange = event => {
+		const { name, value } = event.target;
+		this.props.onRoomsChange(name, value);
+	};
+
+	handleSelectRoomsChange = name => {
 		return newValue => {
 			this.props.onRoomsChange(name, newValue.value);
 		};
@@ -70,34 +85,40 @@ export class PropertyInput extends Component {
 					<div>
 						<input
 							className='login-input register-addr'
-							name='prop-name'
+							name='title'
 							type='name'
 							placeholder='Property Name'
-							onChange={this.handlePropertyChange(
-								'property_type'
-							)}
+							onChange={e =>
+								this.handlePropertyChange(
+									e
+								)
+							}
 						/>
 					</div>
 					<div>
 						<input
 							className='login-input register-addr'
-							name='prop-address'
+							name='address'
 							type='address'
 							placeholder='Property Address'
-							onChange={this.handlePropertyChange(
-								'property_type'
-							)}
+							onChange={e =>
+								this.handlePropertyChange(
+									e
+								)
+							}
 						/>
 					</div>
 					<div>
 						<input
 							className='login-input register-pricing'
-							name='prop-price'
+							name='price'
 							type='number'
 							placeholder='Price (C$)'
-							onChange={this.handlePriceChange(
-								'price'
-							)}
+							onChange={e =>
+								this.handlePriceChange(
+									e
+								)
+							}
 						/>
 					</div>
 					<p className='subtitle-prop'>
@@ -108,7 +129,7 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={propTypeOptions}
-						onChange={this.handlePropertyChange(
+						onChange={this.handleSelectPropertyChange(
 							'property_type'
 						)}
 					/>
@@ -122,7 +143,7 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={countryOption}
-						onChange={this.handlePropertyChange(
+						onChange={this.handleSelectPropertyChange(
 							'country'
 						)}
 					/>
@@ -134,8 +155,8 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
-						onChange={this.handlePriceChange(
-							'guest'
+						onChange={this.handleSelectPriceChange(
+							'guest_num'
 						)}
 					/>
 				</div>
@@ -146,8 +167,8 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
-						onChange={this.handleRoomsChange(
-							'washroom'
+						onChange={this.handleSelectRoomsChange(
+							'bed'
 						)}
 					/>
 				</div>
@@ -160,7 +181,7 @@ export class PropertyInput extends Component {
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
-						onChange={this.handleRoomsChange(
+						onChange={this.handleSelectRoomsChange(
 							'washroom'
 						)}
 					/>
@@ -232,9 +253,11 @@ export class PropertyInput extends Component {
 						name='rule'
 						placeholder='Write Some rules for you property...'
 						maxLength={140}
-						onChange={this.handlePriceChange(
-							'price'
-						)}
+						onChange={e =>
+							this.handlePriceChange(
+								e
+							)
+						}
 					/>
 				</div>
 				<div style={{ marginBottom: 10 + 'px' }}></div>

@@ -30,10 +30,10 @@ const AddPropertyPage = () => {
 			title: '',
 			address: '',
 			country: '',
-			hid: null
+			hid: user.hid
 		});
 		setPrice({
-			guest: 0,
+			guest_num: 0,
 			price: 0,
 			rule: ''
 		});
@@ -42,17 +42,19 @@ const AddPropertyPage = () => {
 			washroom: 0
 		});
 		setError(false);
-	}, [succ]);
+	}, [succ, user.hid]);
 
 	const propertySubmit = async () => {
 		if (!propertyValidate(propertyInput, price)) {
+			console.log('Validation error');
 			setError(true);
 			return;
 		}
 		let roomsOne = createRooms(rooms.bed, rooms.washroom);
 		try {
 			if (propertyInput.hid) {
-				await fetch(
+				delete price.rule;
+				const response = await fetch(
 					'http://localhost:3000/api/property/add-property',
 					{
 						method: 'post',
@@ -67,7 +69,12 @@ const AddPropertyPage = () => {
 						})
 					}
 				);
-				setSucc(true);
+				if (response.ok) {
+					setSucc(true);
+					return;
+				}
+				console.log(response.json());
+				throw Error();
 			} else if (user.uid) {
 				const hid = await registerHost(
 					propertyInput,
@@ -153,7 +160,7 @@ const createRooms = (numBedrooms, numWashroom) => {
 		};
 		rooms.push(tempRoom);
 	}
-
+	console.log(rooms);
 	return rooms;
 };
 
@@ -177,6 +184,7 @@ const registerHost = async (property, rooms, price, userID) => {
 		const hid = await response.json();
 		return hid;
 	}
+	console.log(response.json());
 	throw new Error('Network response was not ok.');
 };
 

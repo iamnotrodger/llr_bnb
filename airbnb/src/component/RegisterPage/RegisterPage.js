@@ -78,18 +78,28 @@ const RegisterPage = () => {
 					rooms.washroom
 				);
 
-				await registerHost(
+				const response = await registerHost(
 					propertyInput,
 					roomsOne,
 					price,
 					user.id
 				);
+				if (!response.ok) {
+					throw Error(
+						'Unable to register host and property'
+					);
+				}
 				history.push('/login');
 			} else if (register === 'Employee') {
 				//TODO: add employee register
 				console.log('Employee Register');
 			} else if (register === 'User') {
-				await registerUser(inputValue);
+				const guestResponse = await registerUser(
+					inputValue
+				);
+				if (!guestResponse.ok) {
+					throw Error('Unable to register Guest');
+				}
 				history.push('/login');
 			}
 		} catch (err) {
