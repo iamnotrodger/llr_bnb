@@ -70,23 +70,27 @@ const PropertyPage = () => {
 					setReview({
 						reviews: reviews
 					});
+					//TODO: evaluate undefined object fields
 					setAverages({
 						rating:
-							avgs.rating !==
+							avgs.rating ===
 							undefined
-								? avgs.rating
-								: 0,
+								? 0
+								: avgs.rating,
 						communication:
-							avgs.communication !==
+							avgs.communication ===
 							undefined
-								? avgs.communication
-								: 0,
+								? 0
+								: avgs.communication,
 						cleanliness:
-							avgs.cleanliness !==
+							avgs.cleanliness ===
 							undefined
-								? avgs.cleanliness
-								: 0,
-						value: avgs.value
+								? 0
+								: avgs.cleanliness,
+						value:
+							avgs.value === undefined
+								? 0
+								: avgs.value
 					});
 					console.log(
 						'Loaded Property Information'
