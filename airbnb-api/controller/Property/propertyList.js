@@ -36,7 +36,7 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
 			// const queryText =
 			// 	'SELECT * FROM project.property, project.pricing  WHERE property_type = $1 AND project.property.prid = project.pricing.prid';
 			const queryText =
-				'SELECT P.prid, P.title, P.country, PR.price, R.rating, R.ratingnum FROM(project.property as P natural join project.pricing as PR) natural left outer join (SELECT prid, AVG(rating) as rating, COUNT(rating) as ratingnum from project.review GROUP BY prid) as R WHERE property_type = $1';
+				'SELECT P.prid, P.title, P.country, PR.price, R.rating, R.review_num FROM(project.property as P natural join project.pricing as PR) natural left outer join (SELECT prid, AVG(rating) as rating, COUNT(rating) as review_num from project.review GROUP BY prid) as R WHERE property_type = $1';
 			const { rows } = await client.query(queryText, [
 				category
 			]);
