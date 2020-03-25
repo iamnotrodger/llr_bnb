@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import TabsControl from '../ReactTab/ReactTab.js';
 import GuestInput from './GuestInput/GuestInput';
 import EmployeeInput from './EmployeeInput/EmployeeInput';
 import PropertyInput from '../PropertyInput/PropertyInput';
+import {
+	createRooms,
+	registerHost,
+	propertyValidate
+} from '../AddPropertyPage/AddPropertyPage';
 import './RegisterPage.css';
 
 const RegisterPage = () => {
@@ -11,17 +17,18 @@ const RegisterPage = () => {
 		lastName: '',
 		email: '',
 		address: '',
-		phoneNum: ''
+		phoneNum: '',
+		password: '',
+		confirmPassword: ''
 	});
 	const [propertyInput, setPropertyInput] = useState({
 		property_type: '',
 		title: '',
 		address: '',
-		country: '',
-		hid: localStorage.getItem('user').hid
+		country: ''
 	});
 	const [price, setPrice] = useState({
-		guest: 0,
+		guest_num: 0,
 		price: 0,
 		rule: ''
 	});
@@ -29,14 +36,11 @@ const RegisterPage = () => {
 		bed: 0,
 		washroom: 0
 	});
-	const [registerHost, setRegisterHost] = useState(false);
-	const [registerEmployee, setRegisterEmployee] = useState(false);
 
-	useEffect(() => {
-		if (!registerHost) {
-			setRegisterHost(true);
-		}
-	}, [propertyInput, price, rooms, registerHost]);
+	const [register, setRegister] = useState('User');
+	const [error, setError] = useState(false);
+
+	const history = useHistory();
 
 	const onChange = event => {
 		const { name, value } = event.target;
@@ -57,18 +61,46 @@ const RegisterPage = () => {
 	};
 
 	const handleButtonSubmit = async () => {
-		if (registerHost) {
-			try {
-				await hostRegister(propertyInput, rooms, price);
-			} catch (err) {
-				console.log(err);
+		if (!guestValidation(inputValue)) {
+			setError(true);
+			return;
+		}
+		try {
+			if (register === 'Host') {
+				if (!propertyValidate(propertyInput, price)) {
+					setError(true);
+					return;
+				}
+
+				const user = await registerUser(inputValue);
+				let roomsOne = createRooms(
+					rooms.bed,
+					rooms.washroom
+				);
+
+				await registerHost(
+					propertyInput,
+					roomsOne,
+					price,
+					user.id
+				);
+				history.push('/login');
+			} else if (register === 'Employee') {
+				//TODO: add employee register
+				console.log('Employee Register');
+			} else if (register === 'User') {
+				await registerUser(inputValue);
+				history.push('/login');
 			}
-		} else if (registerEmployee) {
-			console.log('Employee Register');
-		} else {
-			console.log('Guest Register');
+		} catch (err) {
+			console.log(err);
+			setError(true);
 		}
 	};
+
+	let errorClause = error ? (
+		<div className='error'>An error occured.</div>
+	) : null;
 
 	return (
 		<div className='register-page'>
@@ -82,15 +114,26 @@ const RegisterPage = () => {
 			<div className='login-box register-box'>
 				<p className='login-title'>Register</p>
 				<div className='tabs-container'>
-					<TabsControl>
-						<div name='User Info'>
+					<TabsControl setTab={setRegister}>
+						<div name='User'>
 							<GuestInput
 								onChange={
 									onChange
 								}
+								input={
+									inputValue
+								}
 							/>
 						</div>
-						<div name='Add Property'>
+						<div name='Host'>
+							<GuestInput
+								onChange={
+									onChange
+								}
+								input={
+									inputValue
+								}
+							/>
 							<PropertyInput
 								onPropertyChange={
 									onPropertyChange
@@ -104,10 +147,20 @@ const RegisterPage = () => {
 							/>
 						</div>
 						<div name='Employee'>
+							<GuestInput
+								onChange={
+									onChange
+								}
+								input={
+									inputValue
+								}
+							/>
 							<EmployeeInput />
 						</div>
 					</TabsControl>
 				</div>
+				{errorClause}
+
 				<div>
 					<button
 						className='submitButton'
@@ -121,27 +174,69 @@ const RegisterPage = () => {
 	);
 };
 
-const hostRegister = async (propertyInput, rooms, price) => {
-	let roomsOne = () => {
-		let rooms = [];
-		for (let i = 0; i < rooms.bed; i++) {
-			let tempRoom = {
-				room_type: 'bedroom',
-				bed_num: 1
-			};
-			rooms.push(tempRoom);
-		}
+const guestValidation = input => {
+	const {
+		firstName,
+		lastName,
+		email,
+		address,
+		phoneNum,
+		password,
+		confirmPassword
+	} = input;
 
-		for (let i = 0; i < rooms.washroom; i++) {
-			let tempRoom = {
-				room_type: 'washroom',
-				bed_num: 1
-			};
-			rooms.push(tempRoom);
-		}
+	if (firstName.length === 0) {
+		return false;
+	}
 
-		return rooms;
-	};
+	if (lastName.length === 0) {
+		return false;
+	}
+
+	if (email.length === 0) {
+		return false;
+	}
+
+	if (address.length === 0) {
+		return false;
+	}
+
+	if (phoneNum.length === 0 || phoneNum.length > 15) {
+		return false;
+	}
+
+	if (!/^\d+$/.test(phoneNum)) {
+		return false;
+	}
+
+	if (password.length === 0 || password.length < 8) {
+		return false;
+	}
+
+	if (password !== confirmPassword) {
+		return false;
+	}
+
+	return true;
+};
+const registerUser = async input => {
+	const newInput = { ...input };
+	delete newInput.confirmPassword;
+	const response = await fetch(
+		'http://localhost:3000/api/guest-register',
+		{
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(newInput)
+		}
+	);
+	if (response.ok) {
+		const user = await response.json();
+		return user;
+	}
+	throw new Error('Network response was not ok.');
 };
 
 export default RegisterPage;

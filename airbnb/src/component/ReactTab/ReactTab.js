@@ -21,6 +21,13 @@ export class ReactTab extends Component {
 			: 'tab_item';
 	}
 
+	changeIndex = (index, element) => {
+		this.props.setTab(element.props.name);
+		this.setState({
+			currentIndex: index
+		});
+	};
+
 	render() {
 		return (
 			<div>
@@ -30,13 +37,12 @@ export class ReactTab extends Component {
 						(element, index) => {
 							return (
 								<div
-									onClick={() => {
-										this.setState(
-											{
-												currentIndex: index
-											}
-										);
-									}}
+									onClick={() =>
+										this.changeIndex(
+											index,
+											element
+										)
+									}
 									className={this.check_title_index(
 										index
 									)}

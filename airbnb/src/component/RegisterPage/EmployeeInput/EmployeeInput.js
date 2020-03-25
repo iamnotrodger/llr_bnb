@@ -14,10 +14,6 @@ const EmployeeInput = ({ onChange }) => {
 				<p className='register-title'>
 					Employee Information:
 				</p>
-				<p className='register-hint'>
-					*Leave this page blank if you're not an
-					employee.
-				</p>
 			</div>
 			<div style={{ marginBottom: 10 + 'px' }}></div>
 			<div className='opt-prop'>
@@ -39,6 +35,7 @@ const EmployeeInput = ({ onChange }) => {
 				<input
 					className='login-input register-salary'
 					name='salary'
+					type='number'
 					placeholder='C$'
 				/>
 			</div>

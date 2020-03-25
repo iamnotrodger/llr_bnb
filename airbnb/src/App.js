@@ -54,6 +54,8 @@ class App extends Component {
 		} catch (err) {
 			console.log(err);
 		}
+
+		this.loadUser(this.state.user);
 	}
 
 	loadUser = data => {

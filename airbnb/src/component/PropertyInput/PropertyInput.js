@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import Collapse from '@kunukn/react-collapse';
-// import FormGroup from '@material-ui/core/FormGroup';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import cx from 'classnames';
 import './PropertyInput.css';
 
@@ -64,7 +64,7 @@ export class PropertyInput extends Component {
 				<div className='opt-prop'>
 					<div>
 						<p className='register-title'>
-							Property Information:
+							Property Information
 						</p>
 					</div>
 					<div>
@@ -130,7 +130,7 @@ export class PropertyInput extends Component {
 				<div className='opt-prop'>
 					<p className='subtitle-prop'>Guests:</p>
 					<Select
-						name='guest'
+						name='guest_num'
 						className='select'
 						placeholder='Select...'
 						options={amountOptions}
@@ -198,7 +198,7 @@ export class PropertyInput extends Component {
 									name='Essentials'
 									value='essentials'
 								/>
-								<label for='Essentials'>
+								<label htmlFor='Essentials'>
 									{' '}
 									Essentials
 								</label>
@@ -208,7 +208,7 @@ export class PropertyInput extends Component {
 									name='TV'
 									value='tv'
 								/>
-								<label for='TV'>
+								<label htmlFor='TV'>
 									{' '}
 									TV
 								</label>
@@ -218,7 +218,7 @@ export class PropertyInput extends Component {
 									name='Wi-fi'
 									value='wifi'
 								/>
-								<label for='Wi-fi'>
+								<label htmlFor='Wi-fi'>
 									{' '}
 									Wi-Fi
 								</label>

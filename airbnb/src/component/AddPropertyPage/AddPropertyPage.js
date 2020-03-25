@@ -12,7 +12,7 @@ const AddPropertyPage = () => {
 		hid: user.hid
 	});
 	const [price, setPrice] = useState({
-		guest: 0,
+		guest_num: 0,
 		price: 0,
 		rule: ''
 	});
@@ -22,7 +22,7 @@ const AddPropertyPage = () => {
 	});
 	const [succ, setSucc] = useState(false);
 	const [error, setError] = useState(false);
-	const [registerHost, setRegisterHost] = useState(false);
+	const [hostRegistered, setHostRegistered] = useState(false);
 
 	useEffect(() => {
 		setPropertyInput({
@@ -45,10 +45,13 @@ const AddPropertyPage = () => {
 	}, [succ]);
 
 	const propertySubmit = async () => {
+		if (!propertyValidate(propertyInput, price)) {
+			setError(true);
+			return;
+		}
 		let roomsOne = createRooms(rooms.bed, rooms.washroom);
 		try {
 			if (propertyInput.hid) {
-				console.log('!');
 				await fetch(
 					'http://localhost:3000/api/property/add-property',
 					{
@@ -66,32 +69,20 @@ const AddPropertyPage = () => {
 				);
 				setSucc(true);
 			} else if (user.uid) {
-				console.log('!!');
-				const response = await fetch(
-					'http://localhost:3000/api/host-register',
-					{
-						method: 'post',
-						headers: {
-							'Content-Type':
-								'application/json'
-						},
-						body: JSON.stringify({
-							uid: localStorage.getItem(
-								'user'
-							).uid,
-							property: propertyInput,
-							rooms: rooms,
-							pricing: price
-						})
-					}
+				const hid = await registerHost(
+					propertyInput,
+					rooms,
+					price,
+					user.id
 				);
-				const user = await response.json();
+				const newUser = { ...user, hid: hid };
+				console.log(newUser);
 				localStorage.setItem(
 					'user',
-					JSON.stringify(user)
+					JSON.stringify(newUser)
 				);
 				setSucc(true);
-				setRegisterHost(true);
+				setHostRegistered(true);
 			} else {
 				console.log('Error');
 				setError(true);
@@ -118,7 +109,7 @@ const AddPropertyPage = () => {
 	const SuccMessage = succ ? (
 		<div>Property Addition Successful.</div>
 	) : null;
-	const RegisterHostMessage = registerHost ? (
+	const RegisterHostMessage = hostRegistered ? (
 		<div>You have been registered as a host.</div>
 	) : null;
 
@@ -166,4 +157,59 @@ const createRooms = (numBedrooms, numWashroom) => {
 	return rooms;
 };
 
+const registerHost = async (property, rooms, price, userID) => {
+	const response = await fetch(
+		'http://localhost:3000/api/host-register',
+		{
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				uid: userID,
+				property: property,
+				rooms: rooms,
+				pricing: price
+			})
+		}
+	);
+	if (response.ok) {
+		const hid = await response.json();
+		return hid;
+	}
+	throw new Error('Network response was not ok.');
+};
+
+const propertyValidate = (property, price) => {
+	const { property_type, title, address, country } = property;
+	const { guest_num, rule } = price;
+
+	if (property_type.length === 0) {
+		return false;
+	}
+
+	if (title.length === 0) {
+		return false;
+	}
+
+	if (address.length === 0) {
+		return false;
+	}
+
+	if (country.length === 0) {
+		return false;
+	}
+
+	if (guest_num === 0) {
+		return false;
+	}
+
+	if (rule.length === 0) {
+		return false;
+	}
+
+	return true;
+};
+
 export default AddPropertyPage;
+export { createRooms, registerHost, propertyValidate };
