@@ -1,18 +1,63 @@
-//Route (GET): /api/property/:prid
-//TODO: grab all the reviews with the property id, this will probably will be a array of review objects.
-//TODO: grab all the rooms with the property id, this will probably will be a array of room objects.
-//TODO: grab the pricing of the property
-//TODO: grab rental agreement to see the available dates, then create an array of unavailable dates according to every start and end dates in every rental agreement the rental agreement
-const handleProperty = async (req, res, db_pool) => {
+// Route (GET): /api/property/:prid
+// TODO: grab rental agreement to see the available dates, then create an array of unavailable dates according to every start and end dates in every rental agreement the rental agreement
+const handleViewProperty = async (req, res, db_pool) => {
+	// get the path parameter
 	const { prid } = req.params;
 
 	try {
 		const client = await db_pool.connect();
 		try {
-			const queryText =
+			// get title and address
+			const propertyQueryText =
 				'SELECT * FROM project.property WHERE prid = $1;';
-			const { rows } = await client.query(queryText, [prid]);
-			res.status(200).json(rows[0]);
+			const res1 = await client.query(propertyQueryText, [prid]);
+			const { hid, title, address } = res1.rows[0]; // hid is used to get host uid
+			// get host name
+			const hostQueryText = 
+				'SELECT uid FROM project.host WHERE hid = $1;';
+			const res2 = await client.query(hostQueryText, [hid]);
+			const { uid } = res2.rows[0]; // uid is used to get the host name
+			const usrQueryText = 
+				'SELECT firstname, lastname FROM project.usr WHERE uid = $1;';
+			const res3 = await client.query(usrQueryText, [uid]);
+			const { firstname, lastname } = res3.rows[0];
+			// get bed number
+			const bedQueryText = 
+				'SELECT SUM(bed_num) AS bed_num FROM project.room WHERE prid = $1 AND room_type = \'bedroom\' GROUP BY prid;';
+			const res4 = await client.query(bedQueryText, [prid]);
+			const { bed_num } = res4.rows[0];
+			// get washroom num
+			const washroomQueryText = 
+				'SELECT COUNT(*) AS washroom_num FROM project.room WHERE prid = $1 AND room_type = \'washroom\' GROUP BY prid;';
+			const res5 = await client.query(washroomQueryText, [prid]);
+			const { washroom_num } = res5.rows[0];
+			// get guest_num and price
+			const pricingQueryText = 
+				'SELECT guest_num, price FROM project.pricing WHERE prid = $1;';
+			const res6 = await client.query(pricingQueryText, [prid]);
+			const { guest_num, price } = res6.rows[0];
+			// get reviews
+			const reviewQueryText = 
+				'SELECT * FROM project.review WHERE prid = $1;';
+			const res7 = await client.query(reviewQueryText, [prid]);
+			const reviews = res7.rows;
+			// get avgs
+			const avgsQueryText = 
+				'SELECT AVG(rating) AS rating, AVG(communication) AS communication, AVG(cleanliness) AS cleanliness, AVG(value) AS value FROM project.review WHERE prid = $1 GROUP BY prid;';
+			const res8 = await client.query(avgsQueryText, [prid]);
+			const avgs = res8.rows[0];
+			// console.log(res8.rows[0]); // test
+			res.status(200).jsonp({
+				title: title,
+				location: address,
+				host_name: firstname + ' ' + lastname, 
+				bed_num: bed_num,
+				washroom_num: washroom_num,
+				guest_num: guest_num,
+				price: price,
+				reviews: reviews,
+				avgs: avgs
+			});
 		} catch (err) {
 			console.error('Error during the query.', err.stack);
 			res.status(400).json('Unable to get property.');
@@ -174,7 +219,7 @@ const addRooms = async (db_pool, prid, rooms) => {
 };
 
 module.exports = {
-	handleProperty,
+	handleViewProperty,
 	handleAddProperty,
 	addProperty,
 	handleAddRooms,
