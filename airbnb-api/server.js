@@ -34,8 +34,6 @@ const rental = require('./controller/Rental/rental');
 app.use(express.json());
 app.use(cors());
 
-
-
 // handle guestRegister
 app.post('/api/guest-register', (req, res) =>
 	guestRegister.handleRegister(req, res, db_pool, Joi, CryptoJS)
@@ -109,7 +107,7 @@ app.get('/api/property/review/review-list/:prid/:num?', (req, res) =>
 
 // Add a rental agreement
 app.post('/api/rental/add-rental-agreement', (req, res) => 
-	rental.handleAddRentalAgreement(req, res, db_pool)
+	rental.handleAddRentalAgreement(req, res, db_pool, Joi)
 );
 
 app.get('/', (req, res) => {
