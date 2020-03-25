@@ -1,6 +1,5 @@
-//Route (GET): /api/property/:prid
-//TODO: grab all the reviews with the property id, this will probably will be a array of review objects.
-//TODO: grab rental agreement to see the available dates, then create an array of unavailable dates according to every start and end dates in every rental agreement the rental agreement
+// Route (GET): /api/property/:prid
+// TODO: grab rental agreement to see the available dates, then create an array of unavailable dates according to every start and end dates in every rental agreement the rental agreement
 const handleViewProperty = async (req, res, db_pool) => {
 	// get the path parameter
 	const { prid } = req.params;

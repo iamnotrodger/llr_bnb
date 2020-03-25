@@ -29,84 +29,92 @@ const property = require('./controller/Property/property');
 const propertyList = require('./controller/Property/propertyList');
 const review = require('./controller/Review/review');
 const reviewList = require('./controller/Review/reviewList');
+const rental = require('./controller/Rental/rental');
 
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-	res.end('The server is running on port 3000...');
-});
 
-/*handle guestRegister*/
+
+// handle guestRegister
 app.post('/api/guest-register', (req, res) =>
 	guestRegister.handleRegister(req, res, db_pool, Joi, CryptoJS)
 );
 
-/*handle hostRegister*/
+// handle hostRegister
 app.post('/api/host-register', (req, res) =>
 	hostRegister.handleRegister(req, res, db_pool, Joi)
 );
 
-/*handle login*/
+// handle login
 app.post('/api/login', (req, res) =>
 	login.handleLogin(req, res, db_pool, Joi, CryptoJS)
 );
 
-//Get all the user infromation from Usr table
+// Get all the user infromation from Usr table
 app.get('/api/profile/:uid', (req, res) =>
 	profile.handleProfile(req, res, db_pool)
 );
 
-//Update the user's email
+// Update the user's email
 app.put('/api/profile/update/email', (req, res) =>
 	profileUpdate.handleProfileEmail(req, res, db_pool, Joi)
 );
-//Update the user's password
+// Update the user's password
 app.put('/api/profile/update/password', (req, res) =>
 	profileUpdate.handleProfilePasswrod(req, res, db_pool, Joi)
 );
-//Update the user's name
+// Update the user's name
 app.put('/api/profile/update/name', (req, res) =>
 	profileUpdate.handleProfileName(req, res, db_pool, Joi)
 );
-//Update the user's address
+// Update the user's address
 app.put('/api/profile/update/address', (req, res) =>
 	profileUpdate.handleProfileAddress(req, res, db_pool, Joi)
 );
-//Update the user's phone number
+// Update the user's phone number
 app.put('/api/profile/update/phone', (req, res) =>
 	profileUpdate.handleProfilePhone(req, res, db_pool, Joi)
 );
 
-//Gets all the review that the user has made
+// Gets all the review that the user has made
 app.get('/api/profile/review/review-list/:gid/:num?', (req, res) =>
 	reviewList.handleReviewProfile(req, res, db_pool)
 );
 
-//Get all the information about the property, reviews, rooms, and unavailable dates
+// Get all the information about the property, reviews, rooms, and unavailable dates
 app.get('/api/property/:prid', (req, res) =>
 	property.handleViewProperty(req, res, db_pool)
 );
 
-//Add property
+// Add property
 app.post('/api/property/add-property', (req, res) =>
 	property.handleAddProperty(req, res, db_pool, Joi)
 );
 
-//Gets a number of property according to the type
+// Gets a number of property according to the type
 app.get('/api/property/property-list/:category/:num?', (req, res) =>
 	propertyList.handlePropertyList(req, res, db_pool, Joi)
 );
 
-//Add reviews to property
+// Add reviews to property
 app.post('/api/review/add-review', (req, res) =>
 	review.handleAddReview(req, res, db_pool, Joi)
 );
 
-//Gets all the reveiw made about the property
+// Gets all the reveiw made about the property
 app.get('/api/property/review/review-list/:prid/:num?', (req, res) =>
 	reviewList.handleReviewProperty(req, res, db_pool)
 );
+
+// Add a rental agreement
+app.post('/api/rental/add-rental-agreement', (req, res) => 
+	rental.handleAddRentalAgreement(req, res, db_pool)
+);
+
+app.get('/', (req, res) => {
+	res.end('The server is running on port 3000...');
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
