@@ -84,6 +84,26 @@ button:focus {
 	background: rgb(66, 115, 112) !important;
 }
 
+.error-message {
+	padding: 5px;
+	margin: 0 20%;
+	border-radius: 4px;
+	text-align: center;
+	vertical-align: center;
+	color: #ffffff;
+	background-color: #db5656;
+}
+
+.succ-message {
+	padding: 5px;
+	margin: 0 20%;
+	border-radius: 4px;
+	text-align: center;
+	vertical-align: center;
+	color: #ffffff;
+	background-color: #4ee229;
+}
+
 @media screen and (max-width: 1024px) {
 	.main {
 		padding: 0 5%;

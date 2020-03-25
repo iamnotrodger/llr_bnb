@@ -1,15 +1,14 @@
 import React from 'react';
 import PropertyItem from '../PropertyItem/PropertyItem';
 
-const PropertyMap = ({ properties, setProperty }) => {
+const PropertyMap = ({ properties }) => {
 	return (
 		<div className='propertyContainer'>
 			{properties.map((property, i) => {
 				return (
 					<PropertyItem
-						key={i}
+						key={property.prid}
 						property={property}
-						setProperty={setProperty}
 					/>
 				);
 			})}

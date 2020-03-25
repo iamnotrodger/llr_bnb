@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ isSignedIn, component: Component, ...rest }) => {
-	console.log('Signed: ' + isSignedIn);
 	return (
 		<Route
 			{...rest}

@@ -6,41 +6,22 @@ import StarRatingComponent from 'react-star-rating-component';
 import 'react-dates/lib/css/_datepicker.css';
 import './Booking.css';
 
-// https://www.youtube.com/watch?v=OOHf5kl1ne0
-
 class Booking extends Component {
 	constructor() {
 		super();
 		this.state = {
-			userID: null,
-			hostID: null,
-			propertyID: null,
 			startDate: null,
 			endDate: null,
 			numDays: 0,
 			total: 0,
-			unavailableDays: []
+			succ: false,
+			error: false
 		};
-	}
-
-	componentDidMount() {
-		this.setState({
-			userID: localStorage.getItem('userID'),
-			hostID: 666,
-			propertyID: this.props.propertyID,
-			unavailableDay: [
-				'2020-03-07',
-				'2020-03-08',
-				'2020-03-09',
-				'2020-03-11',
-				'2020-03-12'
-			]
-		});
 	}
 
 	//Sets the unavailable dates in the calendar.
 	isBlocked = day => {
-		return this.state.unavailableDays.some(unavailableDay =>
+		return this.props.unavailableDates.some(unavailableDay =>
 			moment(unavailableDay).isSame(day, 'day')
 		);
 	};
@@ -70,7 +51,7 @@ class Booking extends Component {
 				this.checkForBlockedDates(
 					startDate.toDate(),
 					endDate.toDate(),
-					this.state.unavailableDays
+					this.props.unavailableDates
 				)
 			) {
 				return;
@@ -90,20 +71,58 @@ class Booking extends Component {
 		});
 	};
 
-	onSubmitReserve = () => {
-		if (
-			this.state.endDate === null ||
-			this.state.startDate === null
-		) {
-			console.log('one of date is null');
-			return;
+	onSubmitReserve = async () => {
+		const { gid, prid } = this.props;
+		const { startDate, endDate } = this.state;
+		try {
+			if (startDate === null || endDate === null) {
+				throw Error(
+					'One or both of the dates are null'
+				);
+			}
+
+			const response = await fetch(
+				'http://localhost:3000/api/login',
+				{
+					method: 'post',
+					headers: {
+						'Content-Type':
+							'application/json'
+					},
+					body: JSON.stringify({
+						gid: gid,
+						prid: prid,
+						start_date: startDate,
+						end_date: endDate
+					})
+				}
+			);
+
+			if (response.ok) {
+				this.setState({ succ: true });
+				return;
+			}
+			throw Error('Booking was not reserved.');
+		} catch (err) {
+			console.log(err);
+			this.setState({ error: true });
 		}
 		console.log('Reserve');
 	};
 
 	render() {
-		const { price, numRev } = this.props;
+		const { rating, price, numRev, succ, error } = this.props;
 		const { total } = this.state;
+		const ErrorMessage = error ? (
+			<div className='error-message'>
+				Something went wrong.
+			</div>
+		) : null;
+		const SuccMessage = succ ? (
+			<div className='succ-message'>
+				Property Addition Successful.
+			</div>
+		) : null;
 		return (
 			<div className='bookingContainer'>
 				<div className='bookingHeader'>
@@ -119,7 +138,7 @@ class Booking extends Component {
 							starColor={'#00A699'}
 							value={1}
 						/>
-						<span>3.25</span>
+						<span>{rating}</span>
 						<span>{`${numRev} reviews`}</span>
 					</div>
 
@@ -127,6 +146,8 @@ class Booking extends Component {
 						<div className='lml'></div>
 					</div>
 				</div>
+				{ErrorMessage}
+				{SuccMessage}
 				<div className='bookingDate'>
 					<div>
 						<label>Dates</label>

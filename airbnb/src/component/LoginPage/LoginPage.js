@@ -52,15 +52,14 @@ const LoginPage = ({ loadUser }) => {
 		}
 	};
 
-	let errorClause = error ? (
-		<div className='error'>An error occured.</div>
+	const ErrorMessage = error ? (
+		<div className='error-message'>Something went wrong.</div>
 	) : null;
-
 	return (
 		<div className='login-page'>
 			<div className='login-box'>
 				<p className='login-title'>Welcome to LLB</p>
-				{errorClause}
+				{ErrorMessage}
 				<form onSubmit={handleButtonSubmit}>
 					<div>
 						<input

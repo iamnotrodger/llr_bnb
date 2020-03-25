@@ -70,13 +70,3 @@
 .login-register-hint:hover {
 	color: #84bb73;
 }
-
-.error {
-	padding: 5px;
-	margin: 0 20%;
-	border-radius: 4px;
-	text-align: center;
-	vertical-align: center;
-	color: #ffffff;
-	background-color: #db5656;
-}

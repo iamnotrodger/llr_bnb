@@ -2,57 +2,47 @@ import React, { useState, useEffect } from 'react';
 import PropertyInput from '../PropertyInput/PropertyInput';
 import './AddPropertyPage.css';
 
+const propertyInitial = {
+	property_type: '',
+	title: '',
+	address: '',
+	country: ''
+};
+
+const priceInitial = {
+	guest_num: 0,
+	price: 0,
+	rule: ''
+};
+
+const roomInitial = {
+	bed: 0,
+	washroom: 0
+};
+
 const AddPropertyPage = () => {
-	const user = JSON.parse(localStorage.getItem('user'));
-	const [propertyInput, setPropertyInput] = useState({
-		property_type: '',
-		title: '',
-		address: '',
-		country: '',
-		hid: user.hid
-	});
-	const [price, setPrice] = useState({
-		guest_num: 0,
-		price: 0,
-		rule: ''
-	});
-	const [rooms, setRooms] = useState({
-		bed: 0,
-		washroom: 0
-	});
+	const { hid, uid, gid } = JSON.parse(localStorage.getItem('user'));
+	const [propertyInput, setPropertyInput] = useState(propertyInitial);
+	const [price, setPrice] = useState(priceInitial);
+	const [rooms, setRooms] = useState(roomInitial);
 	const [succ, setSucc] = useState(false);
 	const [error, setError] = useState(false);
 	const [hostRegistered, setHostRegistered] = useState(false);
 
 	useEffect(() => {
-		setPropertyInput({
-			property_type: '',
-			title: '',
-			address: '',
-			country: '',
-			hid: user.hid
-		});
-		setPrice({
-			guest_num: 0,
-			price: 0,
-			rule: ''
-		});
-		setRooms({
-			bed: 0,
-			washroom: 0
-		});
+		setPropertyInput(propertyInitial);
+		setPrice(priceInitial);
+		setRooms(roomInitial);
 		setError(false);
-	}, [succ, user.hid]);
+	}, [succ, hid, uid]);
 
 	const propertySubmit = async () => {
-		if (!propertyValidate(propertyInput, price)) {
-			console.log('Validation error');
-			setError(true);
-			return;
-		}
-		let roomsOne = createRooms(rooms.bed, rooms.washroom);
 		try {
-			if (propertyInput.hid) {
+			if (!propertyValidate(propertyInput, price)) {
+				throw Error('Validation Error');
+			}
+			let roomsOne = createRooms(rooms.bed, rooms.washroom);
+			if (hid) {
 				delete price.rule;
 				const response = await fetch(
 					'http://localhost:3000/api/property/add-property',
@@ -63,7 +53,10 @@ const AddPropertyPage = () => {
 								'application/json'
 						},
 						body: JSON.stringify({
-							property: propertyInput,
+							property: {
+								...propertyInput,
+								hid: hid
+							},
 							rooms: roomsOne,
 							pricing: price
 						})
@@ -75,14 +68,18 @@ const AddPropertyPage = () => {
 				}
 				console.log(response.json());
 				throw Error();
-			} else if (user.uid) {
-				const hid = await registerHost(
+			} else if (uid) {
+				const hidNew = await registerHost(
 					propertyInput,
 					rooms,
 					price,
-					user.id
+					uid
 				);
-				const newUser = { ...user, hid: hid };
+				const newUser = {
+					uid: uid,
+					gid: gid,
+					hid: hidNew
+				};
 				console.log(newUser);
 				localStorage.setItem(
 					'user',
@@ -112,12 +109,18 @@ const AddPropertyPage = () => {
 		setPrice({ ...price, [name]: value });
 	};
 
-	const ErrorMessage = error ? <div>Something went wrong.</div> : null;
+	const ErrorMessage = error ? (
+		<div className='error-message'>Something went wrong.</div>
+	) : null;
 	const SuccMessage = succ ? (
-		<div>Property Addition Successful.</div>
+		<div className='succ-message'>
+			Property Addition Successful.
+		</div>
 	) : null;
 	const RegisterHostMessage = hostRegistered ? (
-		<div>You have been registered as a host.</div>
+		<div className='register-message'>
+			You have been registered as a host.
+		</div>
 	) : null;
 
 	return (

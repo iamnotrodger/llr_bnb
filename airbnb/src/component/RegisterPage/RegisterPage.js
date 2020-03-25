@@ -108,8 +108,8 @@ const RegisterPage = () => {
 		}
 	};
 
-	let errorClause = error ? (
-		<div className='error'>An error occured.</div>
+	const ErrorMessage = error ? (
+		<div className='error-message'>Something went wrong.</div>
 	) : null;
 
 	return (
@@ -169,8 +169,7 @@ const RegisterPage = () => {
 						</div>
 					</TabsControl>
 				</div>
-				{errorClause}
-
+				{ErrorMessage}
 				<div>
 					<button
 						className='submitButton'

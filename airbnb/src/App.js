@@ -45,7 +45,6 @@ class App extends Component {
 				'http://localhost:3000/api/property/property-list/Apartment/4'
 			);
 			const apartments = await responseThree.json();
-
 			this.setState({
 				Hotel: hotels,
 				House: houses,
@@ -170,7 +169,7 @@ class App extends Component {
 						component={RegisterPage}
 					/>
 					<PrivateRoute
-						path='/property/:id'
+						path='/property/:prid'
 						isSignedIn={isSignedIn}
 						component={props => (
 							<PropertyPage
@@ -183,7 +182,7 @@ class App extends Component {
 					/>
 
 					<PrivateRoute
-						path='/profile/:userID'
+						path='/profile/:uid'
 						isSignedIn={isSignedIn}
 						component={props => (
 							<ProfilePage

@@ -1,7 +1,13 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 
-const ReviewHeader = ({ rating, length }) => {
+const ReviewHeader = ({
+	rating,
+	communication,
+	cleanliness,
+	value,
+	length
+}) => {
 	return (
 		<div className='reviewHeader'>
 			<h2>Reviews</h2>
