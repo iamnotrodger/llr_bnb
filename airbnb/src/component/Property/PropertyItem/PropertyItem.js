@@ -3,14 +3,21 @@ import { Link } from 'react-router-dom';
 import './PropertyItem.css';
 import StarRatingComponent from 'react-star-rating-component';
 
-const PropertyItem = ({ property, setProperty }) => {
+const PropertyItem = ({ property }) => {
+	let { prid, country, title, price, rating, review_num } = property;
+	if (rating === null) {
+		rating = 0;
+	}
+	if (review_num === null) {
+		review_num = 0;
+	}
 	return (
 		<div className='property'>
-			<Link to={`/property/${property.id}`}>
-				<div onClick={() => setProperty(property)}>
-					<h3> {property.country} </h3>
-					<h2> {property.title} </h2>
-					<p> {`$${property.price} CAD/night`}</p>
+			<Link to={`/property/${prid}`}>
+				<div>
+					<h3> {country} </h3>
+					<h2> {title} </h2>
+					<p> {`$${price} CAD/night`}</p>
 
 					<div style={{ fontSize: '15px' }}>
 						<StarRatingComponent
@@ -18,10 +25,10 @@ const PropertyItem = ({ property, setProperty }) => {
 							editing={false}
 							starCount={5}
 							starColor={'#00A699'}
-							value={property.rating}
+							value={rating}
 						/>
 						<p className='review-num'>
-							{`(${property.num_reviews})`}
+							{`(${review_num})`}
 						</p>
 					</div>
 				</div>
