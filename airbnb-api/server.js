@@ -35,6 +35,7 @@ const reviewList = require('./controller/Review/reviewList');
 
 const rental = require('./controller/Rental/rental');
 const rentalList = require('./controller/Rental/rentalList');
+const payment = require('./controller/Rental/payment');
 
 app.use(express.json());
 app.use(cors());
@@ -129,6 +130,10 @@ app.post('/api/rental/rental-agreement/host/:hid', (req, res) =>
 // Get rental agreements for a guest
 app.get('/api/rental/rental-agreement/guest/:gid', (req, res) =>
 	rentalList.handleGuestRentalList(req, res, db_pool)
+);
+// Pay a rental agreement
+app.post('/api/rental/rental-agreement/guest/:gid/payment', (req, res) => 
+	payment.handlePayment(req, res, db_pool, Joi)
 );
 
 app.get('/', (req, res) => {
