@@ -23,37 +23,45 @@ const CryptoJS = require('crypto-js');
 const login = require('./controller/login');
 const guestRegister = require('./controller/Account/guestRegister');
 const hostRegister = require('./controller/Account/hostRegister')
+
 const profile = require('./controller/Account/profile');
 const profileUpdate = require('./controller/Account/profileUpdate');
+
 const property = require('./controller/Property/property');
 const propertyList = require('./controller/Property/propertyList');
+
 const review = require('./controller/Review/review');
 const reviewList = require('./controller/Review/reviewList');
+
 const rental = require('./controller/Rental/rental');
+const rentalList = require('./controller/Rental/rentalList');
 
 app.use(express.json());
 app.use(cors());
 
+/*
+ * register and login
+ */
 // handle guestRegister
 app.post('/api/guest-register', (req, res) =>
 	guestRegister.handleRegister(req, res, db_pool, Joi, CryptoJS)
 );
-
 // handle hostRegister
 app.post('/api/host-register', (req, res) =>
 	hostRegister.handleRegister(req, res, db_pool, Joi)
 );
-
 // handle login
 app.post('/api/login', (req, res) =>
 	login.handleLogin(req, res, db_pool, Joi, CryptoJS)
 );
 
+/*
+ * user profile
+ */
 // Get all the user infromation from Usr table
 app.get('/api/profile/:uid', (req, res) =>
 	profile.handleProfile(req, res, db_pool)
 );
-
 // Update the user's email
 app.put('/api/profile/update/email', (req, res) =>
 	profileUpdate.handleProfileEmail(req, res, db_pool, Joi)
@@ -74,46 +82,54 @@ app.put('/api/profile/update/address', (req, res) =>
 app.put('/api/profile/update/phone', (req, res) =>
 	profileUpdate.handleProfilePhone(req, res, db_pool, Joi)
 );
-
 // Gets all the review that the user has made
 app.get('/api/profile/review/review-list/:gid/:num?', (req, res) =>
 	reviewList.handleReviewProfile(req, res, db_pool)
 );
 
+/*
+ * property
+ */
 // Get all the information about the property, reviews, rooms, and unavailable dates
 app.get('/api/property/:prid', (req, res) =>
 	property.handleViewProperty(req, res, db_pool)
 );
-
 // Add property
 app.post('/api/property/add-property', (req, res) =>
 	property.handleAddProperty(req, res, db_pool, Joi)
 );
-
 // Gets a number of property according to the type
 app.get('/api/property/property-list/:category/:num?', (req, res) =>
 	propertyList.handlePropertyList(req, res, db_pool, Joi)
 );
-
 // Add reviews to property
 app.post('/api/review/add-review', (req, res) =>
 	review.handleAddReview(req, res, db_pool, Joi)
 );
-
 // Gets all the reveiw made about the property
 app.get('/api/property/review/review-list/:prid/:num?', (req, res) =>
 	reviewList.handleReviewProperty(req, res, db_pool)
 );
 
+/*
+ * rental agreement
+ */
 // Add a rental agreement
 app.post('/api/rental/add-rental-agreement', (req, res) => 
 	rental.handleAddRentalAgreement(req, res, db_pool, Joi)
+);
+// Get rental agreements for a host
+app.get('/api/rental/rental-agreement/host/:hid', (req, res) =>
+	rentalList.handleHostRentalList(req, res, db_pool)
+);
+// Get rental agreements for a guest
+app.get('/api/rental/rental-agreement/guest/:gid', (req, res) =>
+	rentalList.handleGuestRentalList(req, res, db_pool)
 );
 
 app.get('/', (req, res) => {
 	res.end('The server is running on port 3000...');
 });
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
 	console.log(`Listening to port ${port}...`);
