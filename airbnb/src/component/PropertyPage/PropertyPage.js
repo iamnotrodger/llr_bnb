@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
-import ReviewHeader from '../Review/ReviewList/ReviewHeader';
-import ReviewList from '../Review/ReviewList/ReviewList';
-import ReviewWrite from '../Review/ReviewWrite/ReviewWrite';
-import Booking from '../Booking/Booking';
-import './PropertyPage.css';
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router";
+import UserContext from "../../UserContext";
+import ReviewHeader from "../Review/ReviewList/ReviewHeader";
+import ReviewList from "../Review/ReviewList/ReviewList";
+import ReviewWrite from "../Review/ReviewWrite/ReviewWrite";
+import Booking from "../Booking/Booking";
+import "./PropertyPage.css";
 
 const PropertyPage = () => {
 	const { prid } = useParams();
-	const { gid } = JSON.parse(localStorage.getItem('user'));
+	const { user } = useContext(UserContext);
+	const gid = user ? user.gid : null;
 	const [property, setProperty] = useState({
-		title: '',
-		location: '',
+		title: "",
+		location: "",
 		bedNum: 0,
 		washroomNum: 0,
-		hostName: ''
+		hostName: ""
 	});
 
 	const [price, setPrice] = useState({
@@ -36,11 +38,11 @@ const PropertyPage = () => {
 	});
 
 	useEffect(() => {
+		const abordController = new AbortController();
+		const signal = abordController.signal;
 		const fetchData = async () => {
 			try {
-				const response = await fetch(
-					`http://localhost:3000/api/property/${prid}`
-				);
+				const response = await fetch(`http://localhost:3000/api/property/${prid}`, { signal: signal });
 				if (response.ok) {
 					const {
 						title,
@@ -55,7 +57,6 @@ const PropertyPage = () => {
 						host_name
 					} = await response.json();
 					setProperty({
-						prid: prid,
 						title: title,
 						location: location,
 						bedNum: bed_num,
@@ -67,43 +68,29 @@ const PropertyPage = () => {
 						guestNum: guest_num
 					});
 					setUnavailableDates(unavailableDates);
-					setReview({
-						reviews: reviews
-					});
-					//TODO: evaluate undefined object fields
-					setAverages({
-						rating:
-							avgs.rating ===
-							undefined
-								? 0
-								: avgs.rating,
-						communication:
-							avgs.communication ===
-							undefined
-								? 0
-								: avgs.communication,
-						cleanliness:
-							avgs.cleanliness ===
-							undefined
-								? 0
-								: avgs.cleanliness,
-						value:
-							avgs.value === undefined
-								? 0
-								: avgs.value
-					});
-					console.log(
-						'Loaded Property Information'
-					);
+					setReview({ reviews: reviews });
+					if (avgs) {
+						setAverages({
+							rating: avgs.rating,
+							communication: avgs.communication,
+							cleanliness: avgs.cleanliness,
+							value: avgs.value
+						});
+					}
 					return;
 				}
-				throw Error('Unable to get property');
+				throw Error("Unable to get property");
 			} catch (err) {
 				console.log(err);
 			}
 		};
+
 		fetchData();
+		return function cleanup() {
+			abordController.abort();
+		};
 	}, [prid]);
+
 
 	return (
 		<div className='propertyPage'>
@@ -134,12 +121,8 @@ const PropertyPage = () => {
 				<div>
 					<ReviewHeader
 						rating={averages.rating}
-						communication={
-							averages.communication
-						}
-						cleanliness={
-							averages.cleanliness
-						}
+						communication={averages.communication}
+						cleanliness={averages.cleanliness}
 						value={averages.value}
 						length={review.reviews.length}
 					/>
@@ -154,27 +137,16 @@ const PropertyPage = () => {
 				<div>
 					<div
 						style={{
-							marginTop: '32px',
-							marginBottom: '24px'
-						}}
-					>
+							marginTop: "32px",
+							marginBottom: "24px"
+						}}>
 						<div className='innerBooking'>
 							<Booking
-								price={
-									property.price
-								}
-								prid={
-									property.prid
-								}
+								price={price.price}
+								prid={prid}
 								gid={gid}
-								numRev={
-									review
-										.reviews
-										.length
-								}
-								unavailableDates={
-									unavailableDates
-								}
+								numRev={review.reviews.length}
+								unavailableDates={unavailableDates}
 							/>
 						</div>
 					</div>

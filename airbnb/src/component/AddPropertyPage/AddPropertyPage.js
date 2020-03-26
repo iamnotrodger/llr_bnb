@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import UserContext from "../../UserContext";
 import PropertyInput from '../PropertyInput/PropertyInput';
 import './AddPropertyPage.css';
 
@@ -21,7 +22,10 @@ const roomInitial = {
 };
 
 const AddPropertyPage = () => {
-	const { hid, uid, gid } = JSON.parse(localStorage.getItem('user'));
+	const { user, setUser } = useContext(UserContext);
+	const uid = user ? user.uid : null;
+	const gid = user ? user.gid : null;
+	const hid = user ? user.hid : null;
 	const [propertyInput, setPropertyInput] = useState(propertyInitial);
 	const [price, setPrice] = useState(priceInitial);
 	const [rooms, setRooms] = useState(roomInitial);
@@ -37,6 +41,7 @@ const AddPropertyPage = () => {
 	}, [succ, hid, uid]);
 
 	const propertySubmit = async () => {
+		console.log(user);
 		try {
 			if (!propertyValidate(propertyInput, price)) {
 				throw Error('Validation Error');
@@ -71,7 +76,7 @@ const AddPropertyPage = () => {
 			} else if (uid) {
 				const hidNew = await registerHost(
 					propertyInput,
-					rooms,
+					roomsOne,
 					price,
 					uid
 				);
@@ -80,11 +85,7 @@ const AddPropertyPage = () => {
 					gid: gid,
 					hid: hidNew
 				};
-				console.log(newUser);
-				localStorage.setItem(
-					'user',
-					JSON.stringify(newUser)
-				);
+				setUser(newUser);
 				setSucc(true);
 				setHostRegistered(true);
 			} else {
@@ -168,6 +169,7 @@ const createRooms = (numBedrooms, numWashroom) => {
 };
 
 const registerHost = async (property, rooms, price, userID) => {
+	delete price.rule;
 	const response = await fetch(
 		'http://localhost:3000/api/host-register',
 		{
@@ -184,10 +186,10 @@ const registerHost = async (property, rooms, price, userID) => {
 		}
 	);
 	if (response.ok) {
+		console.log(response.json());
 		const hid = await response.json();
 		return hid;
 	}
-	console.log(response.json());
 	throw new Error('Network response was not ok.');
 };
 
@@ -212,10 +214,6 @@ const propertyValidate = (property, price) => {
 	}
 
 	if (guest_num === 0) {
-		return false;
-	}
-
-	if (rule.length === 0) {
 		return false;
 	}
 
