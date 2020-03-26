@@ -1,32 +1,30 @@
-import React from 'react';
-import PropertyList from './PropertyList';
+import React from "react";
+import PropertyList from "./PropertyList";
 
 const PropertyLibrary = ({
 	hotel,
 	house,
 	apartment,
-	setProperty,
-	loadAllProperty
+	loadAllHotels,
+	loadAllHouses,
+	loadAllApartments
 }) => {
 	return (
 		<div>
 			<PropertyList
 				properties={hotel}
-				type={'Hotel'}
-				setProperty={setProperty}
-				loadAllProperty={loadAllProperty}
+				type={"Hotel"}
+				loadAllProperty={loadAllHotels}
 			/>
 			<PropertyList
 				properties={house}
-				type={'House'}
-				setProperty={setProperty}
-				loadAllProperty={loadAllProperty}
+				type={"House"}
+				loadAllProperty={loadAllHouses}
 			/>
 			<PropertyList
 				properties={apartment}
-				type={'Apartment'}
-				setProperty={setProperty}
-				loadAllProperty={loadAllProperty}
+				type={"Apartment"}
+				loadAllProperty={loadAllApartments}
 			/>
 		</div>
 	);

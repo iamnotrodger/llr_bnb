@@ -1,21 +1,19 @@
-import React from 'react';
-import Select from 'react-select';
-import './EmployeeInput.css';
+import React from "react";
+import Select from "react-select";
+import "./EmployeeInput.css";
 
 const locationOptions = [
-	{ value: 'manager', label: 'Manager' },
-	{ value: 'employee', label: 'Employee' }
+	{ value: "manager", label: "Manager" },
+	{ value: "employee", label: "Employee" }
 ];
 
 const EmployeeInput = ({ onChange }) => {
 	return (
 		<div>
 			<div>
-				<p className='register-title'>
-					Employee Information:
-				</p>
+				<p className='register-title'>Employee Information</p>
 			</div>
-			<div style={{ marginBottom: 10 + 'px' }}></div>
+			<div style={{ marginBottom: 10 + "px" }}></div>
 			<div className='opt-prop'>
 				<p className='subtitle-prop'>Position:</p>
 				<Select
@@ -26,12 +24,9 @@ const EmployeeInput = ({ onChange }) => {
 				/>
 			</div>
 			<div>
-				<p
-					className='subtitle-prop'
-					style={{ marginTop: 12 + 'px' }}
-				>
+				<p className='subtitle-prop' style={{ marginTop: 12 + "px" }}>
 					Salary:
-				</p>
+        			</p>
 				<input
 					className='login-input register-salary'
 					name='salary'
@@ -39,7 +34,7 @@ const EmployeeInput = ({ onChange }) => {
 					placeholder='C$'
 				/>
 			</div>
-			<div style={{ marginBottom: 115 + 'px' }}></div>
+			<div style={{ marginBottom: 115 + "px" }}></div>
 		</div>
 	);
 };

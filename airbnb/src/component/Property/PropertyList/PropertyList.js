@@ -9,9 +9,8 @@ const PropertyList = ({ properties, type, loadAllProperty }) => {
 			<PropertyMap
 				type={type}
 				properties={properties}
-				loadAllProperty={loadAllProperty}
 			/>
-			<span onClick={e => loadAllProperty(type)}>
+			<span onClick={loadAllProperty}>
 				Show All >
 			</span>
 		</div>

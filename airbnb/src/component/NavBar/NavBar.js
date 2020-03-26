@@ -1,67 +1,52 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../../2132GLogo_500x500.png';
-import ProfileIcon from './ProfileIcon';
-import './NavBar.css';
+import React, { useContext, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import UserContext from "../../UserContext";
+import logo from "../../2132GLogo_500x500.png";
+import ProfileIcon from "./ProfileIcon";
+import "./NavBar.css";
 
-const NavBar = ({ isHost, isSignedIn }) => {
-	const links = [
-		{
-			role: 'Guest',
-			label: 'Become a host',
-			link: '/host-register'
-		},
-		{
-			role: 'Host',
-			label: 'Add Property',
-			link: '/add-property'
-		},
-		{ role: 'Guest', label: 'About', link: '/about' },
-		{
-			role: 'Guest',
-			label: 'Log in',
-			link: '/login'
-		},
-		{
-			role: 'Guest',
-			label: 'Register',
-			link: '/register'
-		}
-	];
+const links = [
+	{
+		label: "Add Property",
+		link: "/add-property"
+	},
+	{ role: "Guest", label: "About", link: "/about" },
+	{
+		label: "Register",
+		link: "/register"
+	},
+	{
+		label: "Log in",
+		link: "/login"
+	}
+];
 
-	const filteredList = isHost
-		? links.filter(link => {
-				return (
-					link.role === 'Host' ||
-					link.label === 'About' ||
-					(!isSignedIn &&
-						(link.link === '/login' ||
-							link.link ===
-								'/register'))
-				);
-		  })
-		: links.filter(link => {
-				return (
-					link.role === 'Guest' ||
-					link.label === 'About' ||
-					(isSignedIn &&
-						(link.link === '/login' ||
-							link.link ===
-								'/register'))
-				);
-		  });
+const NavBar = () => {
+	const { user, setUser } = useContext(UserContext);
+	const isSignedIn = user ? true : false;
+	const userID = user ? user.uid : null;
+
+	const filteredList = links.filter((link) => {
+		return (
+			link.label === "About" ||
+			(isSignedIn && link.label === "Add Property") ||
+			(!isSignedIn && (link.link === "/login" || link.link === "/register"))
+		);
+	});
 
 	const linkMarkup = filteredList.map((link, i) => {
 		return (
 			<li key={i}>
 				<Link to={link.link}>
-					<div className='nav-padding'>
-						{link.label}
-					</div>
+					<div className='nav-padding'>{link.label}</div>
 				</Link>
 			</li>
 		);
 	});
+
+	const logOut = () => {
+		setUser(null);
+	};
 
 	return (
 		<header id='navbar'>
@@ -72,7 +57,7 @@ const NavBar = ({ isHost, isSignedIn }) => {
 							src={logo}
 							alt='AirBnB'
 							style={{
-								height: '55px'
+								height: "55px"
 							}}
 						/>
 					</Link>
@@ -83,9 +68,7 @@ const NavBar = ({ isHost, isSignedIn }) => {
 				<div className='nav-links nav-items'>
 					<ul className='nav-menu'>
 						{linkMarkup}
-						<ProfileIcon
-							isSignedIn={isSignedIn}
-						/>
+						<ProfileIcon isSignedIn={isSignedIn} userID={userID} logOut={logOut} />
 					</ul>
 				</div>
 			</nav>

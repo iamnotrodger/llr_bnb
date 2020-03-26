@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import UserContext from './UserContext';
 import NavBar from './component/NavBar/NavBar';
 import PropertyPage from './component/PropertyPage/PropertyPage';
 import ProfilePage from './component/ProfilePage/ProfilePage';
@@ -11,116 +12,103 @@ import PrivateRoute from './component/PrivateRoute/PrivateRoute';
 import RegisterPage from './component/RegisterPage/RegisterPage';
 import AddPropertyPage from './component/AddPropertyPage/AddPropertyPage';
 
-const initialState = {
-	user: JSON.parse(localStorage.getItem('user')),
-	isSignedIn: false,
-	isHost: false,
-	Apartment: [],
-	Hotel: [],
-	House: [],
-	//This state is just for testing purposes.
-	property: JSON.parse(localStorage.getItem('property'))
-};
-
-class App extends Component {
-	constructor() {
-		super();
-		this.state = initialState;
-	}
+const App = () => {
+	const [user, setUser] = useState(() => {
+		const localData = localStorage.getItem('user');
+		return localData ? JSON.parse(localData) : null;
+	});
+	const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+	const [Hotel, setHotel] = useState([]);
+	const [House, setHouse] = useState([]);
+	const [Apartment, setApartment] = useState([]);
 
 	//React Life Cycle Method: will run before render and is used to load data from the backend
-	async componentDidMount() {
-		try {
-			const responseOne = await fetch(
-				'http://localhost:3000/api/property/property-list/Hotel/4'
-			);
-			const hotels = await responseOne.json();
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const responseOne = await fetch(
+					'http://localhost:3000/api/property/property-list/Hotel/4'
+				);
 
-			const responseTwo = await fetch(
-				'http://localhost:3000/api/property/property-list/House/4'
-			);
-			const houses = await responseTwo.json();
+				if (responseOne.ok) {
+					const hotels = await responseOne.json();
+					setHotel(hotels);
+				}
 
-			const responseThree = await fetch(
-				'http://localhost:3000/api/property/property-list/Apartment/4'
-			);
-			const apartments = await responseThree.json();
-			this.setState({
-				Hotel: hotels,
-				House: houses,
-				Apartment: apartments
-			});
-		} catch (err) {
-			console.log(err);
-		}
+				const responseTwo = await fetch(
+					'http://localhost:3000/api/property/property-list/House/4'
+				);
+				let houses;
+				if (responseTwo.ok) {
+					houses = await responseTwo.json();
+					setHouse(houses);
+				}
 
-		this.loadUser(this.state.user);
-	}
+				const responseThree = await fetch(
+					'http://localhost:3000/api/property/property-list/Apartment/4'
+				);
 
-	loadUser = data => {
-		this.setState({
-			user: {
-				uid: data.uid,
-				gid: data.gid,
-				hid: data.id
-			},
-			isSignedIn: true
-		});
+				if (responseThree.ok) {
+					const apartments = await responseThree.json();
+					setApartment(apartments);
+				}
 
-		if (data.hid) {
-			this.setState({
-				isHost: true
-			});
-		}
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		fetchData();
+	}, []);
 
-		localStorage.setItem('user', JSON.stringify(data));
+	useEffect(() => {
+		localStorage.setItem('user', JSON.stringify(user));
+	}, [user]);
+
+	const loadUser = data => {
+		setUser(data);
 	};
 
-	loadAllProperty = async category => {
+	const loadAllHotels = async () => {
+		const hotels = await loadAllProperty('Hotel', Hotel);
+		setHotel(hotels);
+	};
+
+	const loadAllHouses = async () => {
+		const houses = await loadAllProperty('House', House);
+		setHouse(houses);
+	};
+
+	const loadAllApartment = async () => {
+		const apartments = await loadAllApartment('Apartment', Apartment);
+		setApartment(apartments);
+	};
+
+	const loadAllProperty = async (category, oldProeprties) => {
 		try {
 			const response = await fetch(
 				`http://localhost:3000/api/property/property-list/${category}`
 			);
-			const properties = await response.json();
-			this.setState({
-				[category]: properties
-			});
+			if (response.ok) {
+				const properties = await response.json();
+				return properties;
+			}
 		} catch (err) {
 			console.log(err);
 		}
+		return oldProeprties;
 	};
 
-	//This function is just for testing purposes.
-	setProperty = property => {
-		this.setState({ property: property });
-		localStorage.setItem('property', JSON.stringify(property));
-	};
-
-	render() {
-		const {
-			isSignedIn,
-			isHost,
-			user,
-			Apartment,
-			Hotel,
-			House,
-			property
-		} = this.state;
-
-		return (
-			<Router>
-				<NavBar
-					isSignedIn={isSignedIn}
-					isHost={isHost}
-				/>
+	return (
+		<Router>
+			<UserContext.Provider value={value}>
+				<NavBar />
 				<Switch>
 					<Route
 						path='/login'
-						component={props => (
+						component={() => (
 							<LoginPage
 								loadUser={
-									this
-										.loadUser
+									loadUser
 								}
 							/>
 						)}
@@ -128,78 +116,50 @@ class App extends Component {
 					<Route
 						exact
 						path='/'
-						render={props => (
+						render={() => (
 							<React.Fragment>
 								<div className='main'>
 									<PropertyLibrary
-										hotel={
-											Hotel
-										}
-										house={
-											House
-										}
-										apartment={
-											Apartment
-										}
-										setProperty={
-											this
-												.setProperty
-										}
-										loadAllProperty={
-											this
-												.loadAllProperty
-										}
+										hotel={Hotel}
+										house={House}
+										apartment={Apartment}
+										loadAllHotels={loadAllHotels}
+										loadAllHouses={loadAllHouses}
+										loadAllApartment={loadAllApartment}
 									/>
 								</div>
 							</React.Fragment>
 						)}
 					/>
+
 					<Route
 						path='/about'
 						component={About}
 					/>
 
 					<Route
+						path='/register'
+						component={RegisterPage}
+					/>
+
+					<PrivateRoute
 						path='/add-property'
 						component={AddPropertyPage}
 					/>
 
-					<Route
-						path='/register'
-						component={RegisterPage}
-					/>
 					<PrivateRoute
 						path='/property/:prid'
-						isSignedIn={isSignedIn}
-						component={props => (
-							<PropertyPage
-								{...props}
-								property={
-									property
-								}
-							/>
-						)}
+						component={PropertyPage}
 					/>
 
 					<PrivateRoute
 						path='/profile/:uid'
-						isSignedIn={isSignedIn}
-						component={props => (
-							<ProfilePage
-								{...props}
-								user={user}
-								setProperty={
-									this
-										.setProperty
-								}
-								isHost={isHost}
-							/>
-						)}
+						component={ProfilePage}
 					/>
 				</Switch>
-			</Router>
-		);
-	}
-}
+			</UserContext.Provider>
+		</Router >
+	);
+};
 
 export default App;

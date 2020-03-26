@@ -1,34 +1,43 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import OutsideAlerter from './OutsideAlerter';
-import './NavBar.css';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import UserContext from "../../UserContext";
+import OutsideAlerter from "./OutsideAlerter";
+import "./NavBar.css";
 
-const ProfileMenu = ({ toggleMenu }) => {
-	const userID = localStorage.getItem('userID');
-
+const ProfileMenu = ({ toggleMenu, userID, logOut }) => {
 	const menuList = [
 		{
-			role: 'Guest',
-			label: 'Profile',
+			role: "Guest",
+			label: "Profile",
 			link: `/profile/${userID}`
 		},
 		{
-			role: 'Guest',
-			label: 'Log Out',
-			link: '/logout'
+			role: "Guest",
+			label: "Log Out",
+			link: "/logout"
 		}
 	];
 
+	const handleLogOut = () => {
+		logOut();
+	};
+
 	const menuMarkup = menuList.map((link, i) => {
-		return (
+		return link.label === "Log Out" ? (
 			<li key={i}>
 				<div className='profile-item'>
-					<Link to={link.link}>
-						<div>{link.label}</div>
-					</Link>
+					<div onClick={handleLogOut}>{link.label}</div>
 				</div>
 			</li>
-		);
+		) : (
+				<li key={i}>
+					<div className='profile-item'>
+						<Link to={link.link}>
+							<div>{link.label}</div>
+						</Link>
+					</div>
+				</li>
+			);
 	});
 	return (
 		<OutsideAlerter toggleMenu={toggleMenu}>
