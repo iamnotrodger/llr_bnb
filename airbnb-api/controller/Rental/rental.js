@@ -1,10 +1,4 @@
 // Route (POST): /api/rental/add-rental-agreement
-// To Rodger:
-//     Here I assume that you will just give 'prid' in the http request,
-//     and I will query the database for the hid of this property.
-//
-//     Besides, I also assume that when a rental agreement is created, 
-//     the default value for signing is 'pending'.
 const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
     // handle http request
     const schema = {
@@ -22,6 +16,7 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
     const {error} = Joi.validate(req.body, schema);
     if (error) {
         res.status(400).json(error.details[0].message);
+        return;
     }
     const { gid, prid, start_date, end_date } = req.body;
     console.log(gid, prid, start_date, end_date); // test
@@ -52,6 +47,52 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
     }
 }
 
+// Route (POST): '/api/rental/rental-agreement/host/:hid
+const handleApproval = async (req, res, db_pool, Joi) => {
+    // handle http request
+    const schema = {
+        rtid: Joi.number()
+            .integer()
+            .required(),
+        signing: Joi.string()
+            .max(30)
+            .valid([
+                'approved',
+                'disapproved'
+            ])
+            .required()
+    };
+    const { error } = Joi.validate(req.body, schema);
+    if (error) {
+        res.status(400).json(error.details[0].message);
+        return;
+    }
+    const { rtid, signing } = req.body;
+    const { hid } = req.params;
+
+    try {
+        const client = await db_pool.connect();
+        try {
+            const queryText = 
+                'UPDATE project.rental_agreement SET signing = $1 WHERE rtid = $2 AND hid = $3;';
+            await client.query(queryText, [signing, rtid, hid]);
+            res.status(200).json('Successfully update the signing');
+        } catch (err) {
+            console.error('Error during the query.', err.stack);
+            res.status(400).json('Unable to sign the rental agreement.');
+        } finally {
+            client.release()
+        }
+    } catch (err) {
+        res.status(503).json('Service Unavailable');
+        console.error(
+            'Error during the connection to the database',
+            err.stack
+        );
+    }
+}
+
 module.exports = {
-    handleAddRentalAgreement
+    handleAddRentalAgreement,
+    handleApproval
 }

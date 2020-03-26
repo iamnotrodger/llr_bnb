@@ -122,6 +122,10 @@ app.post('/api/rental/add-rental-agreement', (req, res) =>
 app.get('/api/rental/rental-agreement/host/:hid', (req, res) =>
 	rentalList.handleHostRentalList(req, res, db_pool)
 );
+// Approve or disapprove a rental agreement
+app.post('/api/rental/rental-agreement/host/:hid', (req, res) =>
+	rental.handleApproval(req, res, db_pool, Joi)
+);
 // Get rental agreements for a guest
 app.get('/api/rental/rental-agreement/guest/:gid', (req, res) =>
 	rentalList.handleGuestRentalList(req, res, db_pool)
