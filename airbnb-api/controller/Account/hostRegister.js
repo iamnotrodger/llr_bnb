@@ -28,27 +28,20 @@ const handleRegister = async (req, res, db_pool, Joi) => {
 		guest_num: Joi.number()
 			.integer()
 			.required(),
-		price: Joi.number().required()
+		price: Joi.number()
+			.required()
 	};
 	const res2 = Joi.validate(pricing, pricingSchema);
 	if (res1.error && res2.error) {
-		return {
-			code: 400,
-			message:
-				res1.error.details[0].message +
-				'\n' +
-				res2.message.error.details[0].message
-		};
+		res.status(400).json(res1.error.details[0].message + '\n'
+			+ res2.error.details[0].message);
+		return;
 	} else if (res1.error) {
-		return {
-			code: 400,
-			message: res1.error.details[0].message
-		};
+		res.status(400).json(res1.error.details[0].message);
+		return;
 	} else if (res2.error) {
-		return {
-			code: 400,
-			message: res2.error.details[0].message
-		};
+		res.status(400).json(res2.error.details[0].message);
+		return;
 	}
 	const { address, property_type, country, title } = property;
 	const { guest_num, price } = pricing;
@@ -65,33 +58,19 @@ const handleRegister = async (req, res, db_pool, Joi) => {
 			// add property
 			const addPropertyText =
 				'INSERT INTO project.property(address, property_type, hid, country, title) VALUES($1, $2, $3, $4, $5) RETURNING prid;';
-			const res2 = await client.query(addPropertyText, [
-				address,
-				property_type,
-				hid,
-				country,
-				title
-			]);
+			const res2 = await client.query(addPropertyText, [address, property_type, hid, country, title]);
 			const { prid } = res2.rows[0]; // get prid
 			// add rooms
 			const addRoomText =
 				'INSERT INTO project.room(prid, room_type, bed_num) VALUES($1, $2, $3);';
 			for (i in rooms) {
 				const { room_type, bed_num } = rooms[i];
-				await client.query(addRoomText, [
-					prid,
-					room_type,
-					bed_num
-				]);
+				await client.query(addRoomText, [prid, room_type, bed_num]);
 			}
 			// add pricing
 			const addPricingText =
 				'INSERT INTO project.pricing(guest_num, prid, price) VALUES($1, $2, $3);';
-			await client.query(addPricingText, [
-				guest_num,
-				prid,
-				price
-			]);
+			await client.query(addPricingText, [guest_num, prid, price]);
 			await client.query('COMMIT');
 
 			res.status(200).jsonp({
@@ -103,9 +82,7 @@ const handleRegister = async (req, res, db_pool, Joi) => {
 				err.stack
 			);
 			await client.query('ROLLBACK');
-			res.status(400).json(
-				'Error during the registration as a host'
-			);
+			res.status(400).json('Error during the registration as a host');
 		} finally {
 			client.release();
 		}

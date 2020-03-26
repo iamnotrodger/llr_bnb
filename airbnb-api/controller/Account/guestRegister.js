@@ -48,7 +48,7 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 			// insert into user table
 			const userText =
 				'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid;';
-			const { rows } = await client.query(userText, [
+			const res1 = await client.query(userText, [
 				firstName,
 				middleName,
 				lastName,
@@ -56,11 +56,12 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 				address,
 				phoneNum
 			]);
-			const { uid } = rows[0];
+			const { uid } = res1.rows[0];
 			// insert into guest table
 			const guestText =
-				'INSERT INTO project.guest(uid) VALUES($1);';
-			await client.query(guestText, [uid]);
+				'INSERT INTO project.guest(uid) VALUES($1) RETURNING gid;';
+			const res2 = await client.query(guestText, [uid]);
+			const { gid } = res2.rows[0];
 			// insert into login table
 			const loginText =
 				'INSERT INTO project.login(email, password) VALUES($1, $2);';
@@ -69,7 +70,10 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 				words.toString() // encrypted password
 			]);
 			await client.query('COMMIT');
-			res.status(200).json('Successful registration');
+			res.status(200).jsonp({
+				uid: uid,
+				gid: gid
+			});
 		} catch (err) {
 			console.error(
 				'Error during the transaction, ROLLBACK.',
