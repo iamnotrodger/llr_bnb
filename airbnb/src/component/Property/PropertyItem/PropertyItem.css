@@ -14,3 +14,7 @@
 .property:hover {
 	transform: scale(1.1);
 }
+
+.review-num {
+	display: inline-block;
+}

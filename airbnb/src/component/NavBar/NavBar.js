@@ -1,93 +1,96 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../airbnb-1.svg';
-import ProfileMenu from './ProfileMenu';
+import logo from '../../2132GLogo_500x500.png';
+import ProfileIcon from './ProfileIcon';
 import './NavBar.css';
 
-//TODO: Make list more dynamic
+const NavBar = ({ isHost, isSignedIn }) => {
+	const links = [
+		{
+			role: 'Guest',
+			label: 'Become a host',
+			link: '/host-register'
+		},
+		{
+			role: 'Host',
+			label: 'Add Property',
+			link: '/add-property'
+		},
+		{ role: 'Guest', label: 'About', link: '/about' },
+		{
+			role: 'Guest',
+			label: 'Log in',
+			link: '/login'
+		},
+		{
+			role: 'Guest',
+			label: 'Register',
+			link: '/register'
+		}
+	];
 
-class NavBar extends Component {
-	constructor() {
-		super();
-		this.state = {
-			menuOpen: false
-		};
-	}
+	const filteredList = isHost
+		? links.filter(link => {
+				return (
+					link.role === 'Host' ||
+					link.label === 'About' ||
+					(!isSignedIn &&
+						(link.link === '/login' ||
+							link.link ===
+								'/register'))
+				);
+		  })
+		: links.filter(link => {
+				return (
+					link.role === 'Guest' ||
+					link.label === 'About' ||
+					(isSignedIn &&
+						(link.link === '/login' ||
+							link.link ===
+								'/register'))
+				);
+		  });
 
-	toggleMenu = () => {
-		this.setState({
-			menuOpen: !this.state.menuOpen
-		});
-		console.log('toggle');
-	};
-
-	render() {
-		let linkMarkup = this.props.links.map((link, i) => {
-			return (
-				<li>
-					<Link
-						to={link.link}
-						className='link-styless'
-					>
-						<div className='nav-padding'>
-							{link.label}
-						</div>
-					</Link>
-				</li>
-			);
-		});
+	const linkMarkup = filteredList.map((link, i) => {
 		return (
-			<header id='navbar'>
-				<nav>
-					<div className='logo nav-items'>
-						<Link to='/'>
-							<img
-								src={logo}
-								alt='AirBnB'
-								style={{
-									height:
-										'30px'
-								}}
-							/>
-						</Link>
+			<li key={i}>
+				<Link to={link.link}>
+					<div className='nav-padding'>
+						{link.label}
 					</div>
-
-					<div className='padding'></div>
-
-					<div className='nav-links nav-items'>
-						<ul className='nav-menu'>
-							{linkMarkup}
-							<li>
-								<div
-									onClick={
-										this
-											.toggleMenu
-									}
-									className='nav-padding'
-								>
-									<div className='profile'>
-										<img
-											alt='Rodger’s account'
-											src='https://a0.muscache.com/defaults/user_pic-50x50.png?v=3'
-										/>
-									</div>
-								</div>
-								{this.state
-									.menuOpen ? (
-									<ProfileMenu
-										toggleMenu={
-											this
-												.toggleMenu
-										}
-									/>
-								) : null}
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</header>
+				</Link>
+			</li>
 		);
-	}
-}
+	});
+
+	return (
+		<header id='navbar'>
+			<nav>
+				<div className='logo nav-items'>
+					<Link to='/'>
+						<img
+							src={logo}
+							alt='AirBnB'
+							style={{
+								height: '55px'
+							}}
+						/>
+					</Link>
+				</div>
+
+				<div className='padding'></div>
+
+				<div className='nav-links nav-items'>
+					<ul className='nav-menu'>
+						{linkMarkup}
+						<ProfileIcon
+							isSignedIn={isSignedIn}
+						/>
+					</ul>
+				</div>
+			</nav>
+		</header>
+	);
+};
 
 export default NavBar;

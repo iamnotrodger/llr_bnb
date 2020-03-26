@@ -1,31 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './PropertyItem.css';
 import StarRatingComponent from 'react-star-rating-component';
 
-const PropertyItem = ({ property, handlePropertyClick }) => {
-	//TODO: add onClick function that would take you to the selected property page
-	//TODO: add image
+const PropertyItem = ({ property }) => {
+	let { prid, country, title, price, rating, review_num } = property;
+	if (rating === null) {
+		rating = 0;
+	}
+	if (review_num === null) {
+		review_num = 0;
+	}
 	return (
 		<div className='property'>
-			{/* <img
-				alt='robots'
-				src={`https://robohash.org/${id}?100x100`}
-			/> */}
-			<div onClick={() => handlePropertyClick(property)}>
-				<h3> {property.location} </h3>
-				<h2> {property.title} </h2>
-				<p> {`$${property.price} CAD/night`}</p>
+			<Link to={`/property/${prid}`}>
+				<div>
+					<h3> {country} </h3>
+					<h2> {title} </h2>
+					<p> {`$${price} CAD/night`}</p>
 
-				<div style={{ fontSize: '15px' }}>
-					<StarRatingComponent
-						name={property.id}
-						editing={false}
-						starCount={5}
-						starColor={'#00A699'}
-						value={property.rating}
-					/>
+					<div style={{ fontSize: '15px' }}>
+						<StarRatingComponent
+							name='rating'
+							editing={false}
+							starCount={5}
+							starColor={'#00A699'}
+							value={rating}
+						/>
+						<p className='review-num'>
+							{`(${review_num})`}
+						</p>
+					</div>
 				</div>
-			</div>
+			</Link>
 		</div>
 	);
 };

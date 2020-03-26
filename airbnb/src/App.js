@@ -1,60 +1,26 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import NavBar from './component/NavBar/NavBar';
-import PropertyList from './component/Property/PropertyList/PropertyList';
+import PropertyPage from './component/PropertyPage/PropertyPage';
+import ProfilePage from './component/ProfilePage/ProfilePage';
 import About from './component/About/About';
+import PropertyLibrary from './component/Property/PropertyList/PropertyLibrary';
+import LoginPage from './component/LoginPage/LoginPage';
+import PrivateRoute from './component/PrivateRoute/PrivateRoute';
+import RegisterPage from './component/RegisterPage/RegisterPage';
+import AddPropertyPage from './component/AddPropertyPage/AddPropertyPage';
 
 const initialState = {
+	user: JSON.parse(localStorage.getItem('user')),
 	isSignedIn: false,
-	properties: [
-		{
-			id: 1,
-			location: 'Canada',
-			title: 'Hotel',
-			type: 'Hotel',
-			price: 100,
-			rating: 3.4
-		},
-
-		{
-			id: 2,
-			location: 'Canada',
-			title: 'House',
-			type: 'House',
-			price: 102,
-			rating: 4.0
-		},
-
-		{
-			id: 3,
-			location: 'Canada',
-			title: 'Apartment',
-			type: 'Apartment',
-			price: 101,
-			rating: 4.0
-		},
-
-		{
-			id: 4,
-			location: 'Canada',
-			title: 'Apartment',
-			type: 'Apartment',
-			price: 101,
-			rating: 4.0
-		}
-	],
-
-	links: [
-		{ label: 'Become a host', link: '/' },
-		{ label: 'About', link: '/about' }
-	],
-
-	property: {}
+	isHost: false,
+	Apartment: [],
+	Hotel: [],
+	House: [],
+	//This state is just for testing purposes.
+	property: JSON.parse(localStorage.getItem('property'))
 };
-
-//TODO: Create Footer
-//TODO: didmounth call server for images of hotels, houses, and apartments
 
 class App extends Component {
 	constructor() {
@@ -62,58 +28,126 @@ class App extends Component {
 		this.state = initialState;
 	}
 
-	handlePropertyClick = property => {
-		// debugger;
+	//React Life Cycle Method: will run before render and is used to load data from the backend
+	async componentDidMount() {
+		try {
+			const responseOne = await fetch(
+				'http://localhost:3000/api/property/property-list/Hotel/4'
+			);
+			const hotels = await responseOne.json();
+
+			const responseTwo = await fetch(
+				'http://localhost:3000/api/property/property-list/House/4'
+			);
+			const houses = await responseTwo.json();
+
+			const responseThree = await fetch(
+				'http://localhost:3000/api/property/property-list/Apartment/4'
+			);
+			const apartments = await responseThree.json();
+			this.setState({
+				Hotel: hotels,
+				House: houses,
+				Apartment: apartments
+			});
+		} catch (err) {
+			console.log(err);
+		}
+
+		this.loadUser(this.state.user);
+	}
+
+	loadUser = data => {
+		this.setState({
+			user: {
+				uid: data.uid,
+				gid: data.gid,
+				hid: data.id
+			},
+			isSignedIn: true
+		});
+
+		if (data.hid) {
+			this.setState({
+				isHost: true
+			});
+		}
+
+		localStorage.setItem('user', JSON.stringify(data));
+	};
+
+	loadAllProperty = async category => {
+		try {
+			const response = await fetch(
+				`http://localhost:3000/api/property/property-list/${category}`
+			);
+			const properties = await response.json();
+			this.setState({
+				[category]: properties
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	//This function is just for testing purposes.
+	setProperty = property => {
 		this.setState({ property: property });
-		console.log(property);
+		localStorage.setItem('property', JSON.stringify(property));
 	};
 
 	render() {
-		const { properties, links } = this.state;
+		const {
+			isSignedIn,
+			isHost,
+			user,
+			Apartment,
+			Hotel,
+			House,
+			property
+		} = this.state;
+
 		return (
 			<Router>
-				<div>
-					<NavBar links={links} />
+				<NavBar
+					isSignedIn={isSignedIn}
+					isHost={isHost}
+				/>
+				<Switch>
+					<Route
+						path='/login'
+						component={props => (
+							<LoginPage
+								loadUser={
+									this
+										.loadUser
+								}
+							/>
+						)}
+					/>
 					<Route
 						exact
 						path='/'
 						render={props => (
 							<React.Fragment>
 								<div className='main'>
-									<PropertyList
-										properties={
-											properties
+									<PropertyLibrary
+										hotel={
+											Hotel
 										}
-										type={
-											'Hotel'
+										house={
+											House
 										}
-										handlePropertyClick={
+										apartment={
+											Apartment
+										}
+										setProperty={
 											this
-												.handlePropertyClick
+												.setProperty
 										}
-									/>
-									<PropertyList
-										properties={
-											properties
-										}
-										type={
-											'House'
-										}
-										handlePropertyClick={
+										loadAllProperty={
 											this
-												.handlePropertyClick
-										}
-									/>
-									<PropertyList
-										properties={
-											properties
-										}
-										type={
-											'Apartment'
-										}
-										handlePropertyClick={
-											this
-												.handlePropertyClick
+												.loadAllProperty
 										}
 									/>
 								</div>
@@ -124,7 +158,45 @@ class App extends Component {
 						path='/about'
 						component={About}
 					/>
-				</div>
+
+					<Route
+						path='/add-property'
+						component={AddPropertyPage}
+					/>
+
+					<Route
+						path='/register'
+						component={RegisterPage}
+					/>
+					<PrivateRoute
+						path='/property/:prid'
+						isSignedIn={isSignedIn}
+						component={props => (
+							<PropertyPage
+								{...props}
+								property={
+									property
+								}
+							/>
+						)}
+					/>
+
+					<PrivateRoute
+						path='/profile/:uid'
+						isSignedIn={isSignedIn}
+						component={props => (
+							<ProfilePage
+								{...props}
+								user={user}
+								setProperty={
+									this
+										.setProperty
+								}
+								isHost={isHost}
+							/>
+						)}
+					/>
+				</Switch>
 			</Router>
 		);
 	}

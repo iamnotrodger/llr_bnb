@@ -1,4 +1,4 @@
-.container {
+.propertyContainer {
 	margin: 15px 0;
 	display: grid;
 	column-gap: 10px;
@@ -27,7 +27,7 @@
 } */
 
 @media screen and (max-width: 768px) {
-	.container {
+	.propertyContainer {
 		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	}
 }

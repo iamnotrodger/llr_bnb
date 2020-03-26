@@ -1,25 +1,19 @@
 import React from 'react';
-import PropertyItem from '../PropertyItem/PropertyItem';
+import PropertyMap from './PropertyMap';
 import './PropertyList.css';
 
-const PropertyList = ({ properties, type, handlePropertyClick }) => {
+const PropertyList = ({ properties, type, loadAllProperty }) => {
 	return (
 		<div className='list'>
 			<h2>{type}</h2>
-			<div className='container'>
-				{properties.map((property, i) => {
-					return (
-						<PropertyItem
-							key={i}
-							property={property}
-							handlePropertyClick={
-								handlePropertyClick
-							}
-						/>
-					);
-				})}
-			</div>
-			<span>Show All ></span>
+			<PropertyMap
+				type={type}
+				properties={properties}
+				loadAllProperty={loadAllProperty}
+			/>
+			<span onClick={e => loadAllProperty(type)}>
+				Show All >
+			</span>
 		</div>
 	);
 };

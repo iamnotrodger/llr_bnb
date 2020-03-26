@@ -11,6 +11,99 @@
 	font-family: 'Signika';
 }
 
+li {
+	list-style: none;
+}
+
+a {
+	color: inherit; /* blue colors for links too */
+	text-decoration: inherit; /* no underline */
+}
+
+.lineMargin {
+	margin: 24px 0;
+	display: block !important;
+}
+
+.lml {
+	border-bottom-style: solid !important;
+	border-bottom-width: var(--border-rule-border-width, 1px) !important;
+	border-bottom-color: var(--color-divider, #ebebeb) !important;
+}
+
+button {
+	border-image: initial;
+}
+
+button:active {
+	outline: none;
+	border: none;
+}
+
+button:focus {
+	outline: 0;
+}
+
+.submitButton {
+	width: 100%;
+	font-size: var(--font-button-font-size, 16px) !important;
+	line-height: var(--font-button-line-height, 24px) !important;
+	letter-spacing: var(--font-button-letter-spacing, normal) !important;
+	font-family: var(
+		--font-button-font-family,
+		Circular,
+		-apple-system,
+		BlinkMacSystemFont,
+		Roboto,
+		Helvetica Neue,
+		sans-serif
+	) !important;
+	text-transform: var(--font-button-text-transform, undefined) !important;
+	padding-top: var(--spacing-button-vertical, 10px) !important;
+	padding-bottom: var(--spacing-button-vertical, 10px) !important;
+	font-weight: var(--font-bold-font-weight, 800) !important;
+	padding-left: var(--spacing-button-horizontal, 22px) !important;
+	padding-right: var(--spacing-button-horizontal, 22px) !important;
+	box-shadow: var(--shadow-button-level0-box-shadow, none) !important;
+	transition-property: background, border-color, color !important;
+	transition-duration: 0.2s !important;
+	transition-timing-function: ease-out !important;
+	color: #ffffff !important;
+	cursor: pointer !important;
+	margin: 0px !important;
+	text-decoration: none !important;
+	border-radius: 4px !important;
+	border-width: 2px !important;
+	border-style: solid !important;
+	background: rgb(66, 115, 112) !important;
+	border-color: transparent !important;
+	text-align: center !important;
+}
+
+.submitButton:active {
+	background: rgb(66, 115, 112) !important;
+}
+
+.error-message {
+	padding: 5px;
+	margin: 0 20%;
+	border-radius: 4px;
+	text-align: center;
+	vertical-align: center;
+	color: #ffffff;
+	background-color: #db5656;
+}
+
+.succ-message {
+	padding: 5px;
+	margin: 0 20%;
+	border-radius: 4px;
+	text-align: center;
+	vertical-align: center;
+	color: #ffffff;
+	background-color: #4ee229;
+}
+
 @media screen and (max-width: 1024px) {
 	.main {
 		padding: 0 5%;
