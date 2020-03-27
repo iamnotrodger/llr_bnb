@@ -19,8 +19,11 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
         return;
     }
     const { gid, prid, start_date, end_date } = req.body;
-    // console.log(gid, prid, start_date, end_date); // test
-    
+    // calculate days
+    const start = new Date(start_date);
+    const end = new Date(end_date);
+    const days = Math.round((end - start) / 1000 / 86400) + 1;
+
     try {
         const client = await db_pool.connect();
         try {
@@ -43,7 +46,7 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
             // create a pending payment for the rental agreement
             const paymentQueryText = 
                 'INSERT INTO project.payment(rtid, status, amount) VALUES($1, $2, $3)';
-            await client.query(paymentQueryText, [rtid, 'pending', price]);
+            await client.query(paymentQueryText, [rtid, 'pending', price * days]);
             await client.query('COMMIT');
             res.status(200).json('The rental agreement is added');
         } catch (err) {
