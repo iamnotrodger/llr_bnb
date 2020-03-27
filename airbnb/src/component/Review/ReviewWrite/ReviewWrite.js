@@ -1,35 +1,60 @@
-import React, { Component } from 'react';
-import StarRatingComponent from 'react-star-rating-component';
-import './ReviewWrite.css';
+import React, { useState } from "react";
+import StarRatingComponent from "react-star-rating-component";
+import "./ReviewWrite.css";
 
-class ReviewWrite extends Component {
-	constructor() {
-		super();
-		this.state = {
-			communication: 5,
-			cleanliness: 5,
-			value: 5,
-			comment: ''
-		};
-	}
+const ReviewWrite = ({ prid, gid }) => {
+	const [communication, setCommunication] = useState(5);
+	const [cleanliness, setCleanliness] = useState(5);
+	const [value, setValue] = useState(5);
+	const [comment, setComment] = useState('');
 
-	onChange = e => {
-		this.setState({ [e.target.name]: e.target.value });
+	const onChange = (e) => {
+		setComment(e.target.value);
 	};
 
-	onSubmitReview = () => {
-		if (this.state.comment.length > 0) {
-			console.log('submit review');
+	const onSubmitReview = async () => {
+		if (comment.length > 0) {
+			try {
+				const response = fetch('http://localhost:3000/api/review/add-review',
+					{
+						method: 'post',
+						headers: {
+							'Content-Type':
+								'application/json'
+						},
+						body: JSON.stringify({
+							communication: communication,
+							cleanliness: cleanliness,
+							value: value,
+							comment: comment,
+							prid: prid,
+							gid: gid
+						})
+					});
+				if (response.ok) {
+					return;
+				}
+
+				throw Error('Unable to add review');
+
+			} catch (err) {
+				console.log(err);
+			}
 		}
 	};
 
-	onStarClick = (nextValue, prevValue, name) => {
-		this.setState({ [name]: nextValue });
+	const onStarClick = (nextValue, prevValue, name) => {
+		if (name === 'communication') {
+			setCommunication(nextValue);
+		} else if (name === 'cleanliness') {
+			setCleanliness(nextValue);
+		} else if (name === 'value') {
+			setValue(nextValue);
+		}
 	};
 
-	renderStarRating = (rating, name) => {
-		const nameCapitalized =
-			name.charAt(0).toUpperCase() + name.slice(1);
+	const renderStarRating = (rating, name) => {
+		const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
 		return (
 			<div className='ratingComponent'>
 				<div>
@@ -39,9 +64,9 @@ class ReviewWrite extends Component {
 					<StarRatingComponent
 						name={name}
 						starCount={5}
-						starColor={'#00A699'}
+						starColor={"#00A699"}
 						value={rating}
-						onStarClick={this.onStarClick}
+						onStarClick={onStarClick}
 					/>
 				</div>
 				<div>
@@ -51,59 +76,38 @@ class ReviewWrite extends Component {
 		);
 	};
 
-	render() {
-		const {
-			communication,
-			cleanliness,
-			value,
-			comment
-		} = this.state;
-		return (
+	return (
+		<div>
+			<h2>Write Review</h2>
 			<div>
-				<h2>Write Review</h2>
-				<div>
-					<div className='ratingContainer'>
-						{this.renderStarRating(
-							communication,
-							'communication'
-						)}
+				<div className='ratingContainer'>
+					{renderStarRating(communication, "communication")}
 
-						{this.renderStarRating(
-							cleanliness,
-							'cleanliness'
-						)}
-						{this.renderStarRating(
-							value,
-							'value'
-						)}
-					</div>
+					{renderStarRating(cleanliness, "cleanliness")}
+					{renderStarRating(value, "value")}
+				</div>
 
-					<div className='commentContainer'>
-						<textarea
-							className='writeComment'
-							name='comment'
-							value={comment}
-							placeholder='Write Comment...'
-							maxLength={140}
-							onChange={this.onChange}
-						/>
-					</div>
-					<div className='reviewSubmitContainer'>
-						<button
-							className='reviewSubmit'
-							onClick={
-								this
-									.onSubmitReview
-							}
-							type='submit'
-						>
-							Submit
-						</button>
-					</div>
+				<div className='commentContainer'>
+					<textarea
+						className='writeComment'
+						name='comment'
+						value={comment}
+						placeholder='Write Comment...'
+						maxLength={140}
+						onChange={onChange}
+					/>
+				</div>
+				<div className='reviewSubmitContainer'>
+					<button
+						className='reviewSubmit'
+						onClick={onSubmitReview}
+						type='submit'>
+						Submit
+          				</button>
 				</div>
 			</div>
-		);
-	}
-}
+		</div>
+	);
+};
 
 export default ReviewWrite;

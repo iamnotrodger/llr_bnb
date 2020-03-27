@@ -67,7 +67,9 @@ const PropertyPage = () => {
 						price: price,
 						guestNum: guest_num
 					});
-					setUnavailableDates(unavailableDates);
+					if (unavailableDates) {
+						setUnavailableDates(unavailableDates);
+					}
 					setReview({ reviews: reviews });
 					if (avgs) {
 						setAverages({
@@ -111,13 +113,10 @@ const PropertyPage = () => {
 						<div className='lml'></div>
 					</div>
 				</div>
-				<div>
-					<p>Description</p>
-				</div>
 
-				<div className='lineMargin'>
+				{/* <div className='lineMargin'>
 					<div className='lml'></div>
-				</div>
+				</div> */}
 				<div>
 					<ReviewHeader
 						rating={averages.rating}
@@ -129,7 +128,7 @@ const PropertyPage = () => {
 					<ReviewList reviews={review.reviews} />
 				</div>
 				<div>
-					<ReviewWrite />
+					<ReviewWrite prid={prid} gid={gid} />
 				</div>
 			</div>
 

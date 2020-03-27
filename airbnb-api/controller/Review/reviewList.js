@@ -48,7 +48,7 @@ const reviewList = async (column, id, num, db_pool) => {
 	try {
 		const client = await db_pool.connect();
 		try {
-			const queryText = `SELECT rating, comment FROM project.review WHERE ${column} = $1 AND rating > 0`;
+			const queryText = `SELECT R.rating, R.comment, R.gid, U.firstname, U.lastname FROM project.review as R, project.usr as U, project.guest as G WHERE R.${column} = $1 AND U.uid = G.uid AND R.gid = G.gid`;
 			const { rows } = await client.query(queryText, [id]);
 
 			const length = rows.length;

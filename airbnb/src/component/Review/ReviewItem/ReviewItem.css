@@ -1,10 +1,10 @@
 .reviewRating {
-	vertical-align: bottom;
+        vertical-align: bottom;
 }
 .reviewRating span {
-	margin: 0 0.5em;
+        margin: 0 0.5em;
 }
 
 .comment {
-	margin-top: 16px;
+        margin-top: 5px;
 }

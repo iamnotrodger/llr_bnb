@@ -38,9 +38,9 @@ const App = () => {
 				const responseTwo = await fetch(
 					'http://localhost:3000/api/property/property-list/House/4'
 				);
-				let houses;
+
 				if (responseTwo.ok) {
-					houses = await responseTwo.json();
+					const houses = await responseTwo.json();
 					setHouse(houses);
 				}
 
