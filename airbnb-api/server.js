@@ -116,6 +116,10 @@ app.post('/api/review/add-review', (req, res) =>
 app.get('/api/property/review/review-list/:prid/:num?', (req, res) =>
 	reviewList.handleReviewProperty(req, res, db_pool)
 );
+// Get the property list for an employee
+app.get('/api/employee/:empid/property-list', (req, res) =>
+	propertyList.handleEmpPropertyList(req, res, db_pool)
+);
 
 /*
  * rental agreement
