@@ -1,4 +1,4 @@
-// TODO: send email and password to the login page
+// Route (POST): /api/guest-register
 const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 	// handle http request
 	const schema = {
