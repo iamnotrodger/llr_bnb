@@ -22,7 +22,10 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 			.required(),
 		phoneNum: Joi.string()
 			.max(15)
-			.regx(/^\d*$/)
+			.regex(/^\d*$/)
+			.required(),
+		country: Joi.string()
+			.max(30)
 			.required()
 	};
 	const { error } = Joi.validate(req.body, schema);
@@ -37,7 +40,8 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 		middleName,
 		lastName,
 		address,
-		phoneNum
+		phoneNum,
+		country
 	} = req.body;
 
 	// Encrypte the password
@@ -50,14 +54,15 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 			await client.query('BEGIN');
 			// insert into user table
 			const userText =
-				'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid;';
+				'INSERT INTO project.usr(firstName, middleName, lastName, email, address, phoneNum, country) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING uid;';
 			const res1 = await client.query(userText, [
 				firstName,
 				middleName,
 				lastName,
 				email,
 				address,
-				phoneNum
+				phoneNum,
+				country
 			]);
 			const { uid } = res1.rows[0];
 			// insert into guest table
