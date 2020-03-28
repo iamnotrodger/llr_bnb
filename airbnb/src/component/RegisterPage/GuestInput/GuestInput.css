@@ -1,9 +1,13 @@
-.register-fn{
-    width: 49%;
-    float: left;
+.register-fn {
+        width: 49%;
+        float: left;
 }
 
-.register-ln{
-    width: 49%;
-    float: right;
+.register-ln {
+        width: 49%;
+        float: right;
+}
+
+.opt-prop {
+        margin-bottom: 50px;
 }

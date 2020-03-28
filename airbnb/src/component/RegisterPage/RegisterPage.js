@@ -20,7 +20,8 @@ const RegisterPage = () => {
                 address: '',
                 phoneNum: '',
                 password: '',
-                confirmPassword: ''
+                confirmPassword: '',
+                country: ''
         });
         const [propertyInput, setPropertyInput] = useState({
                 property_type: '',
@@ -37,8 +38,8 @@ const RegisterPage = () => {
                 bed: 0,
                 washroom: 0
         });
-        const [loading, setLoading] = useState(false);
 
+        const [loading, setLoading] = useState(false);
         const [register, setRegister] = useState('User');
         const [error, setError] = useState(false);
 
@@ -46,6 +47,10 @@ const RegisterPage = () => {
 
         const onChange = (event) => {
                 const { name, value } = event.target;
+                setInputValue({ ...inputValue, [name]: value });
+        };
+
+        const onSelectChange = (name, value) => {
                 setInputValue({ ...inputValue, [name]: value });
         };
 
@@ -130,6 +135,9 @@ const RegisterPage = () => {
                                                                         input={
                                                                                 inputValue
                                                                         }
+                                                                        onSelectChange={
+                                                                                onSelectChange
+                                                                        }
                                                                 />
                                                         </div>
                                                         <div name='Host'>
@@ -139,6 +147,9 @@ const RegisterPage = () => {
                                                                         }
                                                                         input={
                                                                                 inputValue
+                                                                        }
+                                                                        onSelectChange={
+                                                                                onSelectChange
                                                                         }
                                                                 />
                                                                 <PropertyInput
@@ -160,6 +171,9 @@ const RegisterPage = () => {
                                                                         }
                                                                         input={
                                                                                 inputValue
+                                                                        }
+                                                                        onSelectChange={
+                                                                                onSelectChange
                                                                         }
                                                                 />
                                                                 <EmployeeInput />
@@ -228,6 +242,26 @@ const guestValidation = (input) => {
         return true;
 };
 const registerUser = async (input) => {
+        const newInput = { ...input };
+        delete newInput.confirmPassword;
+        const response = await fetch(
+                'http://localhost:3000/api/guest-register',
+                {
+                        method: 'post',
+                        headers: {
+                                'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newInput)
+                }
+        );
+        if (response.ok) {
+                const user = await response.json();
+                return user;
+        }
+        throw new Error('Network response was not ok.');
+};
+
+const registerEmployee = async (input, employeeInput) => {
         const newInput = { ...input };
         delete newInput.confirmPassword;
         const response = await fetch(
