@@ -7,14 +7,17 @@ const locationOptions = [
         { value: 'employee', label: 'Employee' }
 ];
 
-const countryOption = [
-        { value: 'Canada', label: 'Canada' },
-        { value: 'United States', label: 'United States' },
-        { value: 'China', label: 'China' },
-        { value: 'Philippines', label: 'Philippines' }
-];
-
 const EmployeeInput = ({ onChange }) => {
+        const handleSelectChange = (name) => {
+                return (newValue) => {
+                        onChange(name, newValue.value);
+                };
+        };
+
+        const handleChange = (event) => {
+                const { name, value } = event.target;
+                onChange(name, value);
+        };
         return (
                 <div>
                         <div>
@@ -30,6 +33,9 @@ const EmployeeInput = ({ onChange }) => {
                                         className='select'
                                         placeholder='Select...'
                                         options={locationOptions}
+                                        onChange={handleSelectChange(
+                                                'position'
+                                        )}
                                 />
                         </div>
                         <div>
@@ -43,6 +49,7 @@ const EmployeeInput = ({ onChange }) => {
                                         name='salary'
                                         type='number'
                                         placeholder='C$'
+                                        onChange={handleChange}
                                 />
                         </div>
                         <div style={{ marginBottom: 115 + 'px' }}></div>

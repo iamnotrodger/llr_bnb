@@ -23,7 +23,7 @@ const GuestInput = ({ onChange, input, onSelectChange }) => {
 
         const handleSelectChange = (name) => {
                 return (newValue) => {
-                        onSelectChange(name, newValue);
+                        onSelectChange(name, newValue.value);
                 };
         };
 
@@ -112,7 +112,10 @@ const GuestInput = ({ onChange, input, onSelectChange }) => {
                                         placeholder='Select...'
                                         options={countryOption}
                                         onChange={handleSelectChange('country')}
-                                        value={country}
+                                        value={{
+                                                value: country,
+                                                label: country
+                                        }}
                                 />
                         </div>
                         <div style={{ marginBottom: 10 + 'px' }}></div>

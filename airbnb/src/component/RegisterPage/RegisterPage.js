@@ -38,6 +38,10 @@ const RegisterPage = () => {
                 bed: 0,
                 washroom: 0
         });
+        const [employeeInput, setEmployeeInput] = useState({
+                position: '',
+                salary: 0
+        });
 
         const [loading, setLoading] = useState(false);
         const [register, setRegister] = useState('User');
@@ -64,6 +68,9 @@ const RegisterPage = () => {
 
         const onPriceChange = (name, value) => {
                 setPrice({ ...price, [name]: value });
+        };
+        const onEmployeeChange = (name, value) => {
+                setEmployeeInput({ ...employeeInput, [name]: value });
         };
 
         const handleButtonSubmit = async () => {
@@ -92,8 +99,13 @@ const RegisterPage = () => {
                                 history.push('/login');
                                 return;
                         } else if (register === 'Employee') {
-                                //TODO: add employee register
+                                await registerEmployee({
+                                        ...inputValue,
+                                        ...employeeInput
+                                });
                                 setLoading(false);
+                                history.push('/login');
+                                return;
                         } else if (register === 'User') {
                                 await registerUser(inputValue);
                                 setLoading(false);
@@ -176,7 +188,14 @@ const RegisterPage = () => {
                                                                                 onSelectChange
                                                                         }
                                                                 />
-                                                                <EmployeeInput />
+                                                                <EmployeeInput
+                                                                        input={
+                                                                                employeeInput
+                                                                        }
+                                                                        onChange={
+                                                                                onEmployeeChange
+                                                                        }
+                                                                />
                                                         </div>
                                                 </TabsControl>
                                         </div>
@@ -241,6 +260,7 @@ const guestValidation = (input) => {
 
         return true;
 };
+
 const registerUser = async (input) => {
         const newInput = { ...input };
         delete newInput.confirmPassword;
@@ -261,11 +281,11 @@ const registerUser = async (input) => {
         throw new Error('Network response was not ok.');
 };
 
-const registerEmployee = async (input, employeeInput) => {
+const registerEmployee = async (input) => {
         const newInput = { ...input };
         delete newInput.confirmPassword;
         const response = await fetch(
-                'http://localhost:3000/api/guest-register',
+                'http://localhost:3000/api/employee-register',
                 {
                         method: 'post',
                         headers: {
