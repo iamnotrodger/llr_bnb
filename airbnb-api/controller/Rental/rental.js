@@ -92,8 +92,11 @@ const handleApproval = async (req, res, db_pool, Joi) => {
         const client = await db_pool.connect();
         try {
             const queryText = 
-                'UPDATE project.rental_agreement SET signing = $1 WHERE rtid = $2 AND hid = $3;';
-            await client.query(queryText, [signing, rtid, hid]);
+                'UPDATE project.rental_agreement SET signing = $1, signing_date = $2 WHERE rtid = $3 AND hid = $4;';
+            const today = new Date();
+            const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            // console.log(date); // test
+            await client.query(queryText, [signing, date, rtid, hid]);
             res.status(200).json('Successfully update the signing');
         } catch (err) {
             console.error('Error during the query.', err.stack);
