@@ -11,7 +11,8 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
         start_date: Joi.date()
             .required(),
         end_date: Joi.date()
-            .required() // TODO: try to valide end_date > start_end
+            .min(Joi.ref('start_date'))
+            .required()
     };
     const {error} = Joi.validate(req.body, schema);
     if (error) {
