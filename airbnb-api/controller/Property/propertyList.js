@@ -73,41 +73,6 @@ const shuffle = array => {
 	return array;
 };
 
-// Route (GET): /api/employee/:empid/property-list
-const handleEmpPropertyList = async (req, res, db_pool) => {
-	// get http path parameter
-	const { empid } = req.params;
-
-	try {
-		const client = await db_pool.connect();
-		try {
-			const employeeQueryText = 
-				'SELECT country FROM project.employee WHERE empid = $1;';
-			const res1 = await client.query(employeeQueryText, [empid]);
-			const { country } = res1.rows[0];
-			const propertyQueryText = 
-				'SELECT * FROM project.property WHERE country = $1;';
-			const res2 = await client.query(propertyQueryText, [country]);
-			// console.log(res2.rows); // test
-			res.status(200).jsonp({
-				property_list: res2.rows
-			})
-		} catch (err) {
-			console.error('Error during the query.', err.stack);
-			res.status(400).json('Unable to get the property list.');
-		} finally {
-			client.release()
-		}
-	} catch (err) {
-		res.status(503).json('Service Unavailable');
-		console.error(
-			'Error during the connection to the database',
-			err.stack
-		);
-	}
-}
-
 module.exports = {
 	handlePropertyList,
-	handleEmpPropertyList
 };
