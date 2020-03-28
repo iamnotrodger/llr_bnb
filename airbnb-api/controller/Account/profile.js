@@ -69,7 +69,49 @@ const handleHostProperty = async (req, res, db_pool) => {
 	}
 }
 
+// Route (GET): /api/profile/:uid/my-property/:prid
+const handlePropertyGuest = async (req, res, db_pool) => {
+	// get the http path parameter
+	const { prid } = req.params;
+
+	try {
+		const client = await db_pool.connect();
+		try {
+			// Get rtids of this property
+			const rentalAgreementQueryText = 
+				'SELECT rtid FROM project.rental_agreement WHERE prid = $1;';
+			const res1 = await client.query(rentalAgreementQueryText, [prid]);
+			// console.log(res1.rows); // test
+			// get the guest info and some other info with rtids
+			const joinQueryText = 
+				'SELECT CONCAT(firstname, \' \', lastname) AS guest_name, amount AS rental_price, signing_date, country AS branch, method AS payment_type, status AS payment_status FROM project.rental_agreement NATURAL JOIN project.payment NATURAL JOIN project.guest NATURAL JOIN project.usr WHERE rtid = $1 ORDER BY payment_type ASC, signing_date DESC;';
+			var guest_list = [];
+			for (i in res1.rows) {
+				const { rtid } = res1.rows[i];
+				const res2 = await client.query(joinQueryText, [rtid]);
+				console.log(res2.rows[0]); // test
+				guest_list.push(res2.rows[0]);
+			}
+			res.status(200).jsonp({
+				guest_list: guest_list
+			});
+		} catch (err) {
+			console.error('Error during the query.', err.stack);
+			res.status(400).json('Invalid Inputs.');
+		} finally {
+			client.release();
+		}
+	} catch (err) {
+		res.status(503).json('Service Unavailable');
+		console.error(
+			'Error during the connection to the database',
+			err.stack
+		);
+	}
+}
+
 module.exports = {
 	handleProfile,
-	handleHostProperty
+	handleHostProperty,
+	handlePropertyGuest
 };

@@ -97,7 +97,11 @@ app.get('/api/profile/review/review-list/:gid/:num?', (req, res) =>
 // Get the property for a host
 app.get('/api/profile/:uid/my-property', (req, res) => 
 	profile.handleHostProperty(req, res, db_pool)
-)
+);
+// Get the guests for a property the guest own
+app.get('/api/profile/:uid/my-property/:prid', (req, res) =>
+	profile.handlePropertyGuest(req, res, db_pool)
+);
 
 /*
  * property
