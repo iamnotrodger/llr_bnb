@@ -28,9 +28,11 @@ const PropertyItem = ({ property }) => {
                                                         starColor={'#00A699'}
                                                         value={rating}
                                                 />
-                                                <p className='review-num'>
-                                                        {`(${review_num})`}
-                                                </p>
+                                                <div className='rating'>
+                                                        <p>
+                                                                {`(${review_num})`}
+                                                        </p>
+                                                </div>
                                         </div>
                                 </div>
                         </Link>

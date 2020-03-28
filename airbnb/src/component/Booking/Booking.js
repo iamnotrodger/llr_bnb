@@ -118,7 +118,7 @@ class Booking extends Component {
         };
 
         render() {
-                const { rating, price, numRev } = this.props;
+                const { rating, price, length } = this.props;
                 const { total, succ, error } = this.state;
                 const ErrorMessage = error ? (
                         <div className='error-message'>
@@ -133,11 +133,13 @@ class Booking extends Component {
                 return (
                         <div className='bookingContainer'>
                                 <div className='bookingHeader'>
-                                        <div>
+                                        <div className='price'>
                                                 <h3>{`$${price}`}</h3>
-                                                <span>per night</span>
+                                                <spam className='price-night'>
+                                                        per night
+                                                </spam>
                                         </div>
-                                        <div>
+                                        <div className='booking-reviews'>
                                                 <StarRatingComponent
                                                         name='displayStar'
                                                         editing={false}
@@ -145,8 +147,10 @@ class Booking extends Component {
                                                         starColor={'#00A699'}
                                                         value={1}
                                                 />
-                                                <span>{rating}</span>
-                                                <span>{`${numRev} reviews`}</span>
+                                                <h3 className='rating'>
+                                                        {rating.toFixed(2)}
+                                                </h3>
+                                                <div className='num-reviews'>{`${length} reviews`}</div>
                                         </div>
 
                                         <div className='lineMargin'>
@@ -154,9 +158,7 @@ class Booking extends Component {
                                         </div>
                                 </div>
                                 <div className='bookingDate'>
-                                        <div>
-                                                <label>Dates</label>
-                                        </div>
+                                        <h4 className='lbl'>Dates</h4>
                                         <DateRangePicker
                                                 startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                                                 startDateId='your_unique_start_date_id' // PropTypes.string.isRequired,
@@ -194,10 +196,13 @@ class Booking extends Component {
 
                                 <div className='bookingPrice'>
                                         <span>{`$${price} x ${this.state.numDays} nights`}</span>
-                                        <span>{`$${total}`}</span>
-                                        <div className='lineMargin'>
-                                                <div className='lml'></div>
-                                        </div>
+                                        <span className='price-total'>
+                                                {total ? `$${total}` : null}
+                                        </span>
+                                </div>
+
+                                <div className='lineMargin'>
+                                        <div className='lml'></div>
                                 </div>
 
                                 <div>

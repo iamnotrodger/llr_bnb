@@ -102,6 +102,10 @@ const App = () => {
 
         const loadAllProperty = async (category, oldProperties) => {
                 setLoading(true);
+                if (oldProperties.length > 4) {
+                        setLoading(false);
+                        return oldProperties.slice(0, 4);
+                }
                 try {
                         const response = await fetch(
                                 `http://localhost:3000/api/property/property-list/${category}`

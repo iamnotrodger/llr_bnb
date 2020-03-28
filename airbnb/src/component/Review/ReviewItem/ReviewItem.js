@@ -1,24 +1,26 @@
-import React from "react";
-import StarRatingComponent from "react-star-rating-component";
-import "./ReviewItem.css";
+import React from 'react';
+import StarRatingComponent from 'react-star-rating-component';
+import './ReviewItem.css';
 
 const ReviewItem = ({ review }) => {
         const { rating, comment, firstname, lastname } = review;
-        const username = firstname + " " + lastname;
+        const username = firstname + ' ' + lastname;
         return (
                 <div className='review'>
                         <h4>{username}</h4>
                         <div
-                                style={{ fontSize: "15px" }}
+                                style={{ fontSize: '15px' }}
                                 className='reviewRating'>
                                 <StarRatingComponent
                                         name='reviewRating'
                                         editing={false}
                                         starCount={5}
-                                        starColor={"#00A699"}
+                                        starColor={'#00A699'}
                                         value={rating}
                                 />
-                                <span>{rating.toFixed(2)}</span>
+                                <div className='rating'>
+                                        <p>{rating.toFixed(2)}</p>
+                                </div>
                         </div>
                         <p className='comment'>{comment}</p>
 

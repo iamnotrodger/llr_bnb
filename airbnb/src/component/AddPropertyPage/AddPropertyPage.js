@@ -34,6 +34,10 @@ const AddPropertyPage = () => {
         const [hostRegistered, setHostRegistered] = useState(false);
         const [loading, setLoading] = useState(false);
 
+        const handleLoadUser = (newUser) => {
+                setUser(newUser);
+        };
+
         const propertySubmit = async () => {
                 setSucc(false);
                 setError(false);
@@ -44,7 +48,6 @@ const AddPropertyPage = () => {
                         }
                         let roomsOne = createRooms(rooms.bed, rooms.washroom);
                         if (hid) {
-                                delete price.rule;
                                 const response = await fetch(
                                         'http://localhost:3000/api/property/add-property',
                                         {
@@ -65,10 +68,11 @@ const AddPropertyPage = () => {
                                 );
                                 if (response.ok) {
                                         setSucc(true);
+                                        setError(false);
                                         setLoading(false);
                                         return;
                                 }
-                                throw Error();
+                                throw Error('Unable to add property.');
                         } else if (uid) {
                                 const hidNew = await registerHost(
                                         propertyInput,
@@ -79,17 +83,20 @@ const AddPropertyPage = () => {
                                 const newUser = {
                                         uid: uid,
                                         gid: gid,
-                                        hid: hidNew
+                                        hid: hidNew.hid
                                 };
-                                setUser(newUser);
                                 setSucc(true);
+                                setError(false);
                                 setHostRegistered(true);
                                 setLoading(false);
+                                handleLoadUser(newUser);
+                                return;
                         }
                         throw Error('Unable to submit property.');
                 } catch (err) {
                         console.log(err);
                         setLoading(false);
+                        setSucc(false);
                         setError(true);
                 }
         };

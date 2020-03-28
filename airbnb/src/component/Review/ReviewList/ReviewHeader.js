@@ -1,5 +1,5 @@
-import React from "react";
-import StarRatingComponent from "react-star-rating-component";
+import React from 'react';
+import StarRatingComponent from 'react-star-rating-component';
 
 const ReviewHeader = ({
         rating,
@@ -17,10 +17,12 @@ const ReviewHeader = ({
                                                 name='displayStar'
                                                 editing={false}
                                                 starCount={1}
-                                                starColor={"#00A699"}
+                                                starColor={'#00A699'}
                                                 value={1}
                                         />
-                                        <h3>{rating.toFixed(2)}</h3>
+                                        <h3 className='rating'>
+                                                {rating.toFixed(2)}
+                                        </h3>
                                 </div>
                                 <div className='rhi'>{`${length} reviews`}</div>
                         </div>

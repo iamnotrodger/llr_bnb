@@ -115,7 +115,9 @@ const PropertyPage = (props) => {
                                         <div className='propertyHeader'>
                                                 <h2> {property.title} </h2>
                                                 <p> {property.location} </p>
-                                                <p>{property.hostName}</p>
+                                                <p className='name'>
+                                                        {property.hostName}
+                                                </p>
                                         </div>
                                         <div className='roomContainer'>
                                                 <p>{`${price.guestNum} guest`}</p>
@@ -181,6 +183,14 @@ const PropertyPage = (props) => {
                                                                         }
                                                                         gid={
                                                                                 gid
+                                                                        }
+                                                                        rating={
+                                                                                averages.rating
+                                                                        }
+                                                                        length={
+                                                                                review
+                                                                                        .reviews
+                                                                                        .length
                                                                         }
                                                                         numRev={
                                                                                 review

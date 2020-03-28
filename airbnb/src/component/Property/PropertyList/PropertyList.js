@@ -27,7 +27,11 @@ const PropertyList = ({ properties, type, loadAllProperty, onFilter }) => {
                                 />
                         </div>
                         <PropertyMap properties={properties} />
-                        <span onClick={loadAllProperty}>Show All ></span>
+                        <span onClick={loadAllProperty}>
+                                {properties.length > 4
+                                        ? 'Hide <'
+                                        : 'Show All >'}
+                        </span>
                 </div>
         );
 };

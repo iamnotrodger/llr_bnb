@@ -2,13 +2,6 @@
         text-align: left !important;
 }
 
-.reviewRating {
-        vertical-align: bottom;
-}
-.reviewRating span {
-        margin: 0 0.5em;
-}
-
 .comment {
         margin-top: 5px;
 }

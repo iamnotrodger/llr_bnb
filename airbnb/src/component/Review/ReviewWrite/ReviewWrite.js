@@ -69,10 +69,10 @@ const ReviewWrite = ({ prid, gid, setLoading }) => {
                         name.charAt(0).toUpperCase() + name.slice(1);
                 return (
                         <div className='ratingComponent'>
-                                <div>
+                                <div className='review-header'>
                                         <p>{nameCapitalized}</p>
                                 </div>
-                                <div>
+                                <div className='reviewRating'>
                                         <StarRatingComponent
                                                 name={name}
                                                 starCount={5}
@@ -80,9 +80,9 @@ const ReviewWrite = ({ prid, gid, setLoading }) => {
                                                 value={rating}
                                                 onStarClick={onStarClick}
                                         />
-                                </div>
-                                <div>
-                                        <p>{rating}</p>
+                                        <div className='rating'>
+                                                <p>{rating}</p>
+                                        </div>
                                 </div>
                         </div>
                 );
@@ -91,7 +91,7 @@ const ReviewWrite = ({ prid, gid, setLoading }) => {
         return (
                 <div>
                         <h2>Write Review</h2>
-                        <div>
+                        <div className='set-rating-contianer'>
                                 <div className='ratingContainer'>
                                         {renderStarRating(
                                                 communication,
@@ -115,14 +115,14 @@ const ReviewWrite = ({ prid, gid, setLoading }) => {
                                                 onChange={onChange}
                                         />
                                 </div>
-                                <div className='reviewSubmitContainer'>
-                                        <button
-                                                className='submitButton'
-                                                onClick={onSubmitReview}
-                                                type='submit'>
-                                                Submit
-                                        </button>
-                                </div>
+                        </div>
+                        <div className='reviewSubmitContainer'>
+                                <button
+                                        className='submitButton'
+                                        onClick={onSubmitReview}
+                                        type='submit'>
+                                        Submit
+                                </button>
                         </div>
                 </div>
         );
