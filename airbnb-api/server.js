@@ -23,6 +23,7 @@ const CryptoJS = require('crypto-js');
 const login = require('./controller/login');
 const guestRegister = require('./controller/Account/guestRegister');
 const hostRegister = require('./controller/Account/hostRegister');
+const employeeRegister = require('./controller/Account/employeeRegister');
 
 const profile = require('./controller/Account/profile');
 const profileUpdate = require('./controller/Account/profileUpdate');
@@ -50,6 +51,10 @@ app.post('/api/guest-register', (req, res) =>
 // handle hostRegister
 app.post('/api/host-register', (req, res) =>
         hostRegister.handleRegister(req, res, db_pool, Joi)
+);
+// handle employeeRegister
+app.post('/api/employee-register', (req, res) =>
+        employeeRegister.handleRegister(req, res, db_pool, Joi, CryptoJS)
 );
 // handle login
 app.post('/api/login', (req, res) =>
@@ -110,6 +115,10 @@ app.post('/api/review/add-review', (req, res) =>
 // Gets all the reveiw made about the property
 app.get('/api/property/review/review-list/:prid/:num?', (req, res) =>
         reviewList.handleReviewProperty(req, res, db_pool)
+);
+// Get the property list for an employee
+app.get('/api/employee/:empid/property-list', (req, res) =>
+        propertyList.handleEmpPropertyList(req, res, db_pool)
 );
 
 /*

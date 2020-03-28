@@ -1,3 +1,4 @@
+// Route (POST): /api/host-register
 const handleRegister = async (req, res, db_pool, Joi) => {
 	// handle http request
 	const { uid, property, rooms, pricing } = req.body;

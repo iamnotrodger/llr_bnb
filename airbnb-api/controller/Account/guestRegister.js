@@ -1,4 +1,4 @@
-// TODO: send email and password to the login page
+// Route (POST): /api/guest-register
 const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 	// handle http request
 	const schema = {
@@ -20,7 +20,10 @@ const handleRegister = async (req, res, db_pool, Joi, CryptoJS) => {
 		address: Joi.string()
 			.max(255)
 			.required(),
-		phoneNum: Joi.string().max(15)
+		phoneNum: Joi.string()
+			.max(15)
+			.regx(/^\d*$/)
+			.required()
 	};
 	const { error } = Joi.validate(req.body, schema);
 	if (error) {
