@@ -2,7 +2,7 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        z-index: 2;
+        z-index: 6;
         border: 5px solid #f3f3f3; /* Light grey */
         border-top: 5px solid #3498db; /* Blue */
         border-radius: 50%;
@@ -20,7 +20,7 @@
         position: absolute;
         width: 100%;
         height: 100vh;
-        z-index: 1;
+        z-index: 5;
         background-color: rgba(0, 0, 0, 0.301);
 }
 

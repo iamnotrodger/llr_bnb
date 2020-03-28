@@ -1,3 +1,7 @@
+.review {
+        text-align: left !important;
+}
+
 .reviewRating {
         vertical-align: bottom;
 }

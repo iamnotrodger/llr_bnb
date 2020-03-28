@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router';
 import UserContext from '../../UserContext';
 import ReviewHeader from '../Review/ReviewList/ReviewHeader';
@@ -6,6 +6,7 @@ import ReviewList from '../Review/ReviewList/ReviewList';
 import ReviewWrite from '../Review/ReviewWrite/ReviewWrite';
 import Booking from '../Booking/Booking';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
+import LoadSpinner from '../LoadingScreen/LoadSpinner';
 import './PropertyPage.css';
 
 const PropertyPage = (props) => {
@@ -39,6 +40,7 @@ const PropertyPage = (props) => {
         });
 
         const [loading, setLoading] = useState(true);
+        const [loadingAction, setLoadingAction] = useState(false);
 
         useEffect(() => {
                 const abordController = new AbortController();
@@ -107,6 +109,7 @@ const PropertyPage = (props) => {
 
         return (
                 <LoadingScreen loading={loading}>
+                        <LoadSpinner loading={loadingAction} />
                         <div className='propertyPage'>
                                 <div className='propertyContent'>
                                         <div className='propertyHeader'>
@@ -152,6 +155,9 @@ const PropertyPage = (props) => {
                                                 <ReviewWrite
                                                         prid={prid}
                                                         gid={gid}
+                                                        setLoading={
+                                                                setLoadingAction
+                                                        }
                                                 />
                                         </div>
                                 </div>
@@ -183,6 +189,9 @@ const PropertyPage = (props) => {
                                                                         }
                                                                         unavailableDates={
                                                                                 unavailableDates
+                                                                        }
+                                                                        setLoading={
+                                                                                setLoadingAction
                                                                         }
                                                                 />
                                                         </div>

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import "react-dates/initialize";
-import moment from "moment";
-import { DateRangePicker } from "react-dates";
-import StarRatingComponent from "react-star-rating-component";
-import "react-dates/lib/css/_datepicker.css";
-import "./Booking.css";
+import React, { Component } from 'react';
+import 'react-dates/initialize';
+import moment from 'moment';
+import { DateRangePicker } from 'react-dates';
+import StarRatingComponent from 'react-star-rating-component';
+import 'react-dates/lib/css/_datepicker.css';
+import './Booking.css';
 
 class Booking extends Component {
         constructor() {
@@ -22,17 +22,17 @@ class Booking extends Component {
         //Sets the unavailable dates in the calendar.
         isBlocked = (day) => {
                 return this.props.unavailableDates.some((unavailableDay) =>
-                        moment(unavailableDay).isSame(day, "day")
+                        moment(unavailableDay).isSame(day, 'day')
                 );
         };
 
         // Returns true if the range of dates contains unavailable dates.
         checkForBlockedDates = (start, end, dates) => {
-                const dateFormat = "YYYY-MM-DD";
-                const diff = moment(end).diff(start, "days") + 1;
+                const dateFormat = 'YYYY-MM-DD';
+                const diff = moment(end).diff(start, 'days') + 1;
                 for (let i = 0; i < diff; i++) {
                         const checkDate = moment(start)
-                                .add(i, "d")
+                                .add(i, 'd')
                                 .format(dateFormat);
                         if (dates.find((day) => day === checkDate)) {
                                 return true;
@@ -59,7 +59,7 @@ class Booking extends Component {
                         numDays =
                                 moment(endDate.toDate()).diff(
                                         startDate.toDate(),
-                                        "days"
+                                        'days'
                                 ) + 1;
                 }
 
@@ -72,22 +72,24 @@ class Booking extends Component {
         };
 
         onSubmitReserve = async () => {
-                const { gid, prid } = this.props;
+                const { gid, prid, setLoading } = this.props;
                 const { startDate, endDate } = this.state;
                 try {
                         if (startDate === null || endDate === null) {
                                 throw Error(
-                                        "One or both of the dates are null"
+                                        'One or both of the dates are null'
                                 );
                         }
-
+                        if (setLoading) {
+                                setLoading(true);
+                        }
                         const response = await fetch(
-                                "http://localhost:3000/api/rental/add-rental-agreement",
+                                'http://localhost:3000/api/rental/add-rental-agreement',
                                 {
-                                        method: "post",
+                                        method: 'post',
                                         headers: {
-                                                "Content-Type":
-                                                        "application/json"
+                                                'Content-Type':
+                                                        'application/json'
                                         },
                                         body: JSON.stringify({
                                                 gid: gid,
@@ -100,18 +102,24 @@ class Booking extends Component {
 
                         if (response.ok) {
                                 this.setState({ succ: true });
+                                if (setLoading) {
+                                        setLoading(false);
+                                }
                                 return;
                         }
-                        throw Error("Booking was not reserved.");
+                        throw Error('Booking was not reserved.');
                 } catch (err) {
                         console.log(err);
                         this.setState({ error: true });
+                        if (setLoading) {
+                                setLoading(false);
+                        }
                 }
         };
 
         render() {
-                const { rating, price, numRev, succ, error } = this.props;
-                const { total } = this.state;
+                const { rating, price, numRev } = this.props;
+                const { total, succ, error } = this.state;
                 const ErrorMessage = error ? (
                         <div className='error-message'>
                                 Something went wrong.
@@ -119,7 +127,7 @@ class Booking extends Component {
                 ) : null;
                 const SuccMessage = succ ? (
                         <div className='succ-message'>
-                                Property Addition Successful.
+                                Booking was reserved.
                         </div>
                 ) : null;
                 return (
@@ -134,7 +142,7 @@ class Booking extends Component {
                                                         name='displayStar'
                                                         editing={false}
                                                         starCount={1}
-                                                        starColor={"#00A699"}
+                                                        starColor={'#00A699'}
                                                         value={1}
                                                 />
                                                 <span>{rating}</span>
@@ -145,8 +153,6 @@ class Booking extends Component {
                                                 <div className='lml'></div>
                                         </div>
                                 </div>
-                                {ErrorMessage}
-                                {SuccMessage}
                                 <div className='bookingDate'>
                                         <div>
                                                 <label>Dates</label>
@@ -202,6 +208,8 @@ class Booking extends Component {
                                                 Reserve
                                         </button>
                                 </div>
+                                {ErrorMessage}
+                                {SuccMessage}
                         </div>
                 );
         }

@@ -1,182 +1,244 @@
-import React, { useState, useEffect } from "react";
-import { Route, Link, useParams } from "react-router-dom";
-import ProfileSide from "./ProfileSide";
-import PropertyMap from "../Property/PropertyList/PropertyMap";
-import ReviewList from "../Review/ReviewList/ReviewList";
-import "./ProfilePage.css";
+import React, { useState, useEffect, useContext } from 'react';
+import TabControl from '../ReactTab/ReactTab';
+import UserContext from '../../UserContext';
+import ProfileSide from './ProfileSide';
+import PropertyMap from '../Property/PropertyList/PropertyMap';
+import ReviewList from '../Review/ReviewList/ReviewList';
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
+import LoadSpinner from '../LoadingScreen/LoadSpinner';
+import './ProfilePage.css';
 
-const dummyProperties = [
-	{
-		id: 1,
-		location: "Canada",
-		title: "Hotel",
-		type: "Hotel",
-		price: 100,
-		rating: 3.4
-	},
+const ProfilePage = () => {
+        const { user } = useContext(UserContext);
+        const uid = user ? user.uid : null;
+        const gid = user ? user.gid : null;
+        const hid = user ? user.hid : null;
+        const [userInfo, setUserInfo] = useState({
+                uid: null,
+                firstname: '',
+                lastname: '',
+                address: '',
+                email: '',
+                phonenum: '',
+                created: new Date()
+        });
+        const [oldUserInfo, setOldUserInfo] = useState(userInfo);
+        const [reviews, setReviews] = useState([]);
+        // const [rentalAgreements, setRentalAgreements] = useState([]);
+        const [hostProperty, setHostProperty] = useState([]);
+        const [edit, setEdit] = useState(true);
+        const [loading, setLoading] = useState(false);
+        const [loadAction, setLoadAction] = useState(false);
 
-	{
-		id: 2,
-		location: "Canada",
-		title: "House",
-		type: "House",
-		price: 102,
-		rating: 4.0
-	},
+        useEffect(() => {
+                const abordController = new AbortController();
+                const signal = abordController.signal;
+                const fetchData = async () => {
+                        setLoading(true);
+                        try {
+                                const responseOne = await fetch(
+                                        `http://localhost:3000/api/profile/${uid}`,
+                                        { signal: signal }
+                                );
 
-	{
-		id: 3,
-		location: "Canada",
-		title: "Apartment",
-		type: "Apartment",
-		price: 101,
-		rating: 4.0
-	},
+                                if (!responseOne.ok) {
+                                        throw Error(
+                                                'Failed to get User Information.'
+                                        );
+                                }
+                                const fetchedUser = await responseOne.json();
+                                setUserInfo({
+                                        ...fetchedUser,
+                                        created: new Date(fetchedUser.created)
+                                });
+                                setOldUserInfo({
+                                        ...fetchedUser,
+                                        created: new Date(fetchedUser.created)
+                                });
 
-	{
-		id: 4,
-		location: "Canada",
-		title: "Apartment",
-		type: "Apartment",
-		price: 101,
-		rating: 4.0
-	}
-];
+                                const responseTwo = await fetch(
+                                        `http://localhost:3000/api/profile/review/review-list/${gid}`
+                                );
+                                if (!responseTwo.ok) {
+                                        throw Error('Failed to get Review.');
+                                }
+                                const fetchedRevs = await responseTwo.json();
+                                setReviews(fetchedRevs);
 
-const dummyReviews = [
-	{
-		id: 1,
-		username: "Dummy 1",
-		rating: 4.5,
-		date: "Febuary 2020",
-		comment:
-			"Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum."
-	},
-	{
-		id: 2,
-		username: "Dummy 2",
-		rating: 2,
-		date: "March 2020",
-		comment:
-			"Est reprehenderit eu tempor et excepteur dolor. Eu aliqua culpa dolore in sint reprehenderit laborum nisi amet ullamco. Minim ipsum aliqua consequat ea occaecat. Quis magna reprehenderit mollit exercitation occaecat amet esse elit consectetur esse magna. Et proident est labore cupidatat velit ea Lorem esse commodo cupidatat. Ipsum Lorem culpa ea fugiat anim ea. Ad nisi cillum sit excepteur reprehenderit sint."
-	},
-	{
-		id: 3,
-		username: "Dummy 1",
-		rating: 4.5,
-		date: "Febuary 2020",
-		comment:
-			"Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum."
-	},
-	{
-		id: 4,
-		username: "Dummy 1",
-		rating: 4.5,
-		date: "Febuary 2020",
-		comment:
-			"Officia laborum ad consectetur deserunt consectetur veniam velit consequat exercitation sint adipisicing ipsum in consequat. Minim ea id elit ad veniam reprehenderit. Minim occaecat eiusmod mollit enim excepteur veniam voluptate. Nulla anim excepteur eiusmod ipsum est consectetur laborum."
-	}
-];
+                                // if (hid) {
+                                //         const responseThree = await fetch();
+                                //         if (!responseThree.ok) {
+                                //                 throw Error(
+                                //                         'Unable to get Host properties'
+                                //                 );
+                                //         }
+                                //         const fetchedProperties = await responseThree.json();
+                                //         setHostProperty(fetchedProperties);
+                                // }
+                                setLoading(false);
+                        } catch (err) {
+                                console.log(err);
+                                setLoading(false);
+                        }
+                };
+                fetchData();
+                return function cleanup() {
+                        abordController.abort();
+                };
+        }, [uid]);
 
-const linkList = [
-	{
-		role: "Guest",
-		label: "Reviews",
-		link: "/profile/reviews"
-	},
-	{
-		role: "Guest",
-		label: "History",
-		link: "/profile/past-booking"
-	},
-	{
-		role: "Host",
-		label: "Rental Agreement",
-		link: "/profile/rental-agreement"
-	},
-	{
-		role: "Host",
-		label: "Property",
-		link: "/profile/owned-property"
-	}
-];
+        const handleTab = (data) => {
+                console.log(data);
+        };
 
-const ProfilePage = ({ user, isHost }) => {
-	//TODO: get reveiws, past reservation, rental agreement, owned properties
-	//These are Hooks for using states in a function.
-	const [reviews, setReviews] = useState([]);
-	const [reservation, setReservation] = useState([]);
-	const [rentalAgreements, setRentalAgreements] = useState([]);
-	const [ownedProperties, setOwnedProperties] = useState([]);
-	const { id } = useParams();
+        const onEditClick = () => {
+                setEdit(!edit);
 
-	//Lifecycle Method (Hook) much like componentWillMount
-	useEffect(() => {
-		console.log(id);
-	}, [id]);
+                if (!edit) {
+                        setUserInfo(oldUserInfo);
+                }
+        };
 
-	//Will filter out Depending on the type of user
-	const filteredList = !isHost
-		? linkList.filter((link) => {
-			return link.role !== "Host";
-		})
-		: linkList;
+        const onSubmit = async () => {
+                try {
+                        if (
+                                JSON.stringify(userInfo) ===
+                                JSON.stringify(oldUserInfo)
+                        ) {
+                                throw Error('No change was made.');
+                        }
+                        setLoadAction(true);
+                        if (
+                                userInfo.firstname !== oldUserInfo.firstname ||
+                                userInfo.lastname !== oldUserInfo.lastname
+                        ) {
+                                const response = await fetch(
+                                        'http://localhost:3000/api/profile/update/name',
+                                        {
+                                                method: 'put',
+                                                headers: {
+                                                        'Content-Type':
+                                                                'application/json'
+                                                },
+                                                body: JSON.stringify({
+                                                        firstName:
+                                                                userInfo.firstname,
+                                                        lastName:
+                                                                userInfo.lastname,
+                                                        uid: uid
+                                                })
+                                        }
+                                );
+                                if (!response.ok) {
+                                        throw Error('Unable to update');
+                                }
+                        }
+                        if (userInfo.email !== oldUserInfo.email) {
+                                await updateUserInfo(
+                                        'email',
+                                        userInfo.email,
+                                        uid
+                                );
+                        }
+                        if (userInfo.address !== oldUserInfo.address) {
+                                await updateUserInfo(
+                                        'address',
+                                        userInfo.address,
+                                        uid
+                                );
+                        }
 
-	const provileNav = filteredList.map((link, i) => {
-		return (
-			<li key={i}>
-				<Link to={link.link}>
-					<div className='profileLink'>{link.label}</div>
-				</Link>
-			</li>
-		);
-	});
+                        if (userInfo.phonenum !== oldUserInfo.phonenum) {
+                                await updateUserInfo(
+                                        'phone',
+                                        userInfo.phonenum,
+                                        uid
+                                );
+                        }
+                        setLoadAction(false);
+                        setOldUserInfo(userInfo);
+                        setEdit(true);
+                } catch (err) {
+                        console.log(err);
+                        onEditClick();
+                        setLoadAction(false);
+                }
+        };
 
-	return (
-		<div className='profileContainer'>
-			<div className='profileSide'>
-				<ProfileSide user={user} />
-			</div>
-			<div className='profileContent'>
-				<div className='profileHeader'>
-					<div className='headerContent'>
-						<h2>{`Hi, I'm ${user.firstName}`}</h2>
-						<p>{`Joined in ${user.joined}`}</p>
-					</div>
-					<div className='profileNav'>
-						<div className='profileLinkList'>
-							<ul>{provileNav}</ul>
-						</div>
-						<div className='lml'></div>
-					</div>
-				</div>
-				<div className='profileMain'>
-					<Route
-						path='/profile/reviews'
-						component={(props) => (
-							<ReviewList {...props} reviews={dummyReviews} />
-						)}
-					/>
+        const onUserChange = (event) => {
+                const { name, value } = event.target;
+                setUserInfo({ ...userInfo, [name]: value });
+        };
 
-					<Route
-						path='/profile/past-booking'
-						component={(props) => (
-							<PropertyMap {...props} properties={dummyProperties} />
-						)}
-					/>
+        return (
+                <LoadingScreen loading={loading}>
+                        <LoadSpinner loading={loadAction} />
+                        <div className='profileContainer'>
+                                <div className='profileSide'>
+                                        <ProfileSide
+                                                user={userInfo}
+                                                onChange={onUserChange}
+                                                edit={edit}
+                                                setEdit={onEditClick}
+                                                onSubmit={onSubmit}
+                                        />
+                                </div>
+                                <div className='profileContent'>
+                                        <div className='profileHeader'>
+                                                <div className='headerContent'>
+                                                        <h2>{`Hi, I'm ${userInfo.firstname}`}</h2>
+                                                        <p>{`Joined in ${userInfo.created.getFullYear()}`}</p>
+                                                </div>
+                                        </div>
+                                        <div className='profileMain'>
+                                                <TabControl setTab={handleTab}>
+                                                        <div name='Reviews'>
+                                                                <ReviewList
+                                                                        reviews={
+                                                                                reviews
+                                                                        }
+                                                                />
+                                                        </div>
+                                                        <div name='Bookings'></div>
+                                                        <div
+                                                                name='Host Properties'
+                                                                style={{
+                                                                        display: hid
+                                                                                ? ''
+                                                                                : 'none'
+                                                                }}>
+                                                                <PropertyMap
+                                                                        properties={
+                                                                                hostProperty
+                                                                        }
+                                                                />
+                                                        </div>
+                                                </TabControl>
+                                        </div>
+                                </div>
+                        </div>
+                </LoadingScreen>
+        );
+};
 
-					<Route path='/profile/rental-agreements' />
-
-					<Route
-						path='/profile/owned-property'
-						component={(props) => (
-							<PropertyMap {...props} properties={dummyProperties} />
-						)}
-					/>
-				</div>
-			</div>
-		</div>
-	);
+const updateUserInfo = async (name, value, uid) => {
+        const response = await fetch(
+                `http://localhost:3000/api/profile/update/${name}`,
+                {
+                        method: 'put',
+                        headers: {
+                                'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                                [name]: value,
+                                uid: uid
+                        })
+                }
+        );
+        if (response.ok) {
+                return;
+        }
+        throw Error('Unable to update');
 };
 
 export default ProfilePage;

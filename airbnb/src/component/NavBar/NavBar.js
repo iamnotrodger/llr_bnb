@@ -1,23 +1,23 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import UserContext from "../../UserContext";
-import logo from "../../2132GLogo_500x500.png";
-import ProfileIcon from "./ProfileIcon";
-import "./NavBar.css";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import UserContext from '../../UserContext';
+import logo from '../../2132GLogo_500x500.png';
+import ProfileIcon from './ProfileIcon';
+import './NavBar.css';
 
 const links = [
         {
-                label: "Add Property",
-                link: "/add-property"
+                label: 'Add Property',
+                link: '/add-property'
         },
-        { role: "Guest", label: "About", link: "/about" },
+        { role: 'Guest', label: 'About', link: '/about' },
         {
-                label: "Register",
-                link: "/register"
+                label: 'Register',
+                link: '/register'
         },
         {
-                label: "Log in",
-                link: "/login"
+                label: 'Log in',
+                link: '/login'
         }
 ];
 
@@ -28,11 +28,11 @@ const NavBar = () => {
 
         const filteredList = links.filter((link) => {
                 return (
-                        link.label === "About" ||
-                        (isSignedIn && link.label === "Add Property") ||
+                        link.label === 'About' ||
+                        (isSignedIn && link.label === 'Add Property') ||
                         (!isSignedIn &&
-                                (link.link === "/login" ||
-                                        link.link === "/register"))
+                                (link.link === '/login' ||
+                                        link.link === '/register'))
                 );
         });
 
@@ -61,7 +61,7 @@ const NavBar = () => {
                                                         src={logo}
                                                         alt='AirBnB'
                                                         style={{
-                                                                height: "55px"
+                                                                height: '55px'
                                                         }}
                                                 />
                                         </Link>

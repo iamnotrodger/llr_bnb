@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import './ReviewWrite.css';
 
-const ReviewWrite = ({ prid, gid }) => {
+const ReviewWrite = ({ prid, gid, setLoading }) => {
         const [communication, setCommunication] = useState(5);
         const [cleanliness, setCleanliness] = useState(5);
         const [value, setValue] = useState(5);
@@ -14,6 +14,9 @@ const ReviewWrite = ({ prid, gid }) => {
 
         const onSubmitReview = async () => {
                 if (comment.length > 0) {
+                        if (setLoading) {
+                                setLoading(true);
+                        }
                         try {
                                 const response = await fetch(
                                         'http://localhost:3000/api/review/add-review',
@@ -35,12 +38,18 @@ const ReviewWrite = ({ prid, gid }) => {
                                 );
 
                                 if (response.ok) {
+                                        if (setLoading) {
+                                                setLoading(false);
+                                        }
                                         return;
                                 }
 
                                 throw Error('Unable to add review');
                         } catch (err) {
                                 console.log(err);
+                                if (setLoading) {
+                                        setLoading(false);
+                                }
                         }
                 }
         };

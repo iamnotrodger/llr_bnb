@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import UserContext from '../../UserContext';
 import PropertyInput from '../PropertyInput/PropertyInput';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
@@ -13,8 +13,7 @@ const propertyInitial = {
 
 const priceInitial = {
         guest_num: 0,
-        price: 0,
-        rule: ''
+        price: 0
 };
 
 const roomInitial = {
@@ -168,7 +167,6 @@ const createRooms = (numBedrooms, numWashroom) => {
 };
 
 const registerHost = async (property, rooms, price, userID) => {
-        delete price.rule;
         const response = await fetch(
                 'http://localhost:3000/api/host-register',
                 {
@@ -193,7 +191,7 @@ const registerHost = async (property, rooms, price, userID) => {
 
 const propertyValidate = (property, price) => {
         const { property_type, title, address, country } = property;
-        const { guest_num, rule } = price;
+        const { guest_num } = price;
 
         if (property_type.length === 0) {
                 return false;
