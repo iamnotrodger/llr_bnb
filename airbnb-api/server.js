@@ -167,6 +167,10 @@ app.get('/api/employee/guest-list', (req, res) =>
 app.get('/api/employee/:empid/guest-list', (req, res) =>
 	empListView.handleGuestList(req, res, db_pool)
 );
+// Get all rental agreements as a list sorted by amount in the ascending order
+app.get('/api/employee/rental-agreement-list', (req, res) => 
+	empListView.handleRentalAgreementList(req, res, db_pool)
+);
 
 app.get('/', (req, res) => {
 	res.end('The server is running on port 3000...');
