@@ -15,7 +15,7 @@ const GuestInput = ({ onChange, input, onSelectChange }) => {
                 lastName,
                 email,
                 address,
-                phone,
+                phoneNum,
                 password,
                 confirmPassword,
                 country
@@ -81,7 +81,7 @@ const GuestInput = ({ onChange, input, onSelectChange }) => {
                                         type='tel'
                                         placeholder='Phone number'
                                         onChange={onChange}
-                                        value={phone}
+                                        value={phoneNum}
                                 />
                         </div>
                         <div>

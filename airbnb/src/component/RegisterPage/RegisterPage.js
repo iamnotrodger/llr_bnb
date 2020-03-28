@@ -31,8 +31,7 @@ const RegisterPage = () => {
         });
         const [price, setPrice] = useState({
                 guest_num: 0,
-                price: 0,
-                rule: ''
+                price: 0
         });
         const [rooms, setRooms] = useState({
                 bed: 0,

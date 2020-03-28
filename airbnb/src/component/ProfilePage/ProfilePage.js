@@ -199,7 +199,7 @@ const ProfilePage = () => {
                                                                         }
                                                                 />
                                                         </div>
-                                                        <div name='Bookings'></div>
+                                                        <div name='Rental Agreements'></div>
                                                         <div
                                                                 name='Host Properties'
                                                                 style={{

@@ -95,7 +95,7 @@ const App = () => {
                 setApartment(apartments);
         };
 
-        const loadAllProperty = async (category, oldProeprties) => {
+        const loadAllProperty = async (category, oldProperties) => {
                 setLoading(true);
                 try {
                         const response = await fetch(
@@ -110,7 +110,7 @@ const App = () => {
                         console.log(err);
                 }
                 setLoading(false);
-                return oldProeprties;
+                return oldProperties;
         };
 
         return (

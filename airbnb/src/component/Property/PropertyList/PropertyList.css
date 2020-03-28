@@ -1,23 +1,32 @@
 .propertyContainer {
-	margin: 15px 0;
-	display: grid;
-	column-gap: 10px;
-	row-gap: 10px;
-	grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
-	grid-template-rows: 1fr;
+        margin: 15px 0;
+        display: grid;
+        column-gap: 10px;
+        row-gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+        grid-template-rows: 1fr;
 }
 
 .list {
-	margin: 15px;
+        margin: 15px;
 }
 .list span {
-	font-weight: bold;
-	cursor: pointer;
-	color: #00a699;
+        font-weight: bold;
+        cursor: pointer;
+        color: #00a699;
 }
 
 .list span:hover {
-	text-decoration: underline;
+        text-decoration: underline;
+}
+
+.list-header {
+        display: flex;
+}
+
+.property-filter {
+        width: 200px;
+        margin-left: auto;
 }
 
 /* @media screen and (max-width: 1024px) {
@@ -27,7 +36,7 @@
 } */
 
 @media screen and (max-width: 768px) {
-	.propertyContainer {
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	}
+        .propertyContainer {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
 }
