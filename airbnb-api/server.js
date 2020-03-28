@@ -90,10 +90,14 @@ app.put('/api/profile/update/address', (req, res) =>
 app.put('/api/profile/update/phone', (req, res) =>
 	profileUpdate.handleProfilePhone(req, res, db_pool, Joi)
 );
-// Gets all the review that the user has made
+// Get all the review that the user has made
 app.get('/api/profile/review/review-list/:gid/:num?', (req, res) =>
 	reviewList.handleReviewProfile(req, res, db_pool)
 );
+// Get the property for a host
+app.get('/api/profile/:uid/my-property', (req, res) => 
+	profile.handleHostProperty(req, res, db_pool)
+)
 
 /*
  * property
