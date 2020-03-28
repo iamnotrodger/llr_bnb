@@ -22,7 +22,11 @@ const App = () => {
         const [Hotel, setHotel] = useState([]);
         const [House, setHouse] = useState([]);
         const [Apartment, setApartment] = useState([]);
-        const [prid, setPrid] = useState(null);
+        const [filterType, setFilterType] = useState({
+                Hotel: '',
+                House: '',
+                Apartment: ''
+        });
         const [loading, setLoading] = useState(false);
 
         //React Life Cycle Method: will run before render and is used to load data from the backend
@@ -73,8 +77,9 @@ const App = () => {
                 setUser(data);
         };
 
-        const loadProperty = (data) => {
-                setPrid(data);
+        const handleFilterChange = (type, value) => {
+                setFilterType({ ...filterType, [type]: value });
+                filterProperty(type, value);
         };
 
         const loadAllHotels = async () => {
@@ -113,6 +118,10 @@ const App = () => {
                 return oldProperties;
         };
 
+        const filterProperty = (type, value) => {
+                console.log(type, ': ', value);
+        };
+
         return (
                 <Router>
                         <LoadSpinner loading={loading} />
@@ -145,9 +154,6 @@ const App = () => {
                                                                                 apartment={
                                                                                         Apartment
                                                                                 }
-                                                                                loadProperty={
-                                                                                        loadProperty
-                                                                                }
                                                                                 loadAllHotels={
                                                                                         loadAllHotels
                                                                                 }
@@ -156,6 +162,9 @@ const App = () => {
                                                                                 }
                                                                                 loadAllApartments={
                                                                                         loadAllApartments
+                                                                                }
+                                                                                onFilter={
+                                                                                        handleFilterChange
                                                                                 }
                                                                         />
                                                                 </div>
@@ -183,7 +192,6 @@ const App = () => {
                                                 component={(props) => (
                                                         <PropertyPage
                                                                 {...props}
-                                                                prid={prid}
                                                         />
                                                 )}
                                         />

@@ -1,5 +1,5 @@
-import React from "react";
-import PropertyList from "./PropertyList";
+import React from 'react';
+import PropertyList from './PropertyList';
 
 const PropertyLibrary = ({
         hotel,
@@ -7,24 +7,28 @@ const PropertyLibrary = ({
         apartment,
         loadAllHotels,
         loadAllHouses,
-        loadAllApartments
+        loadAllApartments,
+        onFilter
 }) => {
         return (
                 <div>
                         <PropertyList
                                 properties={hotel}
-                                type={"Hotel"}
+                                type={'Hotel'}
                                 loadAllProperty={loadAllHotels}
+                                onFilter={onFilter}
                         />
                         <PropertyList
                                 properties={house}
-                                type={"House"}
+                                type={'House'}
                                 loadAllProperty={loadAllHouses}
+                                onFilter={onFilter}
                         />
                         <PropertyList
                                 properties={apartment}
-                                type={"Apartment"}
+                                type={'Apartment'}
                                 loadAllProperty={loadAllApartments}
+                                onFilter={onFilter}
                         />
                 </div>
         );

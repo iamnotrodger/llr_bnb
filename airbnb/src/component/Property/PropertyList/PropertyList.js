@@ -9,10 +9,11 @@ const filterOption = [
         { value: 'Unrented', label: 'Unrented' }
 ];
 
-const PropertyList = ({ properties, type, loadAllProperty }) => {
+const PropertyList = ({ properties, type, loadAllProperty, onFilter }) => {
         const handleSelectChange = (value) => {
-                console.log(type, ': ', value.value);
+                onFilter(type, value.value);
         };
+
         return (
                 <div className='list'>
                         <div className='list-header'>
