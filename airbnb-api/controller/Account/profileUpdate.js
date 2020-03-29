@@ -176,10 +176,12 @@ const handleUpdateAddress = async (req, res, db_pool, Joi) => {
 //Route (PUT): /api/profile/update/phone
 const handleUpdatePhone = async (req, res, db_pool, Joi) => {
         const schema = {
-                phone: Joi.string()
+                phonenum: Joi.string()
                         .max(256)
                         .required(),
-                uid: Joi.number().requried()
+                uid: Joi.number()
+                        .integer()
+                        .required()
         };
 
         const { error } = Joi.validate(req.body, schema);
@@ -189,11 +191,11 @@ const handleUpdatePhone = async (req, res, db_pool, Joi) => {
                 return;
         }
 
-        const { phone, uid } = req.body;
+        const { phonenum, uid } = req.body;
 
         const { code, message } = await updateUsrTable(
-                'phone',
-                phone,
+                'phonenum',
+                phonenum,
                 uid,
                 db_pool
         );

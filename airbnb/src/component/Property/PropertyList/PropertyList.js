@@ -27,11 +27,11 @@ const PropertyList = ({ properties, type, loadAllProperty, onFilter }) => {
                                 />
                         </div>
                         <PropertyMap properties={properties} />
-                        <span onClick={loadAllProperty}>
+                        <p className='list-button' onClick={loadAllProperty}>
                                 {properties.length > 4
                                         ? 'Hide <'
                                         : 'Show All >'}
-                        </span>
+                        </p>
                 </div>
         );
 };

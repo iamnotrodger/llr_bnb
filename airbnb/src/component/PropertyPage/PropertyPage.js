@@ -114,14 +114,27 @@ const PropertyPage = (props) => {
                                 <div className='propertyContent'>
                                         <div className='propertyHeader'>
                                                 <h2> {property.title} </h2>
-                                                <p> {property.location} </p>
-                                                <p className='name'>
-                                                        {property.hostName}
-                                                </p>
+                                                <div className='name-location'>
+                                                        <p className='name'>
+                                                                {
+                                                                        property.hostName
+                                                                }
+                                                        </p>
+                                                        <span className='dot'>
+                                                                .
+                                                        </span>
+                                                        <p className='location'>
+                                                                {
+                                                                        property.location
+                                                                }
+                                                        </p>
+                                                </div>
                                         </div>
                                         <div className='roomContainer'>
                                                 <p>{`${price.guestNum} guest`}</p>
+                                                <span className='dot'>.</span>
                                                 <p>{`${property.bedNum} bedroom`}</p>
+                                                <span className='dot'>.</span>
                                                 <p>{`${property.washroomNum} bathroom`}</p>
                                         </div>
 
@@ -137,13 +150,15 @@ const PropertyPage = (props) => {
                                         <div>
                                                 <ReviewHeader
                                                         rating={averages.rating}
-                                                        communication={
+                                                        communication={parseFloat(
                                                                 averages.communication
-                                                        }
-                                                        cleanliness={
+                                                        )}
+                                                        cleanliness={parseFloat(
                                                                 averages.cleanliness
-                                                        }
-                                                        value={averages.value}
+                                                        )}
+                                                        value={parseFloat(
+                                                                averages.value
+                                                        )}
                                                         length={
                                                                 review.reviews
                                                                         .length

@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderStarRating } from '../ReviewWrite/ReviewWrite';
 import StarRatingComponent from 'react-star-rating-component';
 
 const ReviewHeader = ({
@@ -11,20 +12,32 @@ const ReviewHeader = ({
         return (
                 <div className='reviewHeader'>
                         <h2>Reviews</h2>
-                        <div className='rhc'>
-                                <div className='rhi'>
-                                        <StarRatingComponent
-                                                name='displayStar'
-                                                editing={false}
-                                                starCount={1}
-                                                starColor={'#00A699'}
-                                                value={1}
-                                        />
-                                        <h3 className='rating'>
-                                                {rating.toFixed(2)}
-                                        </h3>
-                                </div>
-                                <div className='rhi'>{`${length} reviews`}</div>
+                        {ReviewStats(rating, length)}
+                        <div className='averages'>
+                                {communication
+                                        ? renderStarRating(
+                                                  communication,
+                                                  'communication',
+                                                  false,
+                                                  null
+                                          )
+                                        : null}
+                                {cleanliness
+                                        ? renderStarRating(
+                                                  cleanliness,
+                                                  'cleanliness',
+                                                  false,
+                                                  null
+                                          )
+                                        : null}
+                                {value
+                                        ? renderStarRating(
+                                                  value,
+                                                  'value',
+                                                  false,
+                                                  null
+                                          )
+                                        : null}
                         </div>
 
                         <div className='lineMargin'>
@@ -34,4 +47,25 @@ const ReviewHeader = ({
         );
 };
 
+const ReviewStats = (rating, length) => {
+        return (
+                <div className='reviewRating'>
+                        <div className='reviewRating'>
+                                <StarRatingComponent
+                                        name='displayStar'
+                                        editing={false}
+                                        starCount={1}
+                                        starColor={'#00A699'}
+                                        value={1}
+                                />
+                                <h3 className='big-rating'>
+                                        {rating.toFixed(2)}
+                                </h3>
+                        </div>
+                        <div className='rhi'>{`(${length} reviews)`}</div>
+                </div>
+        );
+};
+
 export default ReviewHeader;
+export { ReviewStats };

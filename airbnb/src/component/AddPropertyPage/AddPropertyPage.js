@@ -85,7 +85,6 @@ const AddPropertyPage = () => {
                                         gid: gid,
                                         hid: hidNew.hid
                                 };
-                                setSucc(true);
                                 setError(false);
                                 setHostRegistered(true);
                                 setLoading(false);
@@ -97,6 +96,7 @@ const AddPropertyPage = () => {
                         console.log(err);
                         setLoading(false);
                         setSucc(false);
+                        setHostRegistered(false);
                         setError(true);
                 }
         };
@@ -114,7 +114,7 @@ const AddPropertyPage = () => {
         };
 
         const ErrorMessage = error ? (
-                <div className='error-message'>Something went wrong.</div>
+                <div className='error-message'>Unable to add property.</div>
         ) : null;
         const SuccMessage = succ ? (
                 <div className='succ-message'>
@@ -122,7 +122,7 @@ const AddPropertyPage = () => {
                 </div>
         ) : null;
         const RegisterHostMessage = hostRegistered ? (
-                <div className='register-message'>
+                <div className='succ-message'>
                         You have been registered as a host.
                 </div>
         ) : null;
@@ -169,7 +169,6 @@ const createRooms = (numBedrooms, numWashroom) => {
                 };
                 rooms.push(tempRoom);
         }
-        console.log(rooms);
         return rooms;
 };
 

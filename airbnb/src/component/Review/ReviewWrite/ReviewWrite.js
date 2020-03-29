@@ -64,30 +64,6 @@ const ReviewWrite = ({ prid, gid, setLoading }) => {
                 }
         };
 
-        const renderStarRating = (rating, name) => {
-                const nameCapitalized =
-                        name.charAt(0).toUpperCase() + name.slice(1);
-                return (
-                        <div className='ratingComponent'>
-                                <div className='review-header'>
-                                        <p>{nameCapitalized}</p>
-                                </div>
-                                <div className='reviewRating'>
-                                        <StarRatingComponent
-                                                name={name}
-                                                starCount={5}
-                                                starColor={'#00A699'}
-                                                value={rating}
-                                                onStarClick={onStarClick}
-                                        />
-                                        <div className='rating'>
-                                                <p>{rating}</p>
-                                        </div>
-                                </div>
-                        </div>
-                );
-        };
-
         return (
                 <div>
                         <h2>Write Review</h2>
@@ -95,14 +71,23 @@ const ReviewWrite = ({ prid, gid, setLoading }) => {
                                 <div className='ratingContainer'>
                                         {renderStarRating(
                                                 communication,
-                                                'communication'
+                                                'communication',
+                                                true,
+                                                onStarClick
                                         )}
 
                                         {renderStarRating(
                                                 cleanliness,
-                                                'cleanliness'
+                                                'cleanliness',
+                                                true,
+                                                onStarClick
                                         )}
-                                        {renderStarRating(value, 'value')}
+                                        {renderStarRating(
+                                                value,
+                                                'value',
+                                                true,
+                                                onStarClick
+                                        )}
                                 </div>
 
                                 <div className='commentContainer'>
@@ -128,4 +113,29 @@ const ReviewWrite = ({ prid, gid, setLoading }) => {
         );
 };
 
+const renderStarRating = (rating, name, edit, onStarClick) => {
+        const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+        return (
+                <div className='ratingComponent'>
+                        <div className='review-header'>
+                                <p>{nameCapitalized}</p>
+                        </div>
+                        <div className='reviewRating'>
+                                <StarRatingComponent
+                                        name={name}
+                                        starCount={5}
+                                        edit={edit}
+                                        starColor={'#00A699'}
+                                        value={rating}
+                                        onStarClick={onStarClick}
+                                />
+                                <div className='rating'>
+                                        <p>{rating.toFixed(2)}</p>
+                                </div>
+                        </div>
+                </div>
+        );
+};
+
 export default ReviewWrite;
+export { renderStarRating };

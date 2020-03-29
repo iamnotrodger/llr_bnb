@@ -20,7 +20,9 @@ const PropertyItem = ({ property }) => {
                                         <h2> {title} </h2>
                                         <p> {`$${price} CAD/night`}</p>
 
-                                        <div style={{ fontSize: '15px' }}>
+                                        <div
+                                                className='reviewRating'
+                                                style={{ fontSize: '15px' }}>
                                                 <StarRatingComponent
                                                         name='rating'
                                                         editing={false}
@@ -28,7 +30,7 @@ const PropertyItem = ({ property }) => {
                                                         starColor={'#00A699'}
                                                         value={rating}
                                                 />
-                                                <div className='rating'>
+                                                <div className='rating no-margin'>
                                                         <p>
                                                                 {`(${review_num})`}
                                                         </p>

@@ -10,7 +10,25 @@ import {
         propertyValidate
 } from '../AddPropertyPage/AddPropertyPage';
 import './RegisterPage.css';
+import Particles from 'react-particles-js';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
+
+const particleOption = {
+        particles: {
+                number: {
+                        value: 150,
+                        density: {
+                                enable: true,
+                                value_area: 800
+                        }
+                }
+        },
+        poligon: {
+                draw: {
+                        enable: true
+                }
+        }
+};
 
 const RegisterPage = () => {
         const [inputValue, setInputValue] = useState({
@@ -119,20 +137,19 @@ const RegisterPage = () => {
         };
 
         const ErrorMessage = error ? (
-                <div className='error-message'>Something went wrong.</div>
+                <div className='error-message'>
+                        Something went wrong. Unable to register.
+                </div>
         ) : null;
 
         return (
                 <div>
                         <LoadSpinner loading={loading} />
+                        <Particles
+                                className='particles'
+                                params={particleOption}
+                        />
                         <div className='register-page'>
-                                <div className='login-background'>
-                                        <img
-                                                className='login-img'
-                                                alt='background'
-                                                src='https://pacificahousing.ca/wp-content/uploads/2016/11/1213-small-4965.jpg'
-                                        />
-                                </div>
                                 <div className='login-box register-box'>
                                         <p className='login-title'>Register</p>
                                         <div className='tabs-container'>
@@ -198,7 +215,6 @@ const RegisterPage = () => {
                                                         </div>
                                                 </TabsControl>
                                         </div>
-                                        {ErrorMessage}
                                         <div>
                                                 <button
                                                         className='submitButton'
@@ -208,6 +224,7 @@ const RegisterPage = () => {
                                                         Register
                                                 </button>
                                         </div>
+                                        {ErrorMessage}
                                 </div>
                         </div>
                 </div>

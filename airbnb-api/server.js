@@ -85,7 +85,7 @@ app.put('/api/profile/update/address', (req, res) =>
         profileUpdate.handleUpdateAddress(req, res, db_pool, Joi)
 );
 // Update the user's phone number
-app.put('/api/profile/update/phone', (req, res) =>
+app.put('/api/profile/update/phonenum', (req, res) =>
         profileUpdate.handleUpdatePhone(req, res, db_pool, Joi)
 );
 // Gets all the review that the user has made

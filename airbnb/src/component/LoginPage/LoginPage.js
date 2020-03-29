@@ -59,7 +59,7 @@ const LoginPage = ({ loadUser }) => {
         };
 
         const ErrorMessage = error ? (
-                <div className='error-message'>Something went wrong.</div>
+                <div className='error-message'>Invalid password or email.</div>
         ) : null;
         return (
                 <div>

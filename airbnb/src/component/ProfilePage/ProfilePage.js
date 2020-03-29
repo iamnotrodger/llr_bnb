@@ -150,7 +150,7 @@ const ProfilePage = () => {
 
                         if (userInfo.phonenum !== oldUserInfo.phonenum) {
                                 await updateUserInfo(
-                                        'phone',
+                                        'phonenum',
                                         userInfo.phonenum,
                                         uid
                                 );

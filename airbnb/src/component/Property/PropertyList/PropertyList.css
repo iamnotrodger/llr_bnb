@@ -10,14 +10,26 @@
 .list {
         margin: 15px;
 }
-.list span {
+.list-button {
+        display: inline-block;
         font-weight: bold;
         cursor: pointer;
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 8px;
         color: #00a699;
+        transition: box-shadow 0.2s ease, -ms-transform 0.1s ease,
+                -webkit-transform 0.1s ease, transform 0.1s ease;
 }
 
-.list span:hover {
+.list-button:hover {
+        background-color: #b9b9b946;
         text-decoration: underline;
+        font-size: 16px;
+}
+
+.list-button:active {
+        transform: scale(0.9);
 }
 
 .list-header {

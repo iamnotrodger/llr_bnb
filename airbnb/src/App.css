@@ -31,10 +31,13 @@ a {
         border-bottom-color: var(--color-divider, #ebebeb) !important;
 }
 
+.reviewRating {
+        display: flex;
+}
+
 .rating {
-        display: inline-block;
+        margin-top: 1px;
         margin-left: 5px;
-        border-bottom: 4px solid rgba(0, 0, 0, 0);
 }
 
 button {
@@ -65,13 +68,13 @@ button:focus {
                 sans-serif
         ) !important;
         text-transform: var(--font-button-text-transform, undefined) !important;
-        padding-top: var(--spacing-button-vertical, 10px) !important;
-        padding-bottom: var(--spacing-button-vertical, 10px) !important;
-        font-weight: var(--font-bold-font-weight, 800) !important;
-        padding-left: var(--spacing-button-horizontal, 22px) !important;
-        padding-right: var(--spacing-button-horizontal, 22px) !important;
-        box-shadow: var(--shadow-button-level0-box-shadow, none) !important;
-        transition-property: background, border-color, color !important;
+        padding-top: var(--spacing-button-vertical, 10px);
+        padding-bottom: var(--spacing-button-vertical, 10px);
+        font-weight: var(--font-bold-font-weight, 800);
+        padding-left: var(--spacing-button-horizontal, 22px);
+        padding-right: var(--spacing-button-horizontal, 22px);
+        box-shadow: var(--shadow-button-level0-box-shadow, none);
+        transition-property: background, border-color, color;
         transition-duration: 0.2s !important;
         transition-timing-function: ease-out !important;
         color: #ffffff !important;
@@ -96,22 +99,22 @@ button:focus {
 
 .error-message {
         padding: 5px;
-        margin: 0 20%;
+        margin: 10px 20%;
         border-radius: 4px;
         text-align: center;
         vertical-align: center;
         color: #ffffff;
-        background-color: #db5656;
+        background-color: #ef3e4a;
 }
 
 .succ-message {
-        padding: 5px;
-        margin: 0 20%;
+        padding: 7px;
+        margin: 10px 20%;
         border-radius: 4px;
         text-align: center;
         vertical-align: center;
         color: #ffffff;
-        background-color: #4ee229;
+        background-color: #32b67a;
 }
 
 @media screen and (max-width: 1024px) {

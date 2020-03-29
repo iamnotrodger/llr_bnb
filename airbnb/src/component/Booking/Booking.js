@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'react-dates/initialize';
 import moment from 'moment';
 import { DateRangePicker } from 'react-dates';
-import StarRatingComponent from 'react-star-rating-component';
+import { ReviewStats } from '../Review/ReviewList/ReviewHeader';
 import 'react-dates/lib/css/_datepicker.css';
 import './Booking.css';
 
@@ -139,20 +139,7 @@ class Booking extends Component {
                                                         per night
                                                 </spam>
                                         </div>
-                                        <div className='booking-reviews'>
-                                                <StarRatingComponent
-                                                        name='displayStar'
-                                                        editing={false}
-                                                        starCount={1}
-                                                        starColor={'#00A699'}
-                                                        value={1}
-                                                />
-                                                <h3 className='rating'>
-                                                        {rating.toFixed(2)}
-                                                </h3>
-                                                <div className='num-reviews'>{`${length} reviews`}</div>
-                                        </div>
-
+                                        {ReviewStats(rating, length)}
                                         <div className='lineMargin'>
                                                 <div className='lml'></div>
                                         </div>

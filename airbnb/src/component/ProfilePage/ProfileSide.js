@@ -12,6 +12,15 @@ const ProfileSide = ({ user, onChange, edit, onSubmit, setEdit }) => {
                 }
         };
 
+        const onSubmitClick = () => {
+                onSubmit();
+                if (edit) {
+                        setInputStyle('');
+                } else {
+                        setInputStyle('profileInput');
+                }
+        };
+
         return (
                 <div className='sideContainerx'>
                         <div className='profileImg'>
@@ -26,6 +35,7 @@ const ProfileSide = ({ user, onChange, edit, onSubmit, setEdit }) => {
                                 <div className='lml'></div>
                         </div>
                         <div className='sideContent'>
+                                <h3>User Information</h3>
                                 <div>
                                         <input
                                                 style={{ width: '100%' }}
@@ -77,22 +87,28 @@ const ProfileSide = ({ user, onChange, edit, onSubmit, setEdit }) => {
                                 </div>
 
                                 <div>
-                                        <button
-                                                type='submit'
-                                                name='edit'
-                                                className='editButton'
-                                                onClick={onEditClick}>
-                                                edit profile
-                                        </button>
+                                        <div className='edit-container'>
+                                                <p
+                                                        type='submit'
+                                                        name='edit'
+                                                        className='editButton'
+                                                        onClick={onEditClick}>
+                                                        edit profile
+                                                </p>
+                                        </div>
 
                                         {!edit ? (
-                                                <button
-                                                        type='submit'
-                                                        name='submit'
-                                                        className='submitChange'
-                                                        onClick={onSubmit}>
-                                                        Submit
-                                                </button>
+                                                <div className='submit-container'>
+                                                        <button
+                                                                type='submit'
+                                                                name='submit'
+                                                                className='submitButton'
+                                                                onClick={
+                                                                        onSubmitClick
+                                                                }>
+                                                                Submit
+                                                        </button>
+                                                </div>
                                         ) : null}
                                 </div>
                         </div>

@@ -31,11 +31,6 @@
         display: flex;
 }
 
-.num-reviews {
-        display: inline-block;
-        margin-left: 0.4em;
-}
-
 .price-total {
         margin-left: auto;
 }
