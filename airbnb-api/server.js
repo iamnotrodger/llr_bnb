@@ -184,7 +184,11 @@ app.get('/api/project/all-rented-property', (req, res) =>
 app.get('/api/project/all-not-rented-property', (req, res) =>
 	project.handleAllNotRentedProperty(req, res, db_pool)
 );
-// qurery 7
+// query 6
+app.get('/api/project/rented-on-10th', (req, res) =>
+	project.handleRentedOn10th(req, res, db_pool)
+)
+// query 7
 app.get('/api/project/15k-employee', (req, res) =>
 	project.handle15kEmployee(req, res, db_pool)
 )
