@@ -101,9 +101,35 @@ const handleAllNotRentedProperty = async (req, res, db_pool) => {
     }
 }
 
+// query 7
+// Route (GET): /api/project/15k-employee
+const handle15kEmployee = async (req, res, db_pool) => {
+    try {
+        const client = await db_pool.connect();
+        try {
+            const queryText =
+                'SELECT uid, empid, firstname, middlename, lastname, country, position, salary FROM project.employee NATURAL JOIN project.usr WHERE salary >= 15000 ORDER BY position DESC, empid ASC;';
+            const res1 = await client.query(queryText);
+            res.status(200).json(res1.rows);
+        } catch (err) {
+            console.error('Error during the query.', err.stack);
+            res.status(400).json('Invalid Inputs.');
+        } finally {
+            client.release();
+        }
+    } catch (err) {
+        res.status(503).json('Service Unavailable');
+        console.error(
+            'Error during the connection to the database',
+            err.stack
+        );
+    }
+}
+
 module.exports = {
     handleAllGuestList,
     handleCompletedCheapestRental,
     handleAllRentedProperty,
-    handleAllNotRentedProperty
+    handleAllNotRentedProperty,
+    handle15kEmployee
 }

@@ -184,6 +184,10 @@ app.get('/api/project/all-rented-property', (req, res) =>
 app.get('/api/project/all-not-rented-property', (req, res) =>
 	project.handleAllNotRentedProperty(req, res, db_pool)
 );
+// qurery 7
+app.get('/api/project/15k-employee', (req, res) =>
+	project.handle15kEmployee(req, res, db_pool)
+)
 
 app.get('/', (req, res) => {
         res.end('The server is running on port 3000...');
