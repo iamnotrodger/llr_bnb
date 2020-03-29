@@ -32,33 +32,6 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
     }
 }
 
-// Route (GET): /api/employee/guest-list
-const handleAllGuestList = async (req, res, db_pool) => {
-    try {
-        const client = await db_pool.connect();
-        try {
-            const queryText = 
-                'SELECT * FROM project.guest NATURAL JOIN project.usr ORDER BY country, gid;';
-            const res1 = await client.query(queryText);
-            // console.log(res1.rows); // test
-            res.status(200).jsonp({
-                guest_list: res1.rows
-            });
-        } catch (err) {
-            console.error('Error during the query.', err.stack);
-            res.status(400).json('Invalid Inputs.');
-        } finally {
-            client.release();
-        }
-    } catch (err) {
-        res.status(503).json('Service Unavailable');
-        console.error(
-            'Error during the connection to the database',
-            err.stack
-        );
-    }
-}
-
 // Route (GET): /api/employee/:empid/guest-list
 const handleGuestList = async (req, res, db_pool) => {
     const { empid } = req.params;
@@ -93,35 +66,7 @@ const handleGuestList = async (req, res, db_pool) => {
     }
 }
 
-// Route (GET): /api/employee/rental-agreement-list
-const handleRentalAgreementList = async (req, res, db_pool) => {
-    try {
-        const client = await db_pool.connect();
-        try {
-            const queryText =
-                'SELECT * FROM project.rental_agreement NATURAL JOIN project.property NATURAL JOIN project.payment ORDER BY amount;';
-            const res1 = await client.query(queryText);
-            res.status(200).jsonp({
-                rental_list: res1.rows
-            });
-        } catch (err) {
-            console.error('Error during the query.', err.stack);
-            res.status(400).json('Invalid Inputs.');
-        } finally {
-            client.release();
-        }
-    } catch (err) {
-        res.status(503).json('Service Unavailable');
-        console.error(
-            'Error during the connection to the database',
-            err.stack
-        );
-    }
-}
-
 module.exports = {
     handleEmpPropertyList,
-    handleAllGuestList,
     handleGuestList,
-    handleRentalAgreementList
 }

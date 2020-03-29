@@ -28,6 +28,16 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
                 const client = await db_pool.connect();
                 try {
                         await client.query('BEGIN');
+                        // check dates are avaible
+                        const checkDatesQueryText = 
+                            'SELECT * FROM project.rental_agreement WHERE prid = $1 AND (start_date, end_date) OVERLAPS ($2, $3);';
+                        const res0 = await client.query(checkDatesQueryText, [prid, start_date, end_date]);
+                        console.log(res0.rows.length); // test
+                        if (res0.rows.length != 0) {
+                            // there are dates overlapping
+                            res.status(400).json('Some dates are avaible')
+                            return;
+                        }
                         // get hid
                         const propertyQueryText =
                                 'SELECT hid FROM project.property WHERE prid = $1;';
@@ -81,6 +91,7 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
                         client.release();
                 }
         } catch (err) {
+                console.log('???'); // test
                 res.status(503).json('Service Unavailable');
                 console.error(
                         'Error during the connection to the database',

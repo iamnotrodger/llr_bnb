@@ -42,9 +42,13 @@ const handlePropertyList = async (req, res, db_pool, Joi) => {
                                 res.status(400).json([]);
                                 return;
                         }
-                        shuffle(rows);
-                        const sliceEnd = num > 0 ? num : length;
-                        res.status(200).json(rows.slice(0, sliceEnd));
+                        // shuffle(rows);
+                        const sliceEnd = num > 0 ? num : length + 1;
+                        res.status(200).json(
+                                rows
+                                        .slice(Math.max(length - sliceEnd, 0))
+                                        .reverse()
+                        );
                 } catch (err) {
                         console.error('Error during the query.', err.stack);
                         res.status(400).json([]);
