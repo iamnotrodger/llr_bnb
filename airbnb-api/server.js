@@ -40,6 +40,8 @@ const payment = require('./controller/Rental/payment');
 
 const empListView = require('./controller/Manage/empListView');
 
+const project = require('./controller/Project/project');
+
 app.use(express.json());
 app.use(cors());
 
@@ -158,17 +160,19 @@ app.post('/api/rental/rental-agreement/guest/:gid/payment', (req, res) =>
 app.get('/api/employee/:empid/property-list', (req, res) =>
         empListView.handleEmpPropertyList(req, res, db_pool)
 );
-// Get the list of all guests for an employee
-app.get('/api/employee/guest-list', (req, res) =>
-        empListView.handleAllGuestList(req, res, db_pool)
-);
 // Get the list of the guests from the same country with the employee
 app.get('/api/employee/:empid/guest-list', (req, res) =>
         empListView.handleGuestList(req, res, db_pool)
 );
-// Get all rental agreements as a list sorted by amount in the ascending order
-app.get('/api/employee/rental-agreement-list', (req, res) =>
-        empListView.handleRentalAgreementList(req, res, db_pool)
+
+/**
+ * project required queries which cannot fit our design
+ */
+app.get('/api/project/all-guest-list', (req, res) =>
+        project.handleAllGuestList(req, res, db_pool)
+);
+app.get('/api/project/completed-cheapest-rental-agreement', (req, res) =>
+        project.handleCompletedCheapestRental(req, res, db_pool)
 );
 
 app.get('/', (req, res) => {
