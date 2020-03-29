@@ -5,7 +5,7 @@ const handleProfile = async (req, res, db_pool) => {
                 const client = await db_pool.connect();
                 try {
                         const queryText =
-                                'SELECT * FROM project.user WHERE uid = $1;';
+                                'SELECT * FROM project.usr WHERE uid = $1;';
                         const { rows } = await client.query(queryText, [uid]);
 
                         if (rows.length > 0) {
@@ -49,13 +49,11 @@ const handleHostProperty = async (req, res, db_pool) => {
                         const { hid } = res1.rows[0];
                         // get the property list
                         const propertyQueryText =
-                                'SELECT * FROM project.property WHERE hid = $1;';
+                                'SELECT P.prid, P.title, P.country, PR.price, R.rating, R.review_num FROM(project.property as P natural join project.pricing as PR) natural left outer join (SELECT prid, AVG(rating) as rating, COUNT(rating) as review_num from project.review GROUP BY prid) as R WHERE P.hid = $1';
                         const res2 = await client.query(propertyQueryText, [
                                 hid
                         ]);
-                        res.status(200).jsonp({
-                                property_list: res2.rows
-                        });
+                        res.status(200).json(res2.rows);
                 } catch (err) {
                         console.error('Error during the query.', err.stack);
                         res.status(400).json('Invalid Inputs.');

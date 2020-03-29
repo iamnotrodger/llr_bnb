@@ -75,6 +75,7 @@ const ProfilePage = () => {
                                                 );
                                         }
                                         const fetchedProperties = await responseThree.json();
+                                        console.log(fetchedProperties);
                                         setHostProperty(fetchedProperties);
                                 }
                                 setLoading(false);

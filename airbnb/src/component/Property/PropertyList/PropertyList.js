@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
+// import Select from 'react-select';
 import PropertyMap from './PropertyMap';
 import './PropertyList.css';
 
@@ -18,13 +18,13 @@ const PropertyList = ({ properties, type, loadAllProperty, onFilter }) => {
                 <div className='list'>
                         <div className='list-header'>
                                 <h2>{type}</h2>
-                                <Select
+                                {/* <Select
                                         name='filter'
                                         className='property-filter'
                                         placeholder='Filter'
                                         options={filterOption}
                                         onChange={handleSelectChange}
-                                />
+                                /> */}
                         </div>
                         <PropertyMap properties={properties} />
                         <p className='list-button' onClick={loadAllProperty}>
