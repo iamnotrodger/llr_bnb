@@ -43,6 +43,8 @@ const handlePayment = async (req, res, db_pool, Joi) => {
             const { signing } = rows[0];
             if (signing != 'approved') {
                 res.status(400).json('The rental agreement is not approved by the host yet.');
+                await client.release();
+                return;
             } else {
                 const PaymentQueryText = 
                     'UPDATE project.payment SET method = $1, card_num = $2, status = $3 WHERE pid = $4;';
