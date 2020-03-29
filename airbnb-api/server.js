@@ -180,6 +180,10 @@ app.get('/api/project/completed-cheapest-rental-agreement', (req, res) =>
 app.get('/api/project/all-rented-property', (req, res) =>
 	project.handleAllRentedProperty(req, res, db_pool)
 );
+// query 5
+app.get('/api/project/all-not-rented-property', (req, res) =>
+	project.handleAllNotRentedProperty(req, res, db_pool)
+);
 
 app.get('/', (req, res) => {
         res.end('The server is running on port 3000...');
