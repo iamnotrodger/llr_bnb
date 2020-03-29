@@ -65,16 +65,18 @@ const ProfilePage = () => {
                                 const fetchedRevs = await responseTwo.json();
                                 setReviews(fetchedRevs);
 
-                                // if (hid) {
-                                //         const responseThree = await fetch();
-                                //         if (!responseThree.ok) {
-                                //                 throw Error(
-                                //                         'Unable to get Host properties'
-                                //                 );
-                                //         }
-                                //         const fetchedProperties = await responseThree.json();
-                                //         setHostProperty(fetchedProperties);
-                                // }
+                                if (hid) {
+                                        const responseThree = await fetch(
+                                                `http://localhost:3000/api/profile/${uid}/my-property`
+                                        );
+                                        if (!responseThree.ok) {
+                                                throw Error(
+                                                        'Unable to get Host properties'
+                                                );
+                                        }
+                                        const fetchedProperties = await responseThree.json();
+                                        setHostProperty(fetchedProperties);
+                                }
                                 setLoading(false);
                         } catch (err) {
                                 console.log(err);

@@ -1,26 +1,29 @@
 // Route (POST): /api/rental/add-rental-agreement
 const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
-        // handle http request
-        const schema = {
-                gid: Joi.number()
-                        .integer()
-                        .required(),
-                prid: Joi.number()
-                        .integer()
-                        .required(),
-                start_date: Joi.date().required(),
-                end_date: Joi.date().required() // TODO: try to valide end_date > start_end
-        };
-        const { error } = Joi.validate(req.body, schema);
-        if (error) {
-                res.status(400).json(error.details[0].message);
-                return;
-        }
-        const { gid, prid, start_date, end_date } = req.body;
-        // calculate days
-        const start = new Date(start_date);
-        const end = new Date(end_date);
-        const days = Math.round((end - start) / 1000 / 86400) + 1;
+    // handle http request
+    const schema = {
+        gid: Joi.number()
+            .integer()
+            .required(),
+        prid: Joi.number()
+            .integer()
+            .required(),
+        start_date: Joi.date()
+            .required(),
+        end_date: Joi.date()
+            .min(Joi.ref('start_date'))
+            .required()
+    };
+    const {error} = Joi.validate(req.body, schema);
+    if (error) {
+        res.status(400).json(error.details[0].message);
+        return;
+    }
+    const { gid, prid, start_date, end_date } = req.body;
+    // calculate days
+    const start = new Date(start_date);
+    const end = new Date(end_date);
+    const days = Math.round((end - start) / 1000 / 86400) + 1;
 
         try {
                 const client = await db_pool.connect();
@@ -108,6 +111,7 @@ const handleApproval = async (req, res, db_pool, Joi) => {
         const { hid } = req.params;
 
         try {
+<<<<<<< HEAD
                 const client = await db_pool.connect();
                 try {
                         const queryText =
@@ -122,6 +126,15 @@ const handleApproval = async (req, res, db_pool, Joi) => {
                 } finally {
                         client.release();
                 }
+=======
+            const queryText = 
+                'UPDATE project.rental_agreement SET signing = $1, signing_date = $2 WHERE rtid = $3 AND hid = $4;';
+            const today = new Date();
+            const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            // console.log(date); // test
+            await client.query(queryText, [signing, date, rtid, hid]);
+            res.status(200).json('Successfully update the signing');
+>>>>>>> backend
         } catch (err) {
                 res.status(503).json('Service Unavailable');
                 console.error(

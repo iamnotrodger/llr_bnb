@@ -38,6 +38,8 @@ const rental = require('./controller/Rental/rental');
 const rentalList = require('./controller/Rental/rentalList');
 const payment = require('./controller/Rental/payment');
 
+const empListView = require('./controller/Manage/empListView');
+
 app.use(express.json());
 app.use(cors());
 
@@ -88,9 +90,17 @@ app.put('/api/profile/update/address', (req, res) =>
 app.put('/api/profile/update/phonenum', (req, res) =>
         profileUpdate.handleUpdatePhone(req, res, db_pool, Joi)
 );
-// Gets all the review that the user has made
+// Get all the review that the user has made
 app.get('/api/profile/review/review-list/:gid/:num?', (req, res) =>
         reviewList.handleReviewProfile(req, res, db_pool)
+);
+// Get the property for a host
+app.get('/api/profile/:uid/my-property', (req, res) =>
+        profile.handleHostProperty(req, res, db_pool)
+);
+// Get the guests for a property the guest own
+app.get('/api/profile/:uid/my-property/:prid', (req, res) =>
+        profile.handlePropertyGuest(req, res, db_pool)
 );
 
 /*
@@ -116,10 +126,6 @@ app.post('/api/review/add-review', (req, res) =>
 app.get('/api/property/review/review-list/:prid/:num?', (req, res) =>
         reviewList.handleReviewProperty(req, res, db_pool)
 );
-// Get the property list for an employee
-app.get('/api/employee/:empid/property-list', (req, res) =>
-        propertyList.handleEmpPropertyList(req, res, db_pool)
-);
 
 /*
  * rental agreement
@@ -143,6 +149,26 @@ app.get('/api/rental/rental-agreement/guest/:gid', (req, res) =>
 // Pay a rental agreement
 app.post('/api/rental/rental-agreement/guest/:gid/payment', (req, res) =>
         payment.handlePayment(req, res, db_pool, Joi)
+);
+
+/*
+ * employee functionality
+ */
+// Get the property list for an employee
+app.get('/api/employee/:empid/property-list', (req, res) =>
+        empListView.handleEmpPropertyList(req, res, db_pool)
+);
+// Get the list of all guests for an employee
+app.get('/api/employee/guest-list', (req, res) =>
+        empListView.handleAllGuestList(req, res, db_pool)
+);
+// Get the list of the guests from the same country with the employee
+app.get('/api/employee/:empid/guest-list', (req, res) =>
+        empListView.handleGuestList(req, res, db_pool)
+);
+// Get all rental agreements as a list sorted by amount in the ascending order
+app.get('/api/employee/rental-agreement-list', (req, res) =>
+        empListView.handleRentalAgreementList(req, res, db_pool)
 );
 
 app.get('/', (req, res) => {
