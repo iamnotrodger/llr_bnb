@@ -56,22 +56,22 @@ const GuestInput = ({ onChange, input, onSelectChange }) => {
                         </div>
                         <div>
                                 <input
-                                        className='login-input register-addr'
-                                        name='address'
-                                        type='address'
-                                        placeholder='Address'
-                                        onChange={onChange}
-                                        value={address}
-                                />
-                        </div>
-                        <div>
-                                <input
                                         className='login-input register-email'
                                         name='email'
                                         type='email'
                                         placeholder='Email Address'
                                         onChange={onChange}
                                         value={email}
+                                />
+                        </div>
+                        <div>
+                                <input
+                                        className='login-input register-addr'
+                                        name='address'
+                                        type='address'
+                                        placeholder='Address'
+                                        onChange={onChange}
+                                        value={address}
                                 />
                         </div>
                         <div>

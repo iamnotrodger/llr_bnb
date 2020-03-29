@@ -113,6 +113,8 @@ export class PropertyInput extends Component {
                                                         className='login-input register-pricing'
                                                         name='price'
                                                         type='number'
+                                                        min='0.01'
+                                                        step='0.01'
                                                         placeholder='Price (C$)'
                                                         onChange={(e) =>
                                                                 this.handlePriceChange(

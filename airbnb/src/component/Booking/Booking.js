@@ -135,9 +135,9 @@ class Booking extends Component {
                                 <div className='bookingHeader'>
                                         <div className='price'>
                                                 <h3>{`$${price}`}</h3>
-                                                <spam className='price-night'>
+                                                <span className='price-night'>
                                                         per night
-                                                </spam>
+                                                </span>
                                         </div>
                                         {ReviewStats(rating, length)}
                                         <div className='lineMargin'>
@@ -184,7 +184,9 @@ class Booking extends Component {
                                 <div className='bookingPrice'>
                                         <span>{`$${price} x ${this.state.numDays} nights`}</span>
                                         <span className='price-total'>
-                                                {total ? `$${total}` : null}
+                                                {total
+                                                        ? `$${total.toFixed(2)}`
+                                                        : null}
                                         </span>
                                 </div>
 
