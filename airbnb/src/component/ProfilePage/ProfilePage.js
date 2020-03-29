@@ -7,7 +7,7 @@ import ReviewList from '../Review/ReviewList/ReviewList';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
 import './ProfilePage.css';
-import AgreementList from '../RentalPage/AgreementList';
+import AgreementList from '../RentalAgreement/AgreementList/AgreementList';
 
 const ProfilePage = () => {
         const { user } = useContext(UserContext);
@@ -30,6 +30,35 @@ const ProfilePage = () => {
         const [edit, setEdit] = useState(true);
         const [loading, setLoading] = useState(false);
         const [loadAction, setLoadAction] = useState(false);
+        const dummyAgreements = [
+                {
+                        rtid: 1, 
+                        gid: 13, 
+                        hid: 1, 
+                        prid: 12,
+                        signing: 'pending',
+                        start_date: '2020-07-01T04:00:00:00.000Z',
+                        end_date: '2020-07-01T04:00:00:00.000Z',
+                        signing_date: '2020-07-01T04:00:00:00.000Z',
+                        status: 'pending', 
+                        title: 'Test', 
+                        guest_name: 'Dummy 2'
+                },
+
+                {
+                        rtid: 2, 
+                        gid: 14, 
+                        hid: 1, 
+                        prid: 2,
+                        signing: 'approved',
+                        start_date: '2020-07-01T04:00:00:00.000Z',
+                        end_date: '2020-07-01T04:00:00:00.000Z',
+                        signing_date: '2020-07-01T04:00:00:00.000Z',
+                        status: 'approved', 
+                        title: 'Test 2', 
+                        guest_name: 'Dummy 12'
+                },
+        ];
 
         useEffect(() => {	// run when render()
                 const abordController = new AbortController();
@@ -65,6 +94,7 @@ const ProfilePage = () => {
                                 }
                                 const fetchedRevs = await responseTwo.json();
                                 setReviews(fetchedRevs);
+                                const responseFour = ``
                                 if (hid) {
                                         const responseThree = await fetch(
                                                 `http://localhost:3000/api/profile/${uid}/my-property`
@@ -77,21 +107,18 @@ const ProfilePage = () => {
                                         const fetchedProperties = await responseThree.json();
                                         setHostProperty(fetchedProperties);
 
-                                        const responseFour = await fetch(
+                                        responseFour = await fetch(
                                                 `http://localhost:3000/api/rental/rental-agreement/host/${hid}`
                                         );
-                                        if (responseFour.ok) {
-                                                const fetchedAgrees = await responseFour.json();
-                                                setAgreements(fetchedAgrees);
-                                        }
+                                        
                                 }else{
-                                        const responseFour = await fetch(
+                                        responseFour = await fetch(
                                                 `http://localhost:3000/api/rental/rental-agreement/host/${gid}`
                                         );
-                                        if (responseFour.ok) {
-                                                const fetchedAgrees = await responseFour.json();
-                                                setAgreements(fetchedAgrees);
-                                        }
+                                }
+                                if (responseFour.ok) {
+                                        const fetchedAgrees = await responseFour.json();
+                                        setAgreements(fetchedAgrees);
                                 }
                                 setLoading(false);
                         } catch (err) {
@@ -103,7 +130,7 @@ const ProfilePage = () => {
                 return function cleanup() {
                         abordController.abort();	// abort when error
                 };
-        }, [uid]); // run everytime when uid changed
+        }, [uid]); // run every time when uid is changed
 
         const handleTab = (data) => {
                 console.log(data);
@@ -218,10 +245,9 @@ const ProfilePage = () => {
                                                                 />
                                                         </div>
                                                         <div name='Rental Agreements'>
-                                                                <AgreementList 
-                                                                        hid={hid}
+                                                                <AgreementList
                                                                         agreements={
-                                                                                agreements
+                                                                                dummyAgreements
                                                                         }
                                                                 />
                                                         </div>
