@@ -21,9 +21,8 @@ const NavBar = () => {
         const filteredList = links.filter((link) => {
                 return (
                         link.label === 'About' ||
-                        (isSignedIn &&
-                                (link.label === 'Add Property' ||
-                                        link.label === 'Query Requirment')) ||
+                        link.label === 'Query Requirment' ||
+                        (isSignedIn && link.label === 'Add Property') ||
                         (!isSignedIn &&
                                 (link.link === '/login' ||
                                         link.link === '/register'))

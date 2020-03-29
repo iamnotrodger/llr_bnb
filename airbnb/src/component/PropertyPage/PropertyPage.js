@@ -5,6 +5,7 @@ import ReviewHeader from '../Review/ReviewList/ReviewHeader';
 import ReviewList from '../Review/ReviewList/ReviewList';
 import ReviewWrite from '../Review/ReviewWrite/ReviewWrite';
 import Booking from '../Booking/Booking';
+import AvailableDates from './AvailableDates';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
 import './PropertyPage.css';
@@ -62,9 +63,10 @@ const PropertyPage = (props) => {
                                                 price,
                                                 reviews,
                                                 avgs,
-                                                unavailableDates,
+                                                unavaible_dates,
                                                 host_name
                                         } = await response.json();
+                                        console.log(unavaible_dates);
                                         setProperty({
                                                 title: title,
                                                 location: location,
@@ -78,7 +80,7 @@ const PropertyPage = (props) => {
                                         });
                                         if (unavailableDates) {
                                                 setUnavailableDates(
-                                                        unavailableDates
+                                                        unavaible_dates
                                                 );
                                         }
                                         setReview({ reviews: reviews });
@@ -143,10 +145,16 @@ const PropertyPage = (props) => {
                                                         <div className='lml'></div>
                                                 </div>
                                         </div>
-
-                                        {/* <div className='lineMargin'>
-					<div className='lml'></div>
-				</div> */}
+                                        <div>
+                                                <AvailableDates
+                                                        unavailableDates={
+                                                                unavailableDates
+                                                        }
+                                                />
+                                        </div>
+                                        <div className='lineMargin'>
+                                                <div className='lml'></div>
+                                        </div>
                                         <div>
                                                 <ReviewHeader
                                                         rating={averages.rating}
