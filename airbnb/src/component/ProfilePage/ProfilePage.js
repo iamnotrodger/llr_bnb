@@ -7,6 +7,7 @@ import ReviewList from '../Review/ReviewList/ReviewList';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
 import './ProfilePage.css';
+import AgreementList from '../RentalPage/AgreementList';
 
 const ProfilePage = () => {
         const { user } = useContext(UserContext);
@@ -24,16 +25,16 @@ const ProfilePage = () => {
         });
         const [oldUserInfo, setOldUserInfo] = useState(userInfo);
         const [reviews, setReviews] = useState([]);
-        // const [rentalAgreements, setRentalAgreements] = useState([]);
+        const [agreements, setAgreements] = useState([]);
         const [hostProperty, setHostProperty] = useState([]);
         const [edit, setEdit] = useState(true);
         const [loading, setLoading] = useState(false);
         const [loadAction, setLoadAction] = useState(false);
 
-        useEffect(() => {
+        useEffect(() => {	// run when render()
                 const abordController = new AbortController();
                 const signal = abordController.signal;
-                const fetchData = async () => {
+                const fetchData = async () => {		// async func define
                         setLoading(true);
                         try {
                                 const responseOne = await fetch(
@@ -64,7 +65,6 @@ const ProfilePage = () => {
                                 }
                                 const fetchedRevs = await responseTwo.json();
                                 setReviews(fetchedRevs);
-
                                 if (hid) {
                                         const responseThree = await fetch(
                                                 `http://localhost:3000/api/profile/${uid}/my-property`
@@ -77,6 +77,22 @@ const ProfilePage = () => {
                                         const fetchedProperties = await responseThree.json();
                                         console.log(fetchedProperties);
                                         setHostProperty(fetchedProperties);
+
+                                        const responseFour = await fetch(
+                                                `http://localhost:3000/api/rental/rental-agreement/host/${hid}`
+                                        );
+                                        if (responseFour.ok) {
+                                                const fetchedAgrees = await responseFour.json();
+                                                setAgreements(fetchedAgrees);
+                                        }
+                                }else{
+                                        const responseFour = await fetch(
+                                                `http://localhost:3000/api/rental/rental-agreement/host/${gid}`
+                                        );
+                                        if (responseFour.ok) {
+                                                const fetchedAgrees = await responseFour.json();
+                                                setAgreements(fetchedAgrees);
+                                        }
                                 }
                                 setLoading(false);
                         } catch (err) {
@@ -84,11 +100,11 @@ const ProfilePage = () => {
                                 setLoading(false);
                         }
                 };
-                fetchData();
+                fetchData();	// async func call
                 return function cleanup() {
-                        abordController.abort();
+                        abordController.abort();	// abort when error
                 };
-        }, [uid]);
+        }, [uid]); // run everytime when uid changed
 
         const handleTab = (data) => {
                 console.log(data);
@@ -202,7 +218,14 @@ const ProfilePage = () => {
                                                                         }
                                                                 />
                                                         </div>
-                                                        <div name='Rental Agreements'></div>
+                                                        <div name='Rental Agreements'>
+                                                                <AgreementList 
+                                                                        hid={hid}
+                                                                        agreements={
+                                                                                agreements
+                                                                        }
+                                                                />
+                                                        </div>
                                                         <div
                                                                 name='Host Properties'
                                                                 style={{

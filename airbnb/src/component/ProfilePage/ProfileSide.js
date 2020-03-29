@@ -22,7 +22,7 @@ const ProfileSide = ({ user, onChange, edit, onSubmit, setEdit }) => {
         };
 
         return (
-                <div className='sideContainerx'>
+                <div className='sideContainer'>
                         <div className='profileImg'>
                                 <div className='profile'>
                                         <img
