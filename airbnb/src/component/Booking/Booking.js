@@ -25,7 +25,6 @@ class Booking extends Component {
                         moment(unavailableDay).isSame(day, 'day')
                 );
         };
-
         // Returns true if the range of dates contains unavailable dates.
         checkForBlockedDates = (start, end, dates) => {
                 const dateFormat = 'YYYY-MM-DD';

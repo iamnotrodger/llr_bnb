@@ -65,7 +65,7 @@ const App = () => {
                                                 component={RegisterPage}
                                         />
 
-                                        <PrivateRoute
+                                        <Route
                                                 path='/query-requirment'
                                                 component={QueryRequirment}
                                         />

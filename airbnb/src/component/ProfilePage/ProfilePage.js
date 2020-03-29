@@ -74,7 +74,16 @@ const ProfilePage = () => {
                                                         fetchedProperties
                                                 );
                                         }
+
+                                        const responseFour = await fetch(
+                                                `http://localhost:3000//api/rental/rental-agreement/host/${hid}`
+                                        );
+                                        if (responseFour.ok) {
+                                                const fetchedAgrees = await responseFour.json();
+                                                setReviews(fetchedAgrees);
+                                        }
                                 }
+
                                 setLoading(false);
                         } catch (err) {
                                 console.log(err);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './QueryRequirment.css';
 
 const QueryRequirment = () => {
+        const handleGuestList = async () => {};
         return (
                 <div className='main query-requirment'>
                         <div>
