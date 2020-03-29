@@ -76,8 +76,86 @@ const handleAllRentedProperty = async (req, res, db_pool) => {
     }
 }
 
+// query 5
+// Route (GET): /api/project/all-not-rented-property
+const handleAllNotRentedProperty = async (req, res, db_pool) => {
+    try {
+        const client = await db_pool.connect();
+        try {
+            const queryText =
+                'SELECT * FROM project.property WHERE prid NOT IN (SELECT prid FROM project.rental_agreement);';
+            const res1 = await client.query(queryText);
+            res.status(200).json(res1.rows);
+        } catch (err) {
+            console.error('Error during the query.', err.stack);
+            res.status(400).json('Invalid Inputs.');
+        } finally {
+            client.release();
+        }
+    } catch (err) {
+        res.status(503).json('Service Unavailable');
+        console.error(
+            'Error during the connection to the database',
+            err.stack
+        );
+    }
+}
+
+// query 6
+// Route (GET): /api/project/rented-on-10th
+const handleRentedOn10th = async (req, res, db_pool) => {
+    try {
+        const client = await db_pool.connect();
+        try {
+            const queryText =
+                'SELECT * FROM project.property NATURAL JOIN project.rental_agreement WHERE date_part(\'day\', start_date) <= 10 AND 10 <= date_part(\'day\', end_date);';
+            const res1 = await client.query(queryText);
+            res.status(200).json(res1.rows);
+        } catch (err) {
+            console.error('Error during the query.', err.stack);
+            res.status(400).json('Invalid Inputs.');
+        } finally {
+            client.release();
+        }
+    } catch (err) {
+        res.status(503).json('Service Unavailable');
+        console.error(
+            'Error during the connection to the database',
+            err.stack
+        );
+    }
+}
+
+// query 7
+// Route (GET): /api/project/15k-employee
+const handle15kEmployee = async (req, res, db_pool) => {
+    try {
+        const client = await db_pool.connect();
+        try {
+            const queryText =
+                'SELECT uid, empid, firstname, middlename, lastname, country, position, salary FROM project.employee NATURAL JOIN project.usr WHERE salary >= 15000 ORDER BY position DESC, empid ASC;';
+            const res1 = await client.query(queryText);
+            res.status(200).json(res1.rows);
+        } catch (err) {
+            console.error('Error during the query.', err.stack);
+            res.status(400).json('Invalid Inputs.');
+        } finally {
+            client.release();
+        }
+    } catch (err) {
+        res.status(503).json('Service Unavailable');
+        console.error(
+            'Error during the connection to the database',
+            err.stack
+        );
+    }
+}
+
 module.exports = {
     handleAllGuestList,
     handleCompletedCheapestRental,
-    handleAllRentedProperty
+    handleAllRentedProperty,
+    handleAllNotRentedProperty,
+    handleRentedOn10th,
+    handle15kEmployee
 }
