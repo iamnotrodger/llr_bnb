@@ -168,11 +168,17 @@ app.get('/api/employee/:empid/guest-list', (req, res) =>
 /**
  * project required queries which cannot fit our design
  */
+// query 2
 app.get('/api/project/all-guest-list', (req, res) =>
         project.handleAllGuestList(req, res, db_pool)
 );
+// query 3
 app.get('/api/project/completed-cheapest-rental-agreement', (req, res) =>
         project.handleCompletedCheapestRental(req, res, db_pool)
+);
+// query 4
+app.get('/api/project/all-rented-property', (req, res) =>
+	project.handleAllRentedProperty(req, res, db_pool)
 );
 
 app.get('/', (req, res) => {
