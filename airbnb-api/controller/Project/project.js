@@ -28,18 +28,10 @@ const handleAllGuestList = async (req, res, db_pool) => {
 // Route (GET): /api/project/completed-cheapest-rental-agreement
 const handleCompletedCheapestRental = async (req, res, db_pool) => {
         try {
-                const client = await db_pool.connect();
-                try {
-                        const queryText =
-                                "SELECT * FROM project.property NATURAL JOIN project.rental_agreement NATURAL JOIN project.payment WHERE amount >= ALL (SELECT amount FROM project.payment) AND status = 'completed';";
-                        const res1 = await client.query(queryText);
-                        res.status(200).json(res1.rows[0]);
-                } catch (err) {
-                        console.error('Error during the query.', err.stack);
-                        res.status(400).json('Invalid Inputs.');
-                } finally {
-                        client.release();
-                }
+                const queryText =
+                        "SELECT * FROM project.property NATURAL JOIN project.rental_agreement NATURAL JOIN project.payment WHERE amount >= ALL (SELECT amount FROM project.payment WHERE status = 'completed') AND status = 'completed';";
+                const res1 = await client.query(queryText);
+                res.status(200).json(res1.rows[0]);
         } catch (err) {
                 res.status(503).json('Service Unavailable');
                 console.error(
