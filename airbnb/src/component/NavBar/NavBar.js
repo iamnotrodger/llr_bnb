@@ -6,19 +6,11 @@ import ProfileIcon from './ProfileIcon';
 import './NavBar.css';
 
 const links = [
-        {
-                label: 'Add Property',
-                link: '/add-property'
-        },
-        { role: 'Guest', label: 'About', link: '/about' },
-        {
-                label: 'Register',
-                link: '/register'
-        },
-        {
-                label: 'Log in',
-                link: '/login'
-        }
+        { label: 'Add Property', link: '/add-property' },
+        { label: 'Query Requirment', link: '/query-requirment' },
+        { label: 'About', link: '/about' },
+        { label: 'Register', link: '/register' },
+        { label: 'Log in', link: '/login' }
 ];
 
 const NavBar = () => {
@@ -29,6 +21,7 @@ const NavBar = () => {
         const filteredList = links.filter((link) => {
                 return (
                         link.label === 'About' ||
+                        link.label === 'Query Requirment' ||
                         (isSignedIn && link.label === 'Add Property') ||
                         (!isSignedIn &&
                                 (link.link === '/login' ||

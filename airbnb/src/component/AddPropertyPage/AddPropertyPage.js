@@ -80,7 +80,20 @@ const AddPropertyPage = () => {
                                                                 hid: hid
                                                         },
                                                         rooms: roomsOne,
-                                                        pricing: price
+                                                        pricing: {
+                                                                ...price,
+                                                                price:
+                                                                        price
+                                                                                .price
+                                                                                .length >
+                                                                        0
+                                                                                ? parseFloat(
+                                                                                          price.price
+                                                                                  ).toFixed(
+                                                                                          2
+                                                                                  )
+                                                                                : 0
+                                                        }
                                                 })
                                         }
                                 );
@@ -95,7 +108,15 @@ const AddPropertyPage = () => {
                                 const hidNew = await registerHost(
                                         propertyInput,
                                         roomsOne,
-                                        price,
+                                        {
+                                                ...price,
+                                                price:
+                                                        price.price.length > 0
+                                                                ? parseFloat(
+                                                                          price.price
+                                                                  ).toFixed(2)
+                                                                : 0
+                                        },
                                         uid
                                 );
                                 const newUser = {
@@ -103,9 +124,15 @@ const AddPropertyPage = () => {
                                         gid: gid,
                                         hid: hidNew.hid
                                 };
-                                setError(false);
                                 setHostRegistered(true);
+                                setError(false);
                                 setLoading(false);
+                                setTimeout(() => {
+                                        setHostRegistered(false);
+                                        console.log(
+                                                'You have been registered as a Host.'
+                                        );
+                                }, 2000);
                                 handleLoadUser(newUser);
                                 return;
                         }

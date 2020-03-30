@@ -60,19 +60,18 @@ const ProfilePage = () => {
                                 const responseTwo = await fetch(
                                         `http://localhost:3000/api/profile/review/review-list/${gid}`
                                 );
-                                if (!responseTwo.ok) {
-                                        throw Error('Failed to get Review.');
+                                if (responseTwo.ok) {
+                                        const fetchedRevs = await responseTwo.json();
+                                        setReviews(fetchedRevs);
                                 }
-                                const fetchedRevs = await responseTwo.json();
-                                setReviews(fetchedRevs);
-                                
                                 if (hid) {
                                         const responseThree = await fetch(
                                                 `http://localhost:3000/api/profile/${uid}/my-property`
                                         );
-                                        if (!responseThree.ok) {
-                                                throw Error(
-                                                        'Unable to get Host properties'
+                                        if (responseThree.ok) {
+                                                const fetchedProperties = await responseThree.json();
+                                                setHostProperty(
+                                                        fetchedProperties
                                                 );
                                         }
                                         const fetchedProperties = await responseThree.json();
@@ -94,6 +93,7 @@ const ProfilePage = () => {
                                                 setAgreements(fetchedAgrees.rental_agreement_list);
                                         }
                                 }
+
                                 setLoading(false);
                         } catch (err) {
                                 console.log(err);

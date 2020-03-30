@@ -46,6 +46,10 @@
         z-index: 3 !important;
 }
 
+.avaialble-tile {
+        margin-bottom: 5px;
+}
+
 @media (min-width: 1128px) {
         .propertyPage {
                 max-width: 1080px !important;

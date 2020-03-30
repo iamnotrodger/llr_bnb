@@ -25,7 +25,6 @@ class Booking extends Component {
                         moment(unavailableDay).isSame(day, 'day')
                 );
         };
-
         // Returns true if the range of dates contains unavailable dates.
         checkForBlockedDates = (start, end, dates) => {
                 const dateFormat = 'YYYY-MM-DD';
@@ -135,9 +134,9 @@ class Booking extends Component {
                                 <div className='bookingHeader'>
                                         <div className='price'>
                                                 <h3>{`$${price}`}</h3>
-                                                <spam className='price-night'>
+                                                <span className='price-night'>
                                                         per night
-                                                </spam>
+                                                </span>
                                         </div>
                                         {ReviewStats(rating, length)}
                                         <div className='lineMargin'>
@@ -184,7 +183,9 @@ class Booking extends Component {
                                 <div className='bookingPrice'>
                                         <span>{`$${price} x ${this.state.numDays} nights`}</span>
                                         <span className='price-total'>
-                                                {total ? `$${total}` : null}
+                                                {total
+                                                        ? `$${total.toFixed(2)}`
+                                                        : null}
                                         </span>
                                 </div>
 
