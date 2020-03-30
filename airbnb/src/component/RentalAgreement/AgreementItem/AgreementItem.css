@@ -14,3 +14,7 @@
     width: 200px;
     margin-top: 10px;
 }
+
+.disapprove-btn:hover {
+    background: rgb(220, 35, 35) !important;
+}
