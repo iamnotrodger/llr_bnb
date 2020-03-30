@@ -1,47 +1,37 @@
 import React, { useState } from 'react';
 
-const AgreementItem = ({ isHost, agreement }) => {
-        const [agreementInfo, setAgreementInfo] = useState({
-                rtid: null, 
-                gid: null, 
-                hid: null, 
-                prid: null, 
-                signing: '', 
-                start_date: '', 
-                end_date: '', 
-                signing_date: '', 
-                status: '', 
-                title: '', 
-                guest_name: ''});
-        if(isHost){
-                const { rtid, gid, hid, prid, signing, start_date, end_date, signing_date, status, title, guest_name } = agreement;
-                setAgreementInfo(agreement)
-        }else{
-                const { rtid, gid, hid, prid, signing, start_date, end_date, signing_date, status, title, host_name } = agreement;
-                setAgreementInfo(agreement)
-        }
+const AgreementItem = ({ isHost, agreement, setLoading }) => {
+        const { rtid, gid, hid, prid, signing, start_date, end_date, signing_date, status, title } = agreement;
         const [approved, setApproved] = useState(
-                agreementInfo.status === 'approved' ? true : false
+                status === 'approved' ? true : false
         );
 
-        const onApproveClicked = async () => {
+        const onApprovalClicked = async ({approval}) => {
                 try {
-                        // const response = await fetch();
-                        // (!response.ok) {
-                        //         setApproved(true);
-                        // }
-                } catch(err) {
-                        console.log(err);
-                        throw Error(err)
-                }
-        }
-
-        const onDisapproveClicked = async () => {
-                try {
-                        // const response = await fetch();
-                        // (!response.ok) {
-                        //         setApproved(true);
-                        // }
+                        if (!setLoading) {
+                                setLoading(true);
+                        }
+                        const response = await fetch(
+                                `http://localhost:3000/api/rental/rental-agreement/host/${hid}`,
+                                {
+                                        method: 'post',
+                                        headers: {
+                                                'Content-Type':
+                                                        'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                                rtid: rtid,
+                                                signing: approval
+                                        })
+                                }
+                        );
+                        approval === 'approved' ? setApproved(true) : setApproved(false);
+                        if (!setLoading) {
+                                setLoading(false);
+                        }
+                        if (!response.ok) {
+                                throw Error('Unable to approve');
+                        }
                 } catch(err) {
                         console.log(err);
                         throw Error(err)
@@ -50,25 +40,25 @@ const AgreementItem = ({ isHost, agreement }) => {
 
         return (
                 <div className='agreement'>
-                        <h3>{agreementInfo.title}</h3>
+                        <h3>{title}</h3>
                         {isHost ?
-                                (<p className='guest-name'>Guest name: {agreementInfo.guest_name}</p>)
+                                (<p className='guest-name'>Guest name: {agreement.guest_name}</p>)
                                 :
-                                (<p className='host-name'>Host name: {agreementInfo.host_name}</p>)
+                                (<p className='host-name'>Host name: {agreement.host_name}</p>)
                         }
-                        <p className='start-date'>Start date: {agreementInfo.start_date}</p>
-                        <p className='end-date'>End date: {agreementInfo.end_date}</p>
+                        <p className='start-date'>Start date: {start_date}</p>
+                        <p className='end-date'>End date: {end_date}</p>
                         {!approved ? (
                                 <div>
                                         <button
                                                 className = 'submitButton approve-btn'
-                                                onClick={onApproveClicked}>
+                                                onClick={onApprovalClicked('approved')}>
                                                 Approve
                                         </button> 
 
                                         <button
                                                 className = 'submitButton disapprove-btn'
-                                                onClick={onDisapproveClicked}>
+                                                onClick={onApprovalClicked('disapproved')}>
                                                 Disapprove
                                         </button> 
                                 </div>

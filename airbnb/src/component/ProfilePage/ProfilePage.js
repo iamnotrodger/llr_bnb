@@ -74,8 +74,6 @@ const ProfilePage = () => {
                                                         fetchedProperties
                                                 );
                                         }
-                                        const fetchedProperties = await responseThree.json();
-                                        setHostProperty(fetchedProperties);
 
                                         const responseFour = await fetch(
                                                 `http://localhost:3000/api/rental/rental-agreement/host/${hid}`
@@ -93,7 +91,6 @@ const ProfilePage = () => {
                                                 setAgreements(fetchedAgrees.rental_agreement_list);
                                         }
                                 }
-
                                 setLoading(false);
                         } catch (err) {
                                 console.log(err);
@@ -220,9 +217,8 @@ const ProfilePage = () => {
                                                         </div>
                                                         <div name='Rental Agreements'>
                                                                 <AgreementList
-                                                                        agreements={
-                                                                                agreements
-                                                                        }
+                                                                        agreements={ agreements }
+                                                                        setLoading={ setLoadAction }
                                                                 />
                                                         </div>
                                                         <div
