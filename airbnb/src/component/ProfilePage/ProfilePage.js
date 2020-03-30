@@ -30,35 +30,6 @@ const ProfilePage = () => {
         const [edit, setEdit] = useState(true);
         const [loading, setLoading] = useState(false);
         const [loadAction, setLoadAction] = useState(false);
-        const dummyAgreements = [
-                {
-                        rtid: 1, 
-                        gid: 13, 
-                        hid: 1, 
-                        prid: 12,
-                        signing: 'pending',
-                        start_date: '2020-07-01T04:00:00:00.000Z',
-                        end_date: '2020-07-01T04:00:00:00.000Z',
-                        signing_date: '2020-07-01T04:00:00:00.000Z',
-                        status: 'pending', 
-                        title: 'Test', 
-                        guest_name: 'Dummy 2'
-                },
-
-                {
-                        rtid: 2, 
-                        gid: 14, 
-                        hid: 1, 
-                        prid: 2,
-                        signing: 'approved',
-                        start_date: '2020-07-01T04:00:00:00.000Z',
-                        end_date: '2020-07-01T04:00:00:00.000Z',
-                        signing_date: '2020-07-01T04:00:00:00.000Z',
-                        status: 'approved', 
-                        title: 'Test 2', 
-                        guest_name: 'Dummy 12'
-                },
-        ];
 
         useEffect(() => {	// run when render()
                 const abordController = new AbortController();
@@ -94,7 +65,7 @@ const ProfilePage = () => {
                                 }
                                 const fetchedRevs = await responseTwo.json();
                                 setReviews(fetchedRevs);
-                                const responseFour = ``
+                                
                                 if (hid) {
                                         const responseThree = await fetch(
                                                 `http://localhost:3000/api/profile/${uid}/my-property`
@@ -107,18 +78,21 @@ const ProfilePage = () => {
                                         const fetchedProperties = await responseThree.json();
                                         setHostProperty(fetchedProperties);
 
-                                        responseFour = await fetch(
+                                        const responseFour = await fetch(
                                                 `http://localhost:3000/api/rental/rental-agreement/host/${hid}`
                                         );
-                                        
+                                        if (responseFour.ok) {
+                                                const fetchedAgrees = await responseFour.json();
+                                                setAgreements(fetchedAgrees.rental_agreement_list);
+                                        }
                                 }else{
-                                        responseFour = await fetch(
+                                        const responseFour = await fetch(
                                                 `http://localhost:3000/api/rental/rental-agreement/host/${gid}`
                                         );
-                                }
-                                if (responseFour.ok) {
-                                        const fetchedAgrees = await responseFour.json();
-                                        setAgreements(fetchedAgrees);
+                                        if (responseFour.ok) {
+                                                const fetchedAgrees = await responseFour.json();
+                                                setAgreements(fetchedAgrees.rental_agreement_list);
+                                        }
                                 }
                                 setLoading(false);
                         } catch (err) {
@@ -247,7 +221,7 @@ const ProfilePage = () => {
                                                         <div name='Rental Agreements'>
                                                                 <AgreementList
                                                                         agreements={
-                                                                                dummyAgreements
+                                                                                agreements
                                                                         }
                                                                 />
                                                         </div>
