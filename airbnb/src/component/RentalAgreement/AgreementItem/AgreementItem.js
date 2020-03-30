@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './AgreementItem.css'
 
 const AgreementItem = ({ isHost, agreement,setLoading }) => {
         const { rtid, gid, hid, prid, signing, start_date, end_date, signing_date, status, title } = agreement;
@@ -35,9 +36,10 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
         };
 
         return (
-                <div className='agreement'>
-                        <div>
-                                <h3>{title}</h3>
+                <div>
+                        <div className='agreement-text'>
+                                <h3 style={{marginBottom:'5px'}}>{title}</h3>
+                                <p className='status' style={{float:'right'}}><h4>Status:</h4> {status}</p>
                                 {isHost ?
                                         (<p className='guest-name'><h4>Guest name:</h4> {agreement.guest_name}</p>)
                                         :

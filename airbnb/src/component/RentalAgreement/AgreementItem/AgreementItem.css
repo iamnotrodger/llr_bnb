@@ -1,0 +1,16 @@
+.agreement-text{
+    text-align: left;
+}
+
+.approve-btn{
+    width: 200px;
+    margin-top: 10px;
+    margin-left: 180px;
+}
+
+.disapprove-btn{
+    float: right;
+    background: brown;
+    width: 200px;
+    margin-top: 10px;
+}

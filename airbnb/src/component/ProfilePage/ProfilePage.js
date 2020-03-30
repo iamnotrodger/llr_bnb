@@ -209,6 +209,9 @@ const ProfilePage = () => {
                                         <div className='profileMain'>
                                                 <TabControl setTab={handleTab}>
                                                         <div name='Reviews'>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
                                                                 <ReviewList
                                                                         reviews={
                                                                                 reviews
@@ -216,6 +219,9 @@ const ProfilePage = () => {
                                                                 />
                                                         </div>
                                                         <div name='Rental Agreements'>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
                                                                 <AgreementList
                                                                         agreements={ agreements }
                                                                         setLoading={ setLoadAction }
@@ -228,6 +234,9 @@ const ProfilePage = () => {
                                                                                 ? ''
                                                                                 : 'none'
                                                                 }}>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
                                                                 <PropertyMap
                                                                         properties={
                                                                                 hostProperty
