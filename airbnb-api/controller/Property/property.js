@@ -23,7 +23,10 @@ const handleViewProperty = async (req, res, db_pool) => {
             const bedQueryText =
                 "SELECT SUM(bed_num) AS bed_num FROM project.room WHERE prid = $1 AND room_type = 'bedroom' GROUP BY prid;";
             const res4 = await client.query(bedQueryText, [prid]);
-            const { bed_num } = res4.rows[0];
+            var bed_num = 0;
+            if (res4.rows.length != 0) {
+              bed_num = res4.rows[0].bed_num;
+            } 
             // get washroom num
             const washroomQueryText =
                 "SELECT COUNT(*) AS washroom_num FROM project.room WHERE prid = $1 AND room_type = 'washroom' GROUP BY prid;";
