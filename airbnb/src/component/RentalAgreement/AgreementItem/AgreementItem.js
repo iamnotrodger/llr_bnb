@@ -3,7 +3,7 @@ import Select from 'react-select';
 import './AgreementItem.css'
 
 const AgreementItem = ({ isHost, agreement,setLoading }) => {
-        const { rtid, gid, hid, prid, signing, start_date, end_date, signing_date, status, title } = agreement;
+        const { rtid, gid, hid, prid, signing, start_date, end_date, signing_date, status, pid, title } = agreement;
         const [signed, setSigned] = useState(
                 (signing !== 'pending') ? true : false
         );
@@ -58,8 +58,12 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
         const onPayClicked = async () => {
                 try {
                         setLoading(true);
+                        console.log(pid)
+                        console.log(rtid)
+                        console.log(cardType)
+                        console.log(parseInt(cardNum))
                         const response = await fetch(
-                                `http://localhost:3000/api/rental/rental-agreement/host/${hid}`,
+                                `http://localhost:3000/api/rental/rental-agreement/guest/${gid}/payment`,
                                 {
                                         method: 'post',
                                         headers: {
@@ -67,7 +71,7 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                                         'application/json'
                                         },
                                         body: JSON.stringify({
-                                                // pid: pid,
+                                                pid: pid,
                                                 rtid: rtid,
                                                 method: cardType,
                                                 card_num: cardNum
@@ -76,10 +80,11 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                         setPayment(true)
                         setLoading(false)
                         if (!response.ok) {
-                                throw Error('Unable to approve');
+                                throw Error('Unable to pay');
                         };
                 } catch(err) {
                         setLoading(false);
+                        console.log(err)
                         throw Error(err)
                 }
         };
@@ -110,6 +115,18 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                 <p className='agreement-text'>{start_date.split("T")[0]}</p>
                                 <h4>- Agreement end on:</h4>
                                 <p className='agreement-text'>{end_date.split("T")[0]}</p>
+                                <h4>- Payment status:</h4>
+                                {(status === 'completed') ?
+                                (<div>
+                                        <p className='agreement-text'>{'Payment Received'}</p>
+                                </div>) 
+                                : 
+                                (<p className='agreement-text' style={{
+                                        color:'brown', 
+                                        fontWeight:'bold'}}>
+                                                Unpaid
+                                        </p>)
+                        }
                         </div>
                         {(isHost && !signed) ? (
                                 <div>
@@ -130,26 +147,21 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                 (<div>
                                         <h4>- Signing date:</h4>
                                         <p className='agreement-text'>{signing_date.split("T")[0]}</p>
-                                        <h4>- Payment status:</h4>
-                                        {(!isHost && status === 'completed') ?
-                                                (<div>
-                                                        <p className='agreement-text'>{'Payment Received'}</p>
-                                                        <p style={{textAlign:'center', color:'green', fontWeight:'bold'}}> All done ! </p>
-                                                </div>) : <p className='agreement-text' style={{color:'brown', fontWeight:'bold', paddingBottom:'5px'}}>{'Unpaid'}</p>
-                                        }
                                         {(!isHost && status === 'pending') ?
                                                 (<div>
                                                         <input
                                                                 className='login-input payment-card-num'
                                                                 name='card-num'
-                                                                type='number'
-                                                                placeholder='Card Number'
+                                                                type='text'
+                                                                placeholder='Card Number (16-digits)'
+                                                                maxLength = '16'
                                                                 onChange={(e) => handleCardNumChange(e)}
                                                         />
                                                         <Select
                                                                 className='select select-payment-type'
                                                                 placeholder='Payment Type'
                                                                 options={paymentOptions}
+                                                                isSearchable={false}
                                                                 onChange={handleSelectCardTypeChange()}
                                                         />
                                                         <button
@@ -169,6 +181,15 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                                 Host rejected your request on {signing_date.split("T")[0]}
                                 </p>) : null
                         }
+                        {(status === 'completed') ?
+                                (<p style={{
+                                        textAlign:'center',
+                                        color:'green', 
+                                        fontWeight:'bold'}}>
+                                        All done!
+                                        </p>) : null
+                        }
+                        
                         <div className='lineMargin'>
                                 <div className='lml'></div>
                         </div>
