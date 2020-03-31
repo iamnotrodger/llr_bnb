@@ -66,7 +66,6 @@ const PropertyPage = (props) => {
                                                 unavaible_dates,
                                                 host_name
                                         } = await response.json();
-                                        console.log(unavaible_dates);
                                         setProperty({
                                                 title: title,
                                                 location: location,
@@ -78,7 +77,7 @@ const PropertyPage = (props) => {
                                                 price: price,
                                                 guestNum: guest_num
                                         });
-                                        if (unavailableDates) {
+                                        if (unavaible_dates) {
                                                 setUnavailableDates(
                                                         unavaible_dates
                                                 );
