@@ -6,14 +6,24 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
     try {
         const client = await db_pool.connect();
         try {
+            // get the employee's country
             const employeeQueryText =
                 'SELECT country FROM project.employee NATURAL JOIN project.usr WHERE empid = $1;';
             const res1 = await client.query(employeeQueryText, [empid]);
             const { country } = res1.rows[0];
+            // get properties which are from the same country with the employee
             const propertyQueryText =
                 'SELECT * FROM project.property WHERE country = $1;';
             const res2 = await client.query(propertyQueryText, [country]);
-            // console.log(res2.rows); // test
+            // get bed_num for each property
+            const bedQueryText =
+                "SELECT SUM(bed_num) AS bed_num FROM project.room WHERE prid = $1 AND room_type = 'bedroom' GROUP BY prid;";
+            for (i in res2.rows) {
+                const { prid } = res2.rows[i];
+                const res3 = await client.query(bedQueryText, [prid]);
+                const { bed_num } = res3.rows[0];
+                res2.rows[i].bed_num = bed_num;
+            }
             res.status(200).jsonp({
                 property_list: res2.rows
             })
