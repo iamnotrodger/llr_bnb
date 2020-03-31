@@ -10,7 +10,6 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
         const [paid, setPayment] = useState(
                 (status === 'completed') ? true : false
         );
-        const [error,setError] = useState('');
         const [cardNum,setCardNum] = useState('');
         const [cardType,setCardType] = useState('');
 
@@ -51,13 +50,12 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                 throw Error('Unable to approve');
                         };
                 } catch(err) {
-                        setError(err)
                         setLoading(false);
                         throw Error(err)
                 }
         };
 
-        const onPayClicked = async (method, card_num) => {
+        const onPayClicked = async () => {
                 try {
                         setLoading(true);
                         const response = await fetch(
@@ -71,8 +69,8 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                         body: JSON.stringify({
                                                 // pid: pid,
                                                 rtid: rtid,
-                                                method: method,
-                                                card_num: card_num
+                                                method: cardType,
+                                                card_num: cardNum
                                         })
                                 });
                         setPayment(true)
@@ -81,7 +79,6 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                 throw Error('Unable to approve');
                         };
                 } catch(err) {
-                        setError(err)
                         setLoading(false);
                         throw Error(err)
                 }
@@ -90,7 +87,7 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
         return (
                 <div className='agreement-tag'>
                         <div>
-                                <h3 style={{marginBottom:'5px'}}>{title}</h3>
+                                <h3>{title}</h3>
                                 {(signing === 'approved') ? 
                                         <p className='agreement-sign' style={{color:'green', float:'right'}}>Status: {signing}</p>
                                 : (signing === 'pending') ?
@@ -100,19 +97,19 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                 }
                                 {isHost ?
                                         (<div>
-                                                <h4>Guest name:</h4>
-                                                <p>{agreement.guest_name}</p>
+                                                <h4>- Guest name:</h4>
+                                                <p className='agreement-text'>{agreement.guest_name}</p>
                                         </div>)
                                         :
                                         (<div>
-                                                <h4>Host name:</h4>
-                                                <p >{agreement.host_name}</p>
+                                                <h4>- Host name:</h4>
+                                                <p className='agreement-text'>{agreement.host_name}</p>
                                         </div>)
                                 }
-                                <h4>Start date:</h4>
-                                <p>{start_date.split("T")[0]}</p>
-                                <h4>End date:</h4>
-                                <p>{end_date.split("T")[0]}</p>
+                                <h4>- Agreement start on:</h4>
+                                <p className='agreement-text'>{start_date.split("T")[0]}</p>
+                                <h4>- Agreement end on:</h4>
+                                <p className='agreement-text'>{end_date.split("T")[0]}</p>
                         </div>
                         {(isHost && !signed) ? (
                                 <div>
@@ -131,8 +128,15 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                         ) : null}
                         {(!isHost && signing === 'approved') ? 
                                 (<div>
-                                        <h4>Signing date:</h4>
-                                        <p>{signing_date.split("T")[0]}</p>
+                                        <h4>- Signing date:</h4>
+                                        <p className='agreement-text'>{signing_date.split("T")[0]}</p>
+                                        <h4>- Payment status:</h4>
+                                        {(!isHost && status === 'completed') ?
+                                                (<div>
+                                                        <p className='agreement-text'>{'Payment Received'}</p>
+                                                        <p style={{textAlign:'center', color:'green', fontWeight:'bold'}}> All done ! </p>
+                                                </div>) : <p className='agreement-text' style={{color:'brown', fontWeight:'bold', paddingBottom:'5px'}}>{'Unpaid'}</p>
+                                        }
                                         {(!isHost && status === 'pending') ?
                                                 (<div>
                                                         <input
@@ -154,7 +158,8 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                                                 Pay Now!
                                                         </button>
                                                         <div style={{ marginBottom: 50 + 'px' }}></div>
-                                                </div>) : null
+                                                </div>) 
+                                                : null
                                         }
                                         
                                 </div>) : null

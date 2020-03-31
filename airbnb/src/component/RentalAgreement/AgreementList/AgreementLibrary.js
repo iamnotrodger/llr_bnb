@@ -7,7 +7,7 @@ const AgreementLibrary = ({hid, hostRentalList, guestRentalList, setLoading}) =>
                 <div>
                             {isHost ?
                                     (<div>
-                                        <h3>Received agreements</h3>
+                                        <h2>---------- Agreements Received ----------</h2>
                                         <div className='lineMargin'>
                                                 <div className='lml'></div>
                                         </div>
@@ -19,7 +19,7 @@ const AgreementLibrary = ({hid, hostRentalList, guestRentalList, setLoading}) =>
                                     </div>) : null
                             }
                             <div>
-                                    <h3>Sent Agreements</h3>
+                                    <h2>---------- Agreements Sent ----------</h2>
                                     <div className='lineMargin'>
                                             <div className='lml'></div>
                                     </div>

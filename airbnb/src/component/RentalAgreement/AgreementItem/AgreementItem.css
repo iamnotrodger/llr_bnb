@@ -2,21 +2,24 @@
     text-align: left;
 }
 
+.agreement-text{
+    padding-left: 12px;
+}
+
 .agreement-sign{
     font-weight: bold;
 }
 
 .approve-btn{
-    width: 200px;
-    margin-top: 20px;
-    margin-left: 180px;
+    width: 49%;
+    margin-top: 15px;
 }
 
 .disapprove-btn{
     float: right;
     background: brown;
-    width: 200px;
-    margin-top: 20px;
+    width: 49%;
+    margin-top: 15px;
 }
 
 .disapprove-btn:hover {
