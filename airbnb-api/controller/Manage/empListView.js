@@ -15,27 +15,26 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
             const propertyQueryText =
                 'SELECT * FROM project.property WHERE country = $1;';
             const res2 = await client.query(propertyQueryText, [country]);
-            // get bed_num for each property
-            const bedQueryText =
-                "SELECT SUM(bed_num) AS bed_num FROM project.room WHERE prid = $1 AND room_type = 'bedroom' GROUP BY prid;";
-            for (i in res2.rows) {
-                const { prid } = res2.rows[i];
-                const res3 = await client.query(bedQueryText, [prid]);
-                if (res3.rows.length != 0) {
-                    const { bed_num } = res3.rows[0];
-                    res2.rows[i].bed_num = bed_num;
-                } else {
-                    res2.rows[i].bed_num = 0;
-                }
-            }
+            // get the price for each property
             const priceQueryText = 
                 'SELECT price FROM project.pricing WHERE prid = $1;';
-            // get the price for each property
             for (i in res2.rows) {
                 const { prid } = res2.rows[i];
-                const res4 = await client.query(priceQueryText, [prid])
-                const { price } = res4.rows[0];
+                const res3 = await client.query(priceQueryText, [prid])
+                const { price } = res3.rows[0];
                 res2.rows[i].price = price;
+            }
+            // get the average rating for each property
+            const avgsQueryText =
+                "SELECT AVG(rating) AS rating FROM project.review WHERE prid = $1 GROUP BY prid;";
+            for (i in res2.rows) {
+                const { prid } = res2.rows[i];
+                const res4 = await client.query(avgsQueryText, [prid]);
+                console.log(res4.rows); // test
+                if (res4.rows.length != 0) {
+                    const { rating } = res4.rows[0];
+                    res2.rows[i].rating = rating;
+                }
             }
             res.status(200).jsonp({
                 property_list: res2.rows
