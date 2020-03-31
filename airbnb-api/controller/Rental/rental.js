@@ -32,7 +32,7 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
                         const checkDatesQueryText = 
                             'SELECT * FROM project.rental_agreement WHERE prid = $1 AND (start_date, end_date) OVERLAPS ($2, $3);';
                         const res0 = await client.query(checkDatesQueryText, [prid, start_date, end_date]);
-                        console.log(res0.rows.length); // test
+                        // console.log(res0.rows.length); // test
                         if (res0.rows.length != 0) {
                             // there are dates overlapping
                             res.status(400).json('Some dates are avaible')
@@ -69,15 +69,19 @@ const handleAddRentalAgreement = async (req, res, db_pool, Joi) => {
                         const { price } = res3.rows[0];
                         // create a pending payment for the rental agreement
                         const paymentQueryText =
-                                'INSERT INTO project.payment(rtid, status, amount) VALUES($1, $2, $3)';
-                        await client.query(paymentQueryText, [
+                                'INSERT INTO project.payment(rtid, status, amount) VALUES($1, $2, $3) RETURNING pid';
+                        const res4 = await client.query(paymentQueryText, [
                                 rtid,
                                 'pending',
                                 price * days
                         ]);
-                        console.log(price * days);
+                        const { pid } = res4.rows[0];
+                        // console.log(price * days); // test
                         await client.query('COMMIT');
-                        res.status(200).json('The rental agreement is added');
+                        res.status(200).jsonp({
+                                rtid: rtid,
+                                pid: pid
+                        });
                 } catch (err) {
                         console.error(
                                 'Error during the transaction, ROLLBACK.',
