@@ -28,6 +28,15 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
                     res2.rows[i].bed_num = 0;
                 }
             }
+            const priceQueryText = 
+                'SELECT price FROM project.pricing WHERE prid = $1;';
+            // get the price for each property
+            for (i in res2.rows) {
+                const { prid } = res2.rows[i];
+                const res4 = await client.query(priceQueryText, [prid])
+                const { price } = res4.rows[0];
+                res2.rows[i].price = price;
+            }
             res.status(200).jsonp({
                 property_list: res2.rows
             })
