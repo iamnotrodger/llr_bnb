@@ -4,11 +4,15 @@ Hongyi Lin, 300053082 </br>
 Rodger Retanal, 300052309 </br>
 Kangwei Liao, 8568800
 
+<hr>
+
 ## Index
-* [Overview](#Overview)
-* [Implementation](#Implementation)
-* [DDLs](#DDLs)
-* [Guide](#Guide)
+* [Overview](#overview)
+* [Implementation](#implementation)
+* [DDLs](#ddls)
+* [Guide](#guide)
+
+<hr>
 
 ## Overview
    For this project, our group designed a Airbnb-like website. We call it LLR-BnB.
