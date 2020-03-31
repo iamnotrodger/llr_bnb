@@ -100,7 +100,7 @@
 
 @media (min-width: 1128px) {
         .profileContainer {
-                max-width: 1080px;
+                max-width: 85%;
         }
 
         .profileSide {
@@ -116,7 +116,7 @@
 
         .profileContent {
                 width: 66.66666666666666%;
-                margin-left: 80px;
+                margin-left: 50px;
         }
 }
 

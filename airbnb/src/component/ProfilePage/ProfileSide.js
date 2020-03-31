@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const ProfileSide = ({ user, onChange, edit, onSubmit, setEdit }) => {
+const ProfileSide = ({ user, onChange, edit, onSubmit, setEdit, empid }) => {
+        const [isEmp, setIsEmp] = useState((empid !== null) ? true : false);
         const [InputStyle, setInputStyle] = useState('profileInput');
 
         const onEditClick = () => {
@@ -84,6 +85,17 @@ const ProfileSide = ({ user, onChange, edit, onSubmit, setEdit }) => {
                                                 value={user.phonenum}
                                                 onChange={onChange}
                                         />
+                                        {isEmp ? 
+                                        (<div>
+                                                <input
+                                                        style={{ width: '100%' }}
+                                                        className={InputStyle}
+                                                        readOnly={true}
+                                                        type='text'
+                                                        name='empid'
+                                                        value={'Employee ID: ' + empid}
+                                                />
+                                        </div>) : null}
                                 </div>
 
                                 <div>
