@@ -37,8 +37,6 @@ nav {
 .nav-menu li {
 	display: table-cell;
 	vertical-align: middle;
-	list-style: none;
-	/* padding: 0 12px; */
 	white-space: nowrap;
 }
 
@@ -107,11 +105,6 @@ nav {
 
 .profile-menu ul li:active {
 	background-color: rgb(235, 235, 235);
-}
-
-.link-styless {
-	color: inherit; /* blue colors for links too */
-	text-decoration: inherit; /* no underline */
 }
 
 .profile-item {

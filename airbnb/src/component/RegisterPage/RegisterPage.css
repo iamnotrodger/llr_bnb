@@ -1,0 +1,31 @@
+.register-page {
+        margin-bottom: 50px;
+}
+.register-box {
+        width: fit-content;
+        margin: 4vh auto 0;
+}
+.login-background {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: -1;
+}
+
+.login-image {
+        width: 100%;
+        height: 100%;
+        position: relative;
+}
+
+.particles {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        background: rgb(66, 115, 112);
+}

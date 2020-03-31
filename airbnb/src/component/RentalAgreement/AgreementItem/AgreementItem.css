@@ -1,0 +1,39 @@
+.agreement-tag{
+    text-align: left;
+}
+
+.agreement-text{
+    padding-left: 12px;
+}
+
+.agreement-sign{
+    font-weight: bold;
+}
+
+.approve-btn{
+    width: 49%;
+    margin-top: 15px;
+}
+
+.disapprove-btn{
+    float: right;
+    background: brown;
+    width: 49%;
+    margin-top: 15px;
+}
+
+.disapprove-btn:hover {
+    background: rgb(220, 35, 35) !important;
+}
+
+.payment-btn{
+    width: 49%;
+    height: 37px;
+    padding-top: 5px;
+    float: inline-end;
+}
+
+.select-payment-type{
+    width: 50%;
+    float: inline-start;
+}

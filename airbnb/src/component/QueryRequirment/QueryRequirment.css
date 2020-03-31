@@ -1,0 +1,38 @@
+.query-requirment {
+        margin-top: 50px;
+        margin-bottom: 50px;
+}
+
+.query-bttons {
+        display: block;
+}
+
+.query-buttons p {
+        display: inline-block;
+        cursor: pointer;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 8px;
+        color: #00a699;
+        transition: box-shadow 0.2s ease, -ms-transform 0.1s ease,
+                -webkit-transform 0.1s ease, transform 0.1s ease;
+        text-decoration: underline;
+}
+
+.query-buttons p:hover {
+        background-color: #b9b9b946;
+}
+
+.query-buttons p:active {
+        transform: scale(0.9);
+}
+
+.qeury-data {
+        border: 1px solid;
+        padding: 5px;
+        margin: 8px 0;
+        word-wrap: break-word;
+        word-break: break-all;
+}

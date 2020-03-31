@@ -1,93 +1,80 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../airbnb-1.svg';
-import ProfileMenu from './ProfileMenu';
+import UserContext from '../../UserContext';
+import logo from '../../2132GLogo_500x500.png';
+import ProfileIcon from './ProfileIcon';
 import './NavBar.css';
 
-//TODO: Make list more dynamic
+const links = [
+        { label: 'Add Property', link: '/add-property' },
+        { label: 'Query Requirment', link: '/query-requirment' },
+        { label: 'About', link: '/about' },
+        { label: 'Register', link: '/register' },
+        { label: 'Log in', link: '/login' }
+];
 
-class NavBar extends Component {
-	constructor() {
-		super();
-		this.state = {
-			menuOpen: false
-		};
-	}
+const NavBar = () => {
+        const { user, setUser } = useContext(UserContext);
+        const isSignedIn = user ? true : false;
+        const userID = user ? user.uid : null;
 
-	toggleMenu = () => {
-		this.setState({
-			menuOpen: !this.state.menuOpen
-		});
-		console.log('toggle');
-	};
+        const filteredList = links.filter((link) => {
+                return (
+                        link.label === 'About' ||
+                        link.label === 'Query Requirment' ||
+                        (isSignedIn && link.label === 'Add Property') ||
+                        (!isSignedIn &&
+                                (link.link === '/login' ||
+                                        link.link === '/register'))
+                );
+        });
 
-	render() {
-		let linkMarkup = this.props.links.map((link, i) => {
-			return (
-				<li>
-					<Link
-						to={link.link}
-						className='link-styless'
-					>
-						<div className='nav-padding'>
-							{link.label}
-						</div>
-					</Link>
-				</li>
-			);
-		});
-		return (
-			<header id='navbar'>
-				<nav>
-					<div className='logo nav-items'>
-						<Link to='/'>
-							<img
-								src={logo}
-								alt='AirBnB'
-								style={{
-									height:
-										'30px'
-								}}
-							/>
-						</Link>
-					</div>
+        const linkMarkup = filteredList.map((link, i) => {
+                return (
+                        <li key={i}>
+                                <Link to={link.link}>
+                                        <div className='nav-padding'>
+                                                {link.label}
+                                        </div>
+                                </Link>
+                        </li>
+                );
+        });
 
-					<div className='padding'></div>
+        const logOut = () => {
+                setUser(null);
+        };
 
-					<div className='nav-links nav-items'>
-						<ul className='nav-menu'>
-							{linkMarkup}
-							<li>
-								<div
-									onClick={
-										this
-											.toggleMenu
-									}
-									className='nav-padding'
-								>
-									<div className='profile'>
-										<img
-											alt='Rodger’s account'
-											src='https://a0.muscache.com/defaults/user_pic-50x50.png?v=3'
-										/>
-									</div>
-								</div>
-								{this.state
-									.menuOpen ? (
-									<ProfileMenu
-										toggleMenu={
-											this
-												.toggleMenu
-										}
-									/>
-								) : null}
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</header>
-		);
-	}
-}
+        return (
+                <header id='navbar'>
+                        <nav>
+                                <div className='logo nav-items'>
+                                        <Link to='/'>
+                                                <img
+                                                        src={logo}
+                                                        alt='AirBnB'
+                                                        style={{
+                                                                height: '55px'
+                                                        }}
+                                                />
+                                        </Link>
+                                </div>
+
+                                <div className='padding'></div>
+
+                                <div className='nav-links nav-items'>
+                                        <ul className='nav-menu'>
+                                                {linkMarkup}
+                                                <ProfileIcon
+                                                        isSignedIn={isSignedIn}
+                                                        userID={userID}
+                                                        logOut={logOut}
+                                                />
+                                        </ul>
+                                </div>
+                        </nav>
+                </header>
+        );
+};
 
 export default NavBar;

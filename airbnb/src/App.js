@@ -1,133 +1,97 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import UserContext from './UserContext';
 import NavBar from './component/NavBar/NavBar';
-import PropertyList from './component/Property/PropertyList/PropertyList';
 import About from './component/About/About';
+import LoginPage from './component/LoginPage/LoginPage';
+import RegisterPage from './component/RegisterPage/RegisterPage';
+import PrivateRoute from './component/PrivateRoute/PrivateRoute';
+import PropertyPage from './component/PropertyPage/PropertyPage';
+import ProfilePage from './component/ProfilePage/ProfilePage';
+import AddPropertyPage from './component/AddPropertyPage/AddPropertyPage';
+import PropertyLibrary from './component/Property/PropertyList/PropertyLibrary';
+import QueryRequirment from './component/QueryRequirment/QueryRequirment';
 
-const initialState = {
-	isSignedIn: false,
-	properties: [
-		{
-			id: 1,
-			location: 'Canada',
-			title: 'Hotel',
-			type: 'Hotel',
-			price: 100,
-			rating: 3.4
-		},
+const App = () => {
+        const [user, setUser] = useState(() => {
+                const localData = localStorage.getItem('user');
+                return localData ? JSON.parse(localData) : null;
+        });
+        const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
-		{
-			id: 2,
-			location: 'Canada',
-			title: 'House',
-			type: 'House',
-			price: 102,
-			rating: 4.0
-		},
+        useEffect(() => {
+                localStorage.setItem('user', JSON.stringify(user));
+        }, [user]);
 
-		{
-			id: 3,
-			location: 'Canada',
-			title: 'Apartment',
-			type: 'Apartment',
-			price: 101,
-			rating: 4.0
-		},
+        const loadUser = (data) => {
+                setUser(data);
+        };
 
-		{
-			id: 4,
-			location: 'Canada',
-			title: 'Apartment',
-			type: 'Apartment',
-			price: 101,
-			rating: 4.0
-		}
-	],
+        return (
+                <Router>
+                        <UserContext.Provider value={value}>
+                                <NavBar />
+                                <Switch>
+                                        <Route
+                                                path='/login'
+                                                component={() => (
+                                                        <LoginPage
+                                                                loadUser={
+                                                                        loadUser
+                                                                }
+                                                        />
+                                                )}
+                                        />
+                                        <Route
+                                                exact
+                                                path='/'
+                                                render={() => (
+                                                        <React.Fragment>
+                                                                <div className='main'>
+                                                                        <PropertyLibrary />
+                                                                </div>
+                                                        </React.Fragment>
+                                                )}
+                                        />
 
-	links: [
-		{ label: 'Become a host', link: '/' },
-		{ label: 'About', link: '/about' }
-	],
+                                        <Route
+                                                path='/about'
+                                                component={About}
+                                        />
 
-	property: {}
+                                        <Route
+                                                path='/register'
+                                                component={RegisterPage}
+                                        />
+
+                                        <Route
+                                                path='/query-requirment'
+                                                component={QueryRequirment}
+                                        />
+
+                                        <PrivateRoute
+                                                path='/add-property'
+                                                component={AddPropertyPage}
+                                        />
+
+                                        <PrivateRoute
+                                                path='/property/:prid'
+                                                component={(props) => (
+                                                        <PropertyPage
+                                                                {...props}
+                                                        />
+                                                )}
+                                        />
+
+                                        <PrivateRoute
+                                                path='/profile/:uid'
+                                                component={ProfilePage}
+                                        />
+                                </Switch>
+                        </UserContext.Provider>
+                </Router>
+        );
 };
-
-//TODO: Create Footer
-//TODO: didmounth call server for images of hotels, houses, and apartments
-
-class App extends Component {
-	constructor() {
-		super();
-		this.state = initialState;
-	}
-
-	handlePropertyClick = property => {
-		// debugger;
-		this.setState({ property: property });
-		console.log(property);
-	};
-
-	render() {
-		const { properties, links } = this.state;
-		return (
-			<Router>
-				<div>
-					<NavBar links={links} />
-					<Route
-						exact
-						path='/'
-						render={props => (
-							<React.Fragment>
-								<div className='main'>
-									<PropertyList
-										properties={
-											properties
-										}
-										type={
-											'Hotel'
-										}
-										handlePropertyClick={
-											this
-												.handlePropertyClick
-										}
-									/>
-									<PropertyList
-										properties={
-											properties
-										}
-										type={
-											'House'
-										}
-										handlePropertyClick={
-											this
-												.handlePropertyClick
-										}
-									/>
-									<PropertyList
-										properties={
-											properties
-										}
-										type={
-											'Apartment'
-										}
-										handlePropertyClick={
-											this
-												.handlePropertyClick
-										}
-									/>
-								</div>
-							</React.Fragment>
-						)}
-					/>
-					<Route
-						path='/about'
-						component={About}
-					/>
-				</div>
-			</Router>
-		);
-	}
-}
 
 export default App;

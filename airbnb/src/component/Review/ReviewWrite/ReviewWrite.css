@@ -1,0 +1,38 @@
+.ratingComponent {
+        display: flex;
+        margin: 5px 0;
+}
+
+.review-header {
+        width: 150px;
+}
+
+.writeComment {
+        padding: 5px;
+        font-size: 1.1em;
+        min-height: 15vh;
+        width: 100%;
+        /*the part below removes the three lines at the bottom right of the textarea*/
+        resize: none;
+        /*the part below removes the blue border that appears everytime you focus in the textarea*/
+        outline: none;
+        border: 2px;
+        border-style: solid;
+        border-radius: 8px;
+        border-color: rgba(104, 104, 104, 0.712);
+        margin: 5px 0;
+}
+
+.set-rating-contianer {
+        margin: 5px 0;
+}
+
+.reviewSubmitContainer {
+        display: flex;
+}
+.reviewSubmitContainer .submitButton {
+        width: 160px;
+        border-radius: 500px;
+        letter-spacing: 2px;
+        margin-left: auto !important;
+}
