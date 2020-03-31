@@ -3,16 +3,21 @@ import React from 'react';
 import PropertyMap from './PropertyMap';
 import './PropertyList.css';
 
-const filterOption = [
-        { value: 'Sort-by-Price', label: 'Sort-by-Price' },
-        { value: 'Sort-by-Rating', label: 'Sort-by-Rating' },
-        { value: 'Unrented', label: 'Unrented' }
-];
+// const filterOption = [
+//         { value: 'Sort-by-Price', label: 'Sort-by-Price' },
+//         { value: 'Sort-by-Rating', label: 'Sort-by-Rating' },
+//         { value: 'Unrented', label: 'Unrented' }
+// ];
 
-const PropertyList = ({ properties, type, loadAllProperty, onFilter }) => {
-        const handleSelectChange = (value) => {
-                onFilter(type, value.value);
-        };
+const PropertyList = ({
+        properties,
+        type,
+        loadAllProperty
+        // onFilter
+}) => {
+        // const handleSelectChange = (value) => {
+        //         onFilter(type, value.value);
+        // };
 
         return (
                 <div className='list'>

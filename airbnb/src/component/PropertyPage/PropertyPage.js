@@ -78,7 +78,7 @@ const PropertyPage = (props) => {
                                                 price: price,
                                                 guestNum: guest_num
                                         });
-                                        if (unavailableDates) {
+                                        if (unavaible_dates) {
                                                 setUnavailableDates(
                                                         unavaible_dates
                                                 );

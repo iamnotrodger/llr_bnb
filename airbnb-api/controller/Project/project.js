@@ -31,7 +31,7 @@ const handleCompletedCheapestRental = async (req, res, db_pool) => {
                 const client = await db_pool.connect();
                 try {
                         const queryText =
-                                "SELECT * FROM project.property NATURAL JOIN project.rental_agreement NATURAL JOIN project.payment WHERE amount >= ALL (SELECT amount FROM project.payment) AND status = 'completed';";
+                                "SELECT * FROM project.property NATURAL JOIN project.rental_agreement NATURAL JOIN project.payment WHERE amount >= ALL (SELECT amount FROM project.payment WHERE status = 'completed') AND status = 'completed';";
                         const res1 = await client.query(queryText);
                         res.status(200).json(res1.rows[0]);
                 } catch (err) {
