@@ -1,26 +1,38 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import './AgreementItem.css'
+import './AgreementItem.css';
 
-const AgreementItem = ({ isHost, agreement,setLoading }) => {
-        const { rtid, gid, hid, prid, signing, start_date, end_date, signing_date, status, pid, title } = agreement;
+const AgreementItem = ({ isHost, agreement, setLoading }) => {
+        const {
+                rtid,
+                gid,
+                hid,
+                prid,
+                signing,
+                start_date,
+                end_date,
+                signing_date,
+                status,
+                pid,
+                title
+        } = agreement;
         const [signed, setSigned] = useState(
-                (signing !== 'pending') ? true : false
+                signing !== 'pending' ? true : false
         );
         const [paid, setPayment] = useState(
-                (status === 'completed') ? true : false
+                status === 'completed' ? true : false
         );
-        const [cardNum,setCardNum] = useState('');
-        const [cardType,setCardType] = useState('');
+        const [cardNum, setCardNum] = useState('');
+        const [cardType, setCardType] = useState('');
 
         const handleCardNumChange = (event) => {
-                setCardNum(event.target.value)
+                setCardNum(event.target.value);
         };
 
         const handleSelectCardTypeChange = () => {
                 return (newValue) => {
-                        setCardType(newValue.value)
-                }
+                        setCardType(newValue.value);
+                };
         };
 
         const paymentOptions = [
@@ -41,27 +53,28 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                         },
                                         body: JSON.stringify({
                                                 rtid: rtid,
-                                                signing: approval,
+                                                signing: approval
                                         })
-                                });
-                        setSigned(true)
-                        setLoading(false)
+                                }
+                        );
+                        setSigned(true);
+                        setLoading(false);
                         if (!response.ok) {
                                 throw Error('Unable to approve');
-                        };
-                } catch(err) {
+                        }
+                } catch (err) {
                         setLoading(false);
-                        throw Error(err)
+                        throw Error(err);
                 }
         };
 
         const onPayClicked = async () => {
                 try {
                         setLoading(true);
-                        console.log(pid)
-                        console.log(rtid)
-                        console.log(cardType)
-                        console.log(parseInt(cardNum))
+                        console.log(pid);
+                        console.log(rtid);
+                        console.log(cardType);
+                        console.log(parseInt(cardNum));
                         const response = await fetch(
                                 `http://localhost:3000/api/rental/rental-agreement/guest/${gid}/payment`,
                                 {
@@ -76,16 +89,17 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                                                 method: cardType,
                                                 card_num: cardNum
                                         })
-                                });
-                        setPayment(true)
-                        setLoading(false)
+                                }
+                        );
+                        setPayment(true);
+                        setLoading(false);
                         if (!response.ok) {
                                 throw Error('Unable to pay');
-                        };
-                } catch(err) {
+                        }
+                } catch (err) {
                         setLoading(false);
-                        console.log(err)
-                        throw Error(err)
+                        console.log(err);
+                        throw Error(err);
                 }
         };
 
@@ -93,103 +107,169 @@ const AgreementItem = ({ isHost, agreement,setLoading }) => {
                 <div className='agreement-tag'>
                         <div>
                                 <h3>{title}</h3>
-                                {(signing === 'approved') ? 
-                                        <p className='agreement-sign' style={{color:'green', float:'right'}}>Status: {signing}</p>
-                                : (signing === 'pending') ?
-                                        <p className='agreement-sign' style={{color:'rgb(255, 174, 66)', float:'right'}}>Status: {'Waiting'}</p>
-                                :
-                                        <p className='agreement-sign' style={{color:'brown', float:'right'}}>Status: {'Rejected'}</p>
-                                }
-                                {isHost ?
-                                        (<div>
-                                                <h4>- Guest name:</h4>
-                                                <p className='agreement-text'>{agreement.guest_name}</p>
-                                        </div>)
-                                        :
-                                        (<div>
-                                                <h4>- Host name:</h4>
-                                                <p className='agreement-text'>{agreement.host_name}</p>
-                                        </div>)
-                                }
-                                <h4>- Agreement start on:</h4>
-                                <p className='agreement-text'>{start_date.split("T")[0]}</p>
-                                <h4>- Agreement end on:</h4>
-                                <p className='agreement-text'>{end_date.split("T")[0]}</p>
-                                <h4>- Payment status:</h4>
-                                {(status === 'completed') ?
-                                (<div>
-                                        <p className='agreement-text'>{'Payment Received'}</p>
-                                </div>) 
-                                : 
-                                (<p className='agreement-text' style={{
-                                        color:'brown', 
-                                        fontWeight:'bold'}}>
+                                {signing === 'approved' ? (
+                                        <p
+                                                className='agreement-sign'
+                                                style={{
+                                                        color: 'green',
+                                                        float: 'right'
+                                                }}>
+                                                Status: {signing}
+                                        </p>
+                                ) : signing === 'pending' ? (
+                                        <p
+                                                className='agreement-sign'
+                                                style={{
+                                                        color:
+                                                                'rgb(255, 174, 66)',
+                                                        float: 'right'
+                                                }}>
+                                                Status: {'Waiting'}
+                                        </p>
+                                ) : (
+                                        <p
+                                                className='agreement-sign'
+                                                style={{
+                                                        color: 'brown',
+                                                        float: 'right'
+                                                }}>
+                                                Status: {'Rejected'}
+                                        </p>
+                                )}
+                                {isHost ? (
+                                        <div>
+                                                <h4>Guest name:</h4>
+                                                <p className='agreement-text'>
+                                                        {agreement.guest_name}
+                                                </p>
+                                        </div>
+                                ) : (
+                                        <div>
+                                                <h4>Host name:</h4>
+                                                <p className='agreement-text'>
+                                                        {agreement.host_name}
+                                                </p>
+                                        </div>
+                                )}
+                                <h4>Agreement start on:</h4>
+                                <p className='agreement-text'>
+                                        {start_date.split('T')[0]}
+                                </p>
+                                <h4>Agreement end on:</h4>
+                                <p className='agreement-text'>
+                                        {end_date.split('T')[0]}
+                                </p>
+                                <h4>Payment status:</h4>
+                                {status === 'completed' ? (
+                                        <div>
+                                                <p className='agreement-text'>
+                                                        {'Payment Received'}
+                                                </p>
+                                        </div>
+                                ) : (
+                                        <p
+                                                className='agreement-text'
+                                                style={{
+                                                        color: 'brown',
+                                                        fontWeight: 'bold'
+                                                }}>
                                                 Unpaid
-                                        </p>)
-                        }
+                                        </p>
+                                )}
                         </div>
-                        {(isHost && !signed) ? (
+                        {isHost && !signed ? (
                                 <div>
                                         <button
-                                                className = 'submitButton approve-btn'
-                                                onClick={() => onApproveClicked('approved')}> 
+                                                className='submitButton approve-btn'
+                                                onClick={() =>
+                                                        onApproveClicked(
+                                                                'approved'
+                                                        )
+                                                }>
                                                 Approve
-                                        </button> 
+                                        </button>
 
                                         <button
-                                                className = 'submitButton disapprove-btn'
-                                                onClick={() => onApproveClicked('disapproved')}> 
+                                                className='submitButton disapprove-btn'
+                                                onClick={() =>
+                                                        onApproveClicked(
+                                                                'disapproved'
+                                                        )
+                                                }>
                                                 Disapprove
-                                        </button> 
+                                        </button>
                                 </div>
                         ) : null}
-                        {(!isHost && signing === 'approved') ? 
-                                (<div>
-                                        <h4>- Signing date:</h4>
-                                        <p className='agreement-text'>{signing_date.split("T")[0]}</p>
-                                        {(!isHost && status === 'pending') ?
-                                                (<div>
+                        {!isHost && signing === 'approved' ? (
+                                <div>
+                                        <h4>Signing date:</h4>
+                                        <p className='agreement-text'>
+                                                {signing_date.split('T')[0]}
+                                        </p>
+                                        {!isHost && status === 'pending' ? (
+                                                <div>
                                                         <input
                                                                 className='login-input payment-card-num'
                                                                 name='card-num'
                                                                 type='text'
                                                                 placeholder='Card Number (16-digits)'
-                                                                maxLength = '16'
-                                                                onChange={(e) => handleCardNumChange(e)}
+                                                                maxLength='16'
+                                                                onChange={(e) =>
+                                                                        handleCardNumChange(
+                                                                                e
+                                                                        )
+                                                                }
                                                         />
                                                         <Select
                                                                 className='select select-payment-type'
                                                                 placeholder='Payment Type'
-                                                                options={paymentOptions}
-                                                                isSearchable={false}
+                                                                options={
+                                                                        paymentOptions
+                                                                }
+                                                                isSearchable={
+                                                                        false
+                                                                }
                                                                 onChange={handleSelectCardTypeChange()}
                                                         />
                                                         <button
-                                                                className = 'submitButton payment-btn'
-                                                                onClick={() => onPayClicked()}> 
+                                                                className='submitButton payment-btn'
+                                                                onClick={() =>
+                                                                        onPayClicked()
+                                                                }>
                                                                 Pay Now!
                                                         </button>
-                                                        <div style={{ marginBottom: 50 + 'px' }}></div>
-                                                </div>) 
-                                                : null
-                                        }
-                                        
-                                </div>) : null
-                        }
-                        {(!isHost && signing === 'disapproved') ?
-                                (<p className='agreement-sign' style={{color:'brown', textAlign:'center'}}>
-                                                Host rejected your request on {signing_date.split("T")[0]}
-                                </p>) : null
-                        }
-                        {(status === 'completed') ?
-                                (<p style={{
-                                        textAlign:'center',
-                                        color:'green', 
-                                        fontWeight:'bold'}}>
+                                                        <div
+                                                                style={{
+                                                                        marginBottom:
+                                                                                50 +
+                                                                                'px'
+                                                                }}></div>
+                                                </div>
+                                        ) : null}
+                                </div>
+                        ) : null}
+                        {!isHost && signing === 'disapproved' ? (
+                                <p
+                                        className='agreement-sign'
+                                        style={{
+                                                color: 'brown',
+                                                textAlign: 'center'
+                                        }}>
+                                        Host rejected your request on{' '}
+                                        {signing_date.split('T')[0]}
+                                </p>
+                        ) : null}
+                        {status === 'completed' ? (
+                                <p
+                                        style={{
+                                                textAlign: 'center',
+                                                color: 'green',
+                                                fontWeight: 'bold'
+                                        }}>
                                         All done!
-                                        </p>) : null
-                        }
-                        
+                                </p>
+                        ) : null}
+
                         <div className='lineMargin'>
                                 <div className='lml'></div>
                         </div>

@@ -49,9 +49,11 @@ const QueryRequirment = () => {
         const dataDisplay = () => {
                 if (query) {
                         if (query instanceof Array) {
-                                return query.map((data) => {
+                                return query.map((data, i) => {
                                         return (
-                                                <div className='qeury-data'>
+                                                <div
+                                                        key={i}
+                                                        className='qeury-data'>
                                                         {JSON.stringify(data)}
                                                 </div>
                                         );
