@@ -4,6 +4,7 @@ import UserContext from '../../UserContext';
 import ProfileSide from './ProfileSide';
 import PropertyMap from '../Property/PropertyList/PropertyMap';
 import AgreementLibrary from '../RentalAgreement/AgreementList/AgreementLibrary';
+import AccountsList from '../Account/AccountList'
 import ReviewList from '../Review/ReviewList/ReviewList';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
@@ -14,6 +15,7 @@ const ProfilePage = () => {
         const uid = user ? user.uid : null;
         const gid = user ? user.gid : null;
         const hid = user ? user.hid : null;
+        const empid = user ? user.empid : null;
         const [userInfo, setUserInfo] = useState({
                 uid: null,
                 firstname: '',
@@ -26,11 +28,13 @@ const ProfilePage = () => {
         const [oldUserInfo, setOldUserInfo] = useState(userInfo);
         const [reviews, setReviews] = useState([]);
         const [hostProperty, setHostProperty] = useState([]);
+        const [branchProperty, setBranchProperty] = useState([]);
         const [edit, setEdit] = useState(true);
         const [loading, setLoading] = useState(false);
         const [loadAction, setLoadAction] = useState(false);
         const [hostRentalList, setHostRental] = useState([]);
         const [guestRentalList, setGuestRental] = useState([]);
+        const [branchAccount, setBranchAccount] = useState([]);
 
         useEffect(() => {	// run when render()
                 const abordController = new AbortController();
@@ -83,6 +87,24 @@ const ProfilePage = () => {
                                         if (responseFour.ok) {
                                                 const fetchedHostAgrees = await responseFour.json();
                                                 setHostRental(fetchedHostAgrees.rental_agreement_list);
+                                        }
+                                }
+
+                                if (empid) {
+                                        const responseSix = await fetch(
+                                                `http://localhost:3000/api/employee/${empid}/property-list`
+                                        );
+                                        if (responseSix.ok) {
+                                                const fetchedProperties = await responseSix.json();
+                                                setBranchProperty(fetchedProperties.property_list);
+                                        }
+
+                                        const responseSeven = await fetch(
+                                                `http://localhost:3000/api/employee/${empid}/guest-list`
+                                        );
+                                        if (responseSeven.ok) {
+                                                const fetchedAccount = await responseSeven.json();
+                                                setBranchAccount(fetchedAccount.guest_list);
                                         }
                                 }
                                 
@@ -199,32 +221,31 @@ const ProfilePage = () => {
                                                 edit={edit}
                                                 setEdit={onEditClick}
                                                 onSubmit={onSubmit}
+                                                empid = {user.empid}
                                         />
                                 </div>
                                 <div className='profileContent'>
                                         <div className='profileHeader'>
                                                 <div className='headerContent'>
-                                                        <h2>{`Hi, I'm ${userInfo.firstname}`}</h2>
+                                                        <h2>{`Hi, ${userInfo.firstname}!`}</h2>
                                                         <p>{`Joined in ${userInfo.created.getFullYear()}`}</p>
                                                 </div>
                                         </div>
                                         <div className='profileMain'>
                                                 <TabControl setTab={handleTab}>
-                                                        <div name='Reviews'>
+                                                        <div name='My Reviews'>
                                                                 <div className='lineMargin'>
                                                                         <div className='lml'></div>
                                                                 </div>
                                                                 <ReviewList
-                                                                        reviews={
-                                                                                reviews
-                                                                        }
+                                                                        reviews={ reviews }
                                                                 />
                                                         </div>
                                                         <div name='Rental Agreements'>
                                                                 <AgreementLibrary
                                                                         hid = {hid}
-                                                                        hostRentalList={hostRentalList}
-                                                                        guestRentalList={guestRentalList}
+                                                                        hostRentalList={ hostRentalList }
+                                                                        guestRentalList={ guestRentalList }
                                                                         setLoading={ setLoadAction }
                                                                 />
                                                         </div>
@@ -239,9 +260,35 @@ const ProfilePage = () => {
                                                                         <div className='lml'></div>
                                                                 </div>
                                                                 <PropertyMap
-                                                                        properties={
-                                                                                hostProperty
-                                                                        }
+                                                                        properties={ hostProperty }
+                                                                />
+                                                        </div>
+                                                        <div
+                                                                name='Branch Properties'
+                                                                style={{
+                                                                        display: empid
+                                                                                ? ''
+                                                                                : 'none'
+                                                                }}>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
+                                                                <PropertyMap
+                                                                        properties={ branchProperty }
+                                                                />
+                                                        </div>
+                                                        <div
+                                                                name='Branch Accounts'
+                                                                style={{
+                                                                        display: empid
+                                                                                ? ''
+                                                                                : 'none'
+                                                                }}>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
+                                                                <AccountsList
+                                                                        accounts={ branchAccount }
                                                                 />
                                                         </div>
                                                 </TabControl>

@@ -6,14 +6,46 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
     try {
         const client = await db_pool.connect();
         try {
+            // get the employee's country
             const employeeQueryText =
-                'SELECT country FROM project.employee WHERE empid = $1;';
+                'SELECT country FROM project.employee NATURAL JOIN project.usr WHERE empid = $1;';
             const res1 = await client.query(employeeQueryText, [empid]);
             const { country } = res1.rows[0];
+            // get properties which are from the same country with the employee
             const propertyQueryText =
                 'SELECT * FROM project.property WHERE country = $1;';
             const res2 = await client.query(propertyQueryText, [country]);
-            // console.log(res2.rows); // test
+            // get the price for each property
+            const priceQueryText = 
+                'SELECT price FROM project.pricing WHERE prid = $1;';
+            for (i in res2.rows) {
+                const { prid } = res2.rows[i];
+                const res3 = await client.query(priceQueryText, [prid])
+                const { price } = res3.rows[0];
+                res2.rows[i].price = price;
+            }
+            // get the average rating for each property
+            const avgsQueryText =
+                "SELECT AVG(rating) AS rating FROM project.review WHERE prid = $1 GROUP BY prid;";
+            for (i in res2.rows) {
+                const { prid } = res2.rows[i];
+                const res4 = await client.query(avgsQueryText, [prid]);
+                // console.log(res4.rows); // test
+                if (res4.rows.length != 0) {
+                    const { rating } = res4.rows[0];
+                    res2.rows[i].rating = rating;
+                }
+            }
+            const revNumQueryText =
+                "SELECT COUNT(rating) AS review_num FROM project.review WHERE prid = $1 GROUP BY prid;";
+            for (i in res2.rows) {
+                const { prid } = res2.rows[i];
+                const res5 = await client.query(revNumQueryText, [prid])
+                if (res5.rows.length != 0) {
+                    const { review_num } = res5.rows[0];
+                    res2.rows[i].review_num = review_num;
+                }
+            }
             res.status(200).jsonp({
                 property_list: res2.rows
             })
