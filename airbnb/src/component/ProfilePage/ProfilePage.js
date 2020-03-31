@@ -3,11 +3,11 @@ import TabControl from '../ReactTab/ReactTab';
 import UserContext from '../../UserContext';
 import ProfileSide from './ProfileSide';
 import PropertyMap from '../Property/PropertyList/PropertyMap';
+import AgreementLibrary from '../RentalAgreement/AgreementList/AgreementLibrary';
 import ReviewList from '../Review/ReviewList/ReviewList';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
 import './ProfilePage.css';
-import AgreementList from '../RentalAgreement/AgreementList/AgreementList';
 
 const ProfilePage = () => {
         const { user } = useContext(UserContext);
@@ -25,11 +25,12 @@ const ProfilePage = () => {
         });
         const [oldUserInfo, setOldUserInfo] = useState(userInfo);
         const [reviews, setReviews] = useState([]);
-        const [agreements, setAgreements] = useState([]);
         const [hostProperty, setHostProperty] = useState([]);
         const [edit, setEdit] = useState(true);
         const [loading, setLoading] = useState(false);
         const [loadAction, setLoadAction] = useState(false);
+        const [hostRentalList, setHostRental] = useState([]);
+        const [guestRentalList, setGuestRental] = useState([]);
 
         useEffect(() => {	// run when render()
                 const abordController = new AbortController();
@@ -64,6 +65,8 @@ const ProfilePage = () => {
                                         const fetchedRevs = await responseTwo.json();
                                         setReviews(fetchedRevs);
                                 }
+
+
                                 if (hid) {
                                         const responseThree = await fetch(
                                                 `http://localhost:3000/api/profile/${uid}/my-property`
@@ -79,18 +82,19 @@ const ProfilePage = () => {
                                                 `http://localhost:3000/api/rental/rental-agreement/host/${hid}`
                                         );
                                         if (responseFour.ok) {
-                                                const fetchedAgrees = await responseFour.json();
-                                                setAgreements(fetchedAgrees.rental_agreement_list);
-                                        }
-                                }else{
-                                        const responseFour = await fetch(
-                                                `http://localhost:3000/api/rental/rental-agreement/host/${gid}`
-                                        );
-                                        if (responseFour.ok) {
-                                                const fetchedAgrees = await responseFour.json();
-                                                setAgreements(fetchedAgrees.rental_agreement_list);
+                                                const fetchedHostAgrees = await responseFour.json();
+                                                setHostRental(fetchedHostAgrees.rental_agreement_list);
                                         }
                                 }
+                                
+                                const responseFive = await fetch(
+                                        `http://localhost:3000/api/rental/rental-agreement/guest/${gid}`
+                                );
+                                if (responseFive.ok) {
+                                        const fetchedGuestAgrees = await responseFive.json();
+                                        setGuestRental(fetchedGuestAgrees.rental_agreement_list);
+                                }
+
                                 setLoading(false);
                         } catch (err) {
                                 console.log(err);
@@ -219,11 +223,10 @@ const ProfilePage = () => {
                                                                 />
                                                         </div>
                                                         <div name='Rental Agreements'>
-                                                                <div className='lineMargin'>
-                                                                        <div className='lml'></div>
-                                                                </div>
-                                                                <AgreementList
-                                                                        agreements={ agreements }
+                                                                <AgreementLibrary
+                                                                        hid = {hid}
+                                                                        hostRentalList={hostRentalList}
+                                                                        guestRentalList={guestRentalList}
                                                                         setLoading={ setLoadAction }
                                                                 />
                                                         </div>

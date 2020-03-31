@@ -1,18 +1,17 @@
-import React, { useState }  from 'react';
+import React from 'react';
 import AgreementItem from '../AgreementItem/AgreementItem';
 
-const AgreementList = ({ hid, agreements,setLoading }) => {
-        const isHost = (hid === null ? false : true)
+const AgreementList = ({ isHost, agreements, setLoading }) => {
         return (
                 <div className='agreementList'>
                         <div className='agreementContainer'>
                                 {agreements.map((agreement, i) => {
                                         return <AgreementItem 
-                                                key={i} 
-                                                id={i} 
-                                                isHost={isHost} 
-                                                agreement={agreement} 
-                                                setLoading = {setLoading}
+                                                        key={i} 
+                                                        id={i} 
+                                                        isHost={isHost} 
+                                                        agreement={agreement}
+                                                        setLoading = {setLoading}
                                                 />;
                                 })}
                         </div>

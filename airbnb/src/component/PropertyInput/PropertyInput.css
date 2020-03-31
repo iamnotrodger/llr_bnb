@@ -20,9 +20,9 @@
 }
 
 .select{
-    width: 300px !important;
-    clear: right !important;
-    float: right !important;
+    width: 300px;
+    clear: right;
+    float: right;
     margin-bottom: 5px !important;
 }
 
