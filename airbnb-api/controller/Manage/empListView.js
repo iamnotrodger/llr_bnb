@@ -7,7 +7,7 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
         const client = await db_pool.connect();
         try {
             const employeeQueryText =
-                'SELECT country FROM project.employee WHERE empid = $1;';
+                'SELECT country FROM project.employee NATURAL JOIN project.usr WHERE empid = $1;';
             const res1 = await client.query(employeeQueryText, [empid]);
             const { country } = res1.rows[0];
             const propertyQueryText =
