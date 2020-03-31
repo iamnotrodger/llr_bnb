@@ -1,8 +1,13 @@
 import React from 'react';
 import AgreementList from './AgreementList';
 
-const AgreementLibrary = ({hid, hostRentalList, guestRentalList, setLoading}) => {
-        const isHost = (hid === null ? false : true)
+const AgreementLibrary = ({
+        hid,
+        hostRentalList,
+        guestRentalList,
+        setLoading
+}) => {
+        const isHost = hid === null ? false : true;
         return (
                 <div>
                         <div className='lineMargin'>
@@ -53,7 +58,7 @@ const AgreementLibrary = ({hid, hostRentalList, guestRentalList, setLoading}) =>
                                         </div>)}
                                 </div>
                 </div>
-        )
-}
+        );
+};
 
 export default AgreementLibrary;

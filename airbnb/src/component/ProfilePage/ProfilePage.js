@@ -91,13 +91,11 @@ const ProfilePage = () => {
 
                                 if (empid) {
                                         const responseSix = await fetch(
-                                                `http://localhost:3000/api/employee/${8}/property-list`
+                                                `http://localhost:3000/api/employee/${empid}/property-list`
                                         );
                                         if (responseSix.ok) {
                                                 const fetchedProperties = await responseSix.json();
-                                                setBranchProperty(
-                                                        fetchedProperties
-                                                );
+                                                setBranchProperty(fetchedProperties.property_list);
                                                 console.log(branchProperty)
                                         }
                                 }
