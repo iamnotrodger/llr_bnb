@@ -245,11 +245,21 @@ Summary:
 
 The project consist of two directories: airbnb and airbnb-api. The airbnb directory contains all of the code for the User Interface, and the airbnb-api directory contains all of the code for the API/backend. To run this website both of these directories must be running.
 
-In order to run this website you need two Terminals/Command Line running: one terminal will be opened and dedicated for the aibnb directory and the second one will be opened and dedicated for the airbnb-api. 
+* In order to run this website you need two Terminals/Command Line running: one terminal will be opened and dedicated for the aibnb directory and the second one will be opened and dedicated for the airbnb-api. 
 
-After opening them you need to run the 'npm install' command for both airbnb and airbnb-api inorder to install the libraries/dependencies we used for this project. This should create a 'node_module' directory for both the airbnb and airbnb-api directory.
+![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/step1.png)
 
-After installing all the libraries/dependencies you must run a localhost server for both the aribnb and airbnb-api. In order to do this you must run the command 'npm start.' You must run this command at the airbnb-api directory first because it is crucial that the airbnb-api server is running on port 3000 because that's where the UI makes it's call to the airbnb-api. After running 'npm start' on the airbnb-api directory you must run this command again on the airbnb directory. Since the aibnb-api is running on port 30000 it will ask you to run the airbnb server in port 30001.
+* After opening them you need to run the 'npm install' command for both airbnb and airbnb-api inorder to install the libraries/dependencies we used for this project. This should create a 'node_module' directory for both the airbnb and airbnb-api directory.
+
+
+![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/step2.png)
+
+* After installing all the libraries/dependencies you must run a localhost server for both the aribnb and airbnb-api. In order to do this you must run the command 'npm start.' You must run this command at the airbnb-api directory first because it is crucial that the airbnb-api server is running on port 3000 because that's where the UI makes it's call to the airbnb-api. After running 'npm start' on the airbnb-api directory you must run this command again on the airbnb directory. Since the aibnb-api is running on port 30000 it will ask you to run the airbnb server in port 30001.
+
+![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/step3.png)
+![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/step4.png)
 
 After both server is runnign a window should open up in your default browser with our website running on 'localhost:3001.' If not, search up 'localhost:30001' in your browser if you ran the airbnb server on port 3001.
+
+![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/step5.png)
 
