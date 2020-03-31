@@ -66,6 +66,7 @@ const PropertyPage = (props) => {
                                                 unavaible_dates,
                                                 host_name
                                         } = await response.json();
+                                        console.log(unavaible_dates);
                                         setProperty({
                                                 title: title,
                                                 location: location,

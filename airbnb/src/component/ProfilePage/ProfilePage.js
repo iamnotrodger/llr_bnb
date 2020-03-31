@@ -3,6 +3,7 @@ import TabControl from '../ReactTab/ReactTab';
 import UserContext from '../../UserContext';
 import ProfileSide from './ProfileSide';
 import PropertyMap from '../Property/PropertyList/PropertyMap';
+import AgreementLibrary from '../RentalAgreement/AgreementList/AgreementLibrary';
 import ReviewList from '../Review/ReviewList/ReviewList';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
@@ -24,16 +25,17 @@ const ProfilePage = () => {
         });
         const [oldUserInfo, setOldUserInfo] = useState(userInfo);
         const [reviews, setReviews] = useState([]);
-        // const [rentalAgreements, setRentalAgreements] = useState([]);
         const [hostProperty, setHostProperty] = useState([]);
         const [edit, setEdit] = useState(true);
         const [loading, setLoading] = useState(false);
         const [loadAction, setLoadAction] = useState(false);
+        const [hostRentalList, setHostRental] = useState([]);
+        const [guestRentalList, setGuestRental] = useState([]);
 
-        useEffect(() => {
+        useEffect(() => {	// run when render()
                 const abordController = new AbortController();
                 const signal = abordController.signal;
-                const fetchData = async () => {
+                const fetchData = async () => {		// async func define
                         setLoading(true);
                         try {
                                 const responseOne = await fetch(
@@ -76,25 +78,32 @@ const ProfilePage = () => {
                                         }
 
                                         const responseFour = await fetch(
-                                                `http://localhost:3000//api/rental/rental-agreement/host/${hid}`
+                                                `http://localhost:3000/api/rental/rental-agreement/host/${hid}`
                                         );
                                         if (responseFour.ok) {
-                                                const fetchedAgrees = await responseFour.json();
-                                                setReviews(fetchedAgrees);
+                                                const fetchedHostAgrees = await responseFour.json();
+                                                setHostRental(fetchedHostAgrees.rental_agreement_list);
                                         }
                                 }
-
+                                
+                                const responseFive = await fetch(
+                                        `http://localhost:3000/api/rental/rental-agreement/guest/${gid}`
+                                );
+                                if (responseFive.ok) {
+                                        const fetchedGuestAgrees = await responseFive.json();
+                                        setGuestRental(fetchedGuestAgrees.rental_agreement_list);
+                                }
                                 setLoading(false);
                         } catch (err) {
                                 console.log(err);
                                 setLoading(false);
                         }
                 };
-                fetchData();
+                fetchData();	// async func call
                 return function cleanup() {
-                        abordController.abort();
+                        abordController.abort();	// abort when error
                 };
-        }, [uid]);
+        }, [uid]); // run every time when uid is changed
 
         const handleTab = (data) => {
                 console.log(data);
@@ -202,13 +211,23 @@ const ProfilePage = () => {
                                         <div className='profileMain'>
                                                 <TabControl setTab={handleTab}>
                                                         <div name='Reviews'>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
                                                                 <ReviewList
                                                                         reviews={
                                                                                 reviews
                                                                         }
                                                                 />
                                                         </div>
-                                                        <div name='Rental Agreements'></div>
+                                                        <div name='Rental Agreements'>
+                                                                <AgreementLibrary
+                                                                        hid = {hid}
+                                                                        hostRentalList={hostRentalList}
+                                                                        guestRentalList={guestRentalList}
+                                                                        setLoading={ setLoadAction }
+                                                                />
+                                                        </div>
                                                         <div
                                                                 name='Host Properties'
                                                                 style={{
@@ -216,6 +235,9 @@ const ProfilePage = () => {
                                                                                 ? ''
                                                                                 : 'none'
                                                                 }}>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
                                                                 <PropertyMap
                                                                         properties={
                                                                                 hostProperty

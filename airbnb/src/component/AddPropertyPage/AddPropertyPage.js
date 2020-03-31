@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import UserContext from '../../UserContext';
 import PropertyInput from '../PropertyInput/PropertyInput';
 import LoadSpinner from '../LoadingScreen/LoadSpinner';
+import Particles from 'react-particles-js';
 import './AddPropertyPage.css';
 
 const propertyInitial = {
@@ -19,6 +20,23 @@ const priceInitial = {
 const roomInitial = {
         bed: 0,
         washroom: 0
+};
+
+const particleOption = {
+        particles: {
+                number: {
+                        value: 150,
+                        density: {
+                                enable: true,
+                                value_area: 800
+                        }
+                }
+        },
+        poligon: {
+                draw: {
+                        enable: true
+                }
+        }
 };
 
 const AddPropertyPage = () => {
@@ -157,22 +175,28 @@ const AddPropertyPage = () => {
         return (
                 <div>
                         <LoadSpinner loading={loading} />
+                        <Particles
+                                className='particles'
+                                params={particleOption}
+                        />
                         <div className='add-prop-page'>
-                                <PropertyInput
-                                        className='add-prop-input'
-                                        onPropertyChange={onPropertyChange}
-                                        onPriceChange={onPriceChange}
-                                        onRoomsChange={onRoomsChange}
-                                />
-                                <div>
-                                        <button
-                                                className='submitButton'
-                                                onClick={propertySubmit}>
-                                                Submit
-                                        </button>
-                                        {ErrorMessage}
-                                        {SuccMessage}
-                                        {RegisterHostMessage}
+                                <div className='login-box add-prop-box'>
+                                        <PropertyInput
+                                                className='add-prop-input add-prop-host'
+                                                onPropertyChange={onPropertyChange}
+                                                onPriceChange={onPriceChange}
+                                                onRoomsChange={onRoomsChange}
+                                        />
+                                        <div>
+                                                <button
+                                                        className='submitButton'
+                                                        onClick={propertySubmit}>
+                                                        Submit
+                                                </button>
+                                                {ErrorMessage}
+                                                {SuccMessage}
+                                                {RegisterHostMessage}
+                                        </div>
                                 </div>
                         </div>
                 </div>

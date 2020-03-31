@@ -21,7 +21,7 @@ a {
 }
 
 .lineMargin {
-        margin: 24px 0;
+        margin: 18px 0;
         display: block !important;
 }
 
@@ -90,7 +90,7 @@ button:focus {
 }
 
 .submitButton:hover {
-        background: rgb(114, 212, 206) !important;
+        background: rgb(76, 172, 165) !important;
 }
 
 .submitButton:active {

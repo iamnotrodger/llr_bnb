@@ -12,12 +12,13 @@ const handleHostRentalList = async (req, res, db_pool) => {
             const res1 = await client.query(rentalAgreementQueryText, [hid]);
             // get payment status for each rental agreement
             const paymentQueryText = 
-                'SELECT status FROM project.payment WHERE rtid = $1;';
+                'SELECT pid, status FROM project.payment WHERE rtid = $1;';
             for (i in res1.rows) {
                 const { rtid } = res1.rows[i];
                 const res2 = await client.query(paymentQueryText, [rtid]);
-                const { status } = res2.rows[0];
+                const { pid, status } = res2.rows[0];
                 res1.rows[i].status = status;
+                res1.rows[i].pid = pid;
             }
             // get property title for each rental agreement
             const propertyQueryText =
@@ -69,12 +70,13 @@ const handleGuestRentalList = async (req, res, db_pool) => {
             const res1 = await client.query(queryText, [gid]);
             // get payment status for each rental agreement
             const paymentQueryText =
-                'SELECT status FROM project.payment WHERE rtid = $1;';
+                'SELECT pid, status FROM project.payment WHERE rtid = $1;';
             for (i in res1.rows) {
                 const { rtid } = res1.rows[i];
                 const res2 = await client.query(paymentQueryText, [rtid]);
-                const { status } = res2.rows[0];
+                const { pid, status } = res2.rows[0];
                 res1.rows[i].status = status;
+                res1.rows[i].pid = pid;
             }
             // get property title for each rental agreement
             const propertyQueryText = 
