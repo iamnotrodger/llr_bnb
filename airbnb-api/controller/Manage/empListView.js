@@ -21,8 +21,12 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
             for (i in res2.rows) {
                 const { prid } = res2.rows[i];
                 const res3 = await client.query(bedQueryText, [prid]);
-                const { bed_num } = res3.rows[0];
-                res2.rows[i].bed_num = bed_num;
+                if (res3.rows.length != 0) {
+                    const { bed_num } = res3.rows[0];
+                    res2.rows[i].bed_num = bed_num;
+                } else {
+                    res2.rows[i].bed_num = 0;
+                }
             }
             res.status(200).jsonp({
                 property_list: res2.rows
