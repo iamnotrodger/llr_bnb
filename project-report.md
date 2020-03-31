@@ -239,8 +239,8 @@ Summary:
 1. Open up the airbnb and airbnb-api directory in seperate Terminal/command line.
 2. Run 'npm install' in the terminal/command line for both airbnb and airbnb-api directory.
 3. Start a local host server.
-   3.1 Run 'npm start' on the airbnb-api directory first. It is cruscial that the airbnb-api is running on port 30000.
-   3.2 Run 'npm start' on the airbnb dirctory. Since the airbnb-api is running on port 30000 it will as you to run in port        3001.
+   * Run 'npm start' on the airbnb-api directory first. It is cruscial that the airbnb-api is running on port 30000.
+   * Run 'npm start' on the airbnb dirctory. Since the airbnb-api is running on port 30000 it will ask you to run in port     3001.
 4. A window should open up your default browser with our website. If not search up 'localhost:3001' in your choosen browser.
 
 The project consist of two directories: airbnb and airbnb-api. The airbnb directory contains all of the code for the User Interface, and the airbnb-api directory contains all of the code for the API/backend. To run this website both of these directories must be running.
