@@ -13,8 +13,9 @@ Kangwei Liao, 8568800
 ## Overview
    For this project, our group designed a Airbnb-like website. We call it LLR-BnB.
 Hongyi Lin is the backend developer for this project. He is responsible for the server functionality and the database queries. Rodger Retanal is the middle man. He is responsible for connecting the UI and backend. Kangwei Liao is the UI designer. He is resposible for the website UI. 
-   This website allows you to register as a Guest, Host, or Employee. You are automatically registered as a guest when you register. As a Guest, you are able to request bookings for properties as well as make reviews for properties. If you're booking reques gets approve by the Host, you can then pay for it in the 'Profile Page.' 
-   In order to become Host you must register a property, you can register as much properties as you want. You can register a propoerty in the inital registration form or register a property in the 'Add Property Page.' As a host, you are able to to reject or approve booking request made by Guests. Keep in mind as Host you still hold the same functionality as a Guest.
+
+- This website allows you to register as a Guest, Host, or Employee. You are automatically registered as a guest when you register. As a Guest, you are able to request bookings for properties as well as make reviews for properties. If you're booking reques gets approve by the Host, you can then pay for it in the 'Profile Page.' 
+-In order to become Host you must register a property, you can register as much properties as you want. You can register a propoerty in the inital registration form or register a property in the 'Add Property Page.' As a host, you are able to to reject or approve booking request made by Guests. Keep in mind as Host you still hold the same functionality as a Guest.
    There is a dedicated query requirment page than did not fit with our project.
 
 ## Implementation
