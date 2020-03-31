@@ -8,9 +8,10 @@ const PropertyItem = ({ property }) => {
         if (rating === null) {
                 rating = 0;
         }
-        if (review_num === null) {
+        if (review_num === null || review_num === undefined) {
                 review_num = 0;
         }
+        console.log(review_num)
 
         return (
                 <div className='property'>
