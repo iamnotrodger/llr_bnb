@@ -46,7 +46,26 @@ const QueryRequirment = () => {
                 await getRequest('/api/project/15k-employee');
         };
 
-        console.log(query);
+        const dataDisplay = () => {
+                if (query) {
+                        if (query instanceof Array) {
+                                return query.map((data) => {
+                                        return (
+                                                <div className='qeury-data'>
+                                                        {JSON.stringify(data)}
+                                                </div>
+                                        );
+                                });
+                        } else {
+                                return (
+                                        <div className='qeury-data'>
+                                                {JSON.stringify(query)}
+                                        </div>
+                                );
+                        }
+                }
+                return null;
+        };
 
         return (
                 <div className='main query-requirment'>
@@ -96,20 +115,7 @@ const QueryRequirment = () => {
                                         </p>
                                 </div>
                         </div>
-                        <div className='query-contnet'>
-                                {query
-                                        ? query.map((data) => {
-                                                  return (
-                                                          <div className='qeury-data'>
-                                                                  {JSON.stringify(
-                                                                          data
-                                                                  )}
-                                                          </div>
-                                                  );
-                                          })
-                                        : null}
-                                {/* {query ? JSON.stringify(query) : null} */}
-                        </div>
+                        <div className='query-contnet'>{dataDisplay()}</div>
                 </div>
         );
 };

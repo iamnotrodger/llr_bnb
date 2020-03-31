@@ -69,7 +69,6 @@ const ProfilePage = () => {
                                         setReviews(fetchedRevs);
                                 }
 
-
                                 if (hid) {
                                         const responseThree = await fetch(
                                                 `http://localhost:3000/api/profile/${uid}/my-property`
@@ -110,7 +109,6 @@ const ProfilePage = () => {
                                         const fetchedGuestAgrees = await responseFive.json();
                                         setGuestRental(fetchedGuestAgrees.rental_agreement_list);
                                 }
-
                                 setLoading(false);
                         } catch (err) {
                                 console.log(err);
