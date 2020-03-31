@@ -30,10 +30,20 @@ const handleEmpPropertyList = async (req, res, db_pool) => {
             for (i in res2.rows) {
                 const { prid } = res2.rows[i];
                 const res4 = await client.query(avgsQueryText, [prid]);
-                console.log(res4.rows); // test
+                // console.log(res4.rows); // test
                 if (res4.rows.length != 0) {
                     const { rating } = res4.rows[0];
                     res2.rows[i].rating = rating;
+                }
+            }
+            const revNumQueryText =
+                "SELECT COUNT(rating) AS review_num FROM project.review WHERE prid = $1 GROUP BY prid;";
+            for (i in res2.rows) {
+                const { prid } = res2.rows[i];
+                const res5 = await client.query(revNumQueryText, [prid])
+                if (res5.rows.length != 0) {
+                    const { review_num } = res5.rows[0];
+                    res2.rows[i].review_num = review_num;
                 }
             }
             res.status(200).jsonp({
