@@ -14,6 +14,8 @@ const ProfilePage = () => {
         const uid = user ? user.uid : null;
         const gid = user ? user.gid : null;
         const hid = user ? user.hid : null;
+        const empid = user ? user.empid : null;
+        console.log(empid)
         const [userInfo, setUserInfo] = useState({
                 uid: null,
                 firstname: '',
@@ -26,6 +28,7 @@ const ProfilePage = () => {
         const [oldUserInfo, setOldUserInfo] = useState(userInfo);
         const [reviews, setReviews] = useState([]);
         const [hostProperty, setHostProperty] = useState([]);
+        const [branchProperty, setBranchProperty] = useState([]);
         const [edit, setEdit] = useState(true);
         const [loading, setLoading] = useState(false);
         const [loadAction, setLoadAction] = useState(false);
@@ -84,6 +87,19 @@ const ProfilePage = () => {
                                         if (responseFour.ok) {
                                                 const fetchedHostAgrees = await responseFour.json();
                                                 setHostRental(fetchedHostAgrees.rental_agreement_list);
+                                        }
+                                }
+
+                                if (empid) {
+                                        const responseSix = await fetch(
+                                                `http://localhost:3000/api/employee/${8}/property-list`
+                                        );
+                                        if (responseSix.ok) {
+                                                const fetchedProperties = await responseSix.json();
+                                                setBranchProperty(
+                                                        fetchedProperties
+                                                );
+                                                console.log(branchProperty)
                                         }
                                 }
                                 
@@ -201,12 +217,13 @@ const ProfilePage = () => {
                                                 edit={edit}
                                                 setEdit={onEditClick}
                                                 onSubmit={onSubmit}
+                                                empid = {user.empid}
                                         />
                                 </div>
                                 <div className='profileContent'>
                                         <div className='profileHeader'>
                                                 <div className='headerContent'>
-                                                        <h2>{`Hi, I'm ${userInfo.firstname}`}</h2>
+                                                        <h2>{`Hi, ${userInfo.firstname}!`}</h2>
                                                         <p>{`Joined in ${userInfo.created.getFullYear()}`}</p>
                                                 </div>
                                         </div>
@@ -243,6 +260,22 @@ const ProfilePage = () => {
                                                                 <PropertyMap
                                                                         properties={
                                                                                 hostProperty
+                                                                        }
+                                                                />
+                                                        </div>
+                                                        <div
+                                                                name='Branch Properties'
+                                                                style={{
+                                                                        display: empid
+                                                                                ? ''
+                                                                                : 'none'
+                                                                }}>
+                                                                <div className='lineMargin'>
+                                                                        <div className='lml'></div>
+                                                                </div>
+                                                                <PropertyMap
+                                                                        properties={
+                                                                                branchProperty
                                                                         }
                                                                 />
                                                         </div>
