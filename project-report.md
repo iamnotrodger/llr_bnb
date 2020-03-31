@@ -11,6 +11,7 @@ Kangwei Liao, 8568800
 * [Implementation](#implementation)
 * [DDLs](#ddls)
 * [Guide](#guide)
+* [Result for 10 required queries](#result-for-10-required-queries)
 
 <hr>
 
@@ -31,7 +32,7 @@ Hongyi Lin is the backend developer for this project. He is responsible for the 
 
 ## DDLs
 ```sql
-CREATE TABLE usr
+CREATE TABLE project.usr
 (
     uid serial,
     firstname varchar(35) NOT NULL,
@@ -45,39 +46,39 @@ CREATE TABLE usr
     CONSTRAINT usr_pkey PRIMARY KEY (uid),
     CONSTRAINT email_unique UNIQUE (email),
     CONSTRAINT usr_country_fkey FOREIGN KEY (country)
-        REFERENCES branch (country)
+        REFERENCES project.branch (country)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 )
 ```
 ```sql
-CREATE TABLE guest
+CREATE TABLE project.guest
 (
     uid integer NOT NULL,
     gid serial,
     CONSTRAINT guest_pkey PRIMARY KEY (uid, gid),
     CONSTRAINT unique_gid UNIQUE (gid),
     CONSTRAINT guest_uid_fkey FOREIGN KEY (uid)
-        REFERENCES usr (uid)
+        REFERENCES project.usr (uid)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 )
 ```
 ```sql
-CREATE TABLE host
+CREATE TABLE project.host
 (
     uid integer NOT NULL,
     hid serial,
     CONSTRAINT host_pkey PRIMARY KEY (uid, hid),
     CONSTRAINT unique_hid UNIQUE (hid),
     CONSTRAINT host_uid_fkey FOREIGN KEY (uid)
-        REFERENCES usr (uid)
+        REFERENCES project.usr (uid)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 )
 ```
 ```sql
-CREATE TABLE employee
+CREATE TABLE project.employee
 (
     empid serial,
     uid integer NOT NULL,
@@ -85,33 +86,33 @@ CREATE TABLE employee
     position varchar(30),
     CONSTRAINT employee_pkey PRIMARY KEY (empid, uid),
     CONSTRAINT employee_uid_fkey FOREIGN KEY (uid)
-        REFERENCES usr (uid)
+        REFERENCES project.usr (uid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT position_check CHECK (position in ('employee', 'manager'))
 )
 ```
 ```sql
-CREATE TABLE login
+CREATE TABLE project.login
 (
     email varchar(255),
     password varchar(100),
     CONSTRAINT login_pkey PRIMARY KEY (email),
     CONSTRAINT login_email_fkey FOREIGN KEY (email)
-        REFERENCES usr (email)
+        REFERENCES project.usr (email)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 )
 ```
 ```sql
-CREATE TABLE branch
+CREATE TABLE project.branch
 (
     country varchar(30),
     CONSTRAINT branch_pkey PRIMARY KEY (country)
 )
 ```
 ```sql
-CREATE TABLE property
+CREATE TABLE project.property
 (
     prid serial,
     address varchar(255),
@@ -121,18 +122,18 @@ CREATE TABLE property
     title varchar(60),
     CONSTRAINT property_pkey PRIMARY KEY (prid),
     CONSTRAINT property_country_fkey FOREIGN KEY (country)
-        REFERENCES branch (country)
+        REFERENCES project.branch (country)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT property_hid_fkey FOREIGN KEY (hid)
-        REFERENCES host (hid)
+        REFERENCES project.host (hid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT property_property_type_check CHECK (property_type in ('House', 'Apartment', 'Hotel', 'Bed and Breakfast'))
 )
 ```
 ```sql
-CREATE TABLE room
+CREATE TABLE project.room
 (
     prid integer NOT NULL,
     rmid serial,
@@ -140,14 +141,14 @@ CREATE TABLE room
     bed_num integer,
     CONSTRAINT room_pkey PRIMARY KEY (prid, rmid),
     CONSTRAINT room_prid_fkey FOREIGN KEY (prid)
-        REFERENCES property (prid) MATCH SIMPLE
+        REFERENCES project.property (prid) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT room_room_type_check CHECK (room_type in ('bedroom', 'washroom'))
 )
 ```
 ```sql
-CREATE TABLE pricing
+CREATE TABLE project.pricing
 (
     prcid serial,
     guest_num integer,
@@ -155,13 +156,13 @@ CREATE TABLE pricing
     price real,
     CONSTRAINT pricing_pkey PRIMARY KEY (prcid, prid),
     CONSTRAINT pricing_prid_fkey FOREIGN KEY (prid)
-        REFERENCES property (prid)
+        REFERENCES project.property (prid)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 )
 ```
 ```sql
-CREATE TABLE rental_agreement
+CREATE TABLE project.rental_agreement
 (
     rtid serial,
     gid integer,
@@ -173,15 +174,15 @@ CREATE TABLE rental_agreement
     signing_date date,
     CONSTRAINT rental_agreement_pkey PRIMARY KEY (rtid),
     CONSTRAINT rental_agreement_gid_fkey FOREIGN KEY (gid)
-        REFERENCES guest (gid)
+        REFERENCES project.guest (gid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT rental_agreement_hid_fkey FOREIGN KEY (hid)
-        REFERENCES host (hid)
+        REFERENCES project.host (hid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT rental_agreement_prid_fkey FOREIGN KEY (prid)
-        REFERENCES property (prid)
+        REFERENCES project.property (prid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT rental_agreement_signing_check CHECK (signing in ('pending', 'approved', 'disapproved')),
@@ -189,7 +190,7 @@ CREATE TABLE rental_agreement
 )
 ```
 ```sql
-CREATE TABLE payment
+CREATE TABLE project.payment
 (
     pid serial,
     rtid integer NOT NULL,
@@ -199,7 +200,7 @@ CREATE TABLE payment
     card_num numeric(16,0),
     CONSTRAINT payment_pkey PRIMARY KEY (pid, rtid),
     CONSTRAINT payment_rtid_fkey FOREIGN KEY (rtid)
-        REFERENCES rental_agreement (rtid)
+        REFERENCES project.rental_agreement (rtid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT payment_method_check CHECK (method in ('credit card', 'debit card')),
@@ -207,7 +208,7 @@ CREATE TABLE payment
 )
 ```
 ```sql
-CREATE TABLE review
+CREATE TABLE project.review
 (
     rvid serial,
     gid integer,
@@ -220,11 +221,11 @@ CREATE TABLE review
     created timestamp,
     CONSTRAINT review_pkey PRIMARY KEY (rvid),
     CONSTRAINT review_gid_fkey FOREIGN KEY (gid)
-        REFERENCES guest (gid)
+        REFERENCES project.guest (gid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT review_prid_fkey FOREIGN KEY (prid)
-        REFERENCES property (prid) MATCH SIMPLE
+        REFERENCES project.property (prid) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT review_rating_check CHECK (1.0 <= rating AND rating <= 5.0),
@@ -267,3 +268,26 @@ The project consist of two directories: airbnb and airbnb-api. The airbnb direct
 
     ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/step5.png)
 
+## Result for 10 required queries
+Because there is just one branch in one **country**, our group thinks that country is good enough to be the primary key for the branch table. As a result, there is no **branch_id** in our branch table. </br>
+The code is along with other sql code in *functionality.sql*.
+* query 1 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query1.png)
+* query 2 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query2.png)
+* query 3 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query3.png)
+* query 4 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query4.png)
+* query 5 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query5.png)
+* query 6 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query6.png)
+* query 7 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query7.png)
+* query 8 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query8.png)
+* query 9 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query9.png)
+* query 10 </br>
+    ![alt text](https://raw.githubusercontent.com/iamnotrodger/llr_bnb/master/photos/query10.png)
