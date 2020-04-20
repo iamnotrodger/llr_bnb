@@ -1,11 +1,13 @@
-const host = 'web0.eecs.uottawa.ca';
-const user = 'hlin087';
-const password = '@Lhy19990301';
-const database = 'hlin087';
+const host = 'llr-bnb.cs55wdy5pdtt.ca-central-1.rds.amazonaws.com';
+const user = 'Hongyi';
+const password = 'Az5Vason16rfbL63Afma';
+const database = 'postgres';
+const port = '15432'
 
 module.exports = {
     host,
     user,
     password,
-    database
+    database,
+    port
 }

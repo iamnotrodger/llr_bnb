@@ -6,7 +6,7 @@ const db_pool = new Pool({
         user: connection.user,
         password: connection.password,
         database: connection.database,
-        port: 15432
+        port: connection.port
 }); // pooled database client
 // db_pool.connect()
 
